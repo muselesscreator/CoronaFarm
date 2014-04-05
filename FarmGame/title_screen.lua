@@ -23,6 +23,10 @@ local function gotoLevel()
     storyboard.gotoScene('level_screen')
 end
 
+local function gotoTutorial()
+    storyboard.gotoScene('tutorial_screen')
+end
+
 ---------------------------------------------------------------------------------
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
@@ -65,6 +69,17 @@ function scene:createScene( event )
     LevelButton.y = 450
     screenGroup:insert(LevelButton)
 
+    local TutorialButton = widget.newButton
+    {
+        defaultFile = "images/buttonRed.png",
+        overFile = "images/buttonRedOver.png",
+        label = "Play Tutorial",
+        emboss = true,
+        onRelease = gotoTutorial,
+    }
+    TutorialButton.x = display.contentWidth * 0.5
+    TutorialButton.y = 530
+    screenGroup:insert(TutorialButton)
 
     timer.performWithDelay(10, function() touchesAllowed = true end)
 
