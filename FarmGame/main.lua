@@ -11,14 +11,14 @@ local storyboard = require "storyboard"
 storyboard.purgeOnSceneChange = true
 --> Import Sprite Sheet
 sheetInfo = require("plant_sheet")
-myImageSheet = graphics.newImageSheet("images/plant_sheet.png", sheetInfo:getSheet())
+myImageSheet = graphics.newImageSheet("plant_sheet.png", sheetInfo:getSheet())
 sequenceData =
 {
     { name="seqArrowLeft", frames={ 1 }},
     { name="seqArrowRight", frames={ 2 }},
     { name="seqBarren", frames={ 3 }},
-    { name="seqBird", frames={5, 6, 7, 8, 9, 10, 11, 12, 13. 14}, time=800},
-    { name="seqBirdDead", frames={15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28. 29}, time=1500, loopCount = 1},
+    { name="seqBird", frames={5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, time=800},
+    { name="seqBirdDead", frames={15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}, time=1500, loopCount = 1},
     { name="seqBlank", frames={ 30 }},
     { name="seqBoxClosed", frames={ 31 }},
     { name="seqBoxOpen", frames={ 32 }},
