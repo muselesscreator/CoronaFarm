@@ -226,6 +226,8 @@ function TutorialScene(scene)
     elseif scene == 'SaladPest3' then
         level.textbox1:setText('Destroy earthbound pests with this Mallet of Justice!')
         level.hand1 = tutorialPointer(300, 415)
+        theQueue[2].sprite:setSequence('seqMallet')
+        theQueue[2].square_type='Mallet'
         theQueue[1].sprite:setSequence('seqMallet')
         level.gopher1:eat(level.lettuce['5,3'])
         nextButton('SaladPest4')
@@ -240,6 +242,35 @@ function TutorialScene(scene)
                 level.textbox2 = textBox(300, 450, 700, 150, "*Make sure you don't whack a pest that's sitting on an important junction.  Wait for the right time to strike.", 15)
             end, 1)
         nextButton('SaladBox')
+    elseif scene == 'SaladBox' then
+        level.textbox2:die()
+        level.textbox1:setText('You can store the next item in your queue to be used at a later time by putting it in your crate.')
+        level.hand1:rotate(345)
+        level.hand1:BounceToXY(300,  600)
+        nextButton('SaladBox2')
+    elseif scene == 'SaladBox2' then
+        level.textbox2 = textBox(300, 450, 700, 150, "This is perfect for storing Mallets or Seeds for when you need them most.", 15)
+        level.hand1:BounceToXY(300, 600)
+        timer.performWithDelay(200, function()
+                theBasket.decorator:setSequence('seqMallet')
+                theBasket.decorator.alpha = 1
+                theQueue:stackedNextEntry()
+            end, 1)
+        nextButton('SaladBox3')
+    elseif scene == 'SaladBox3' then
+        level.textbox2:die()
+        level.textbox1:die()
+        level.textbox1 = textBox(300, 50, 700, 115, 'To use the stored item, just tap the storage bin.', 15)
+        level.hand1:BounceToXY(275, 600)
+        timer.performWithDelay(200, function() theBasket.box:setSequence('seqBoxOpen') end, 1)
+        nextButton('SaladGoForth')
+    elseif scene == 'SaladGoForth' then
+        level.hand1:die()
+        level.textbox1:die()
+        level.textbox1 = textBox(300, 50, 700, 150, 'Now go forth and farm!  Farm like the world is depending on you... you know... because it is.', 15)
+        nextButton('Farm')
+    elseif scene == 'Farm' then
+        storyboard.gotoScene('farm_screen')
     end
 
 end
@@ -488,6 +519,19 @@ function tutorialPointer:BounceTo(i, j)
     local x2 = math.floor((x1+x3)/2)
     local y1 = self.y
     local y3 = theField.grid[i][j].y-50
+    local y2 = math.floor((y1+y3)/2-100)
+    self.x = x3
+    self.y = y3
+    local curve = bezier:curve({x1, x2, x3}, {y1, y2, y3})
+    MoveInCurve(self.sprite, curve, 10, 250)
+end
+
+function tutorialPointer:BounceToXY(x, y)
+    local x1 = self.x
+    local x3 = x
+    local x2 = math.floor((x1+x3)/2)
+    local y1 = self.y
+    local y3 = y
     local y2 = math.floor((y1+y3)/2-100)
     self.x = x3
     self.y = y3
