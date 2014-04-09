@@ -17,8 +17,43 @@ function libQueue:initialize() --push to fill the queue to the specified number
     end
 end
 
-function libQueue:nextEntry() --push and pop, return the queue and the element that was popped
-    theField:updateWeights()
+function libQueue:nextEntry(weights) --push and pop, return the queue and the element that was popped
+    print(weights)
+    if weights ~= nil then
+        theField.weights = weights
+    else
+        theField:updateWeights()
+    end
+    l = self.length
+    local myType = self:pickNext().square_type
+    local sprite = display.newSprite(myImageSheet, sequenceData)
+    sprite.x = theField.Queue.X
+    sprite.y = 0
+    sprite:setSequence('seq'..myType)
+    layers.frame:insert(sprite)
+    self[1].sprite.alpha = 0
+    self[1].sprite:removeSelf()
+    print('--@libQueue:nextEntry():  theQueue')
+    for i=1, self.length-1 do
+        self[i].sprite = self[i+1].sprite
+        self[i].square_type = self[i+1].square_type
+        print(i..' '..self[i].square_type)
+    end
+    self[l].sprite = sprite
+    self[l].square_type = myType
+
+    for i=1, self.length do
+        new_y = theField.Queue.Y - (125*(i-1))
+        print(new_y)
+        if i==1 then
+            transition.to(self[i].sprite, {time=300, y=new_y, transition=easing.outBounce})
+        else
+            transition.to(self[i].sprite, {time=600, y=new_y, transition=easing.outBounce})
+        end
+    end
+end
+
+function libQueue:stackedNextEntry() --push and pop, return the queue and the element that was popped
     l = self.length
     local myType = self:pickNext().square_type
     local sprite = display.newSprite(myImageSheet, sequenceData)

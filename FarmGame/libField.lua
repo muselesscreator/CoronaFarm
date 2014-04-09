@@ -3,28 +3,28 @@ require 'fields'
 require 'fieldEvents'
 local storyboard = require 'storyboard'
 
-Field = class(function(field, type)
+Field = class(function(tmpField, type)
         print('--@Field init: type =')
         print(type)
         tmp = fields[type]
         for i, v in pairs(tmp) do
-            field[i] = v
+            tmpField[i] = v
         end
-        field.turns = 0
-        field.pests = {}
-        for i, v in pairs(field.allowedPests) do
-            field.pests[v] = {}
+        tmpField.turns = 0
+        tmpField.pests = {}
+        for i, v in pairs(tmpField.allowedPests) do
+            tmpField.pests[v] = {}
         end
-        field.grid = {}
-        bg = display.newImage(field.bg)
+        tmpField.grid = {}
+        bg = display.newImage(tmpField.bg)
         bg.anchorX = 0
         bg.anchorY = 0
         bg.x = 0
         bg.y = 0
-        bg.h = field.bg_h
-        bg.w = field.bg_w
+        bg.h = tmpField.bg_h
+        bg.w = tmpField.bg_w
         layers.field:insert(bg)
-        return field
+        return tmpField
     end)
 
 function Field:fill()
@@ -212,4 +212,3 @@ function Field:numPestsOfType(type)
     end
     return tmp
 end
-
