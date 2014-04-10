@@ -78,7 +78,7 @@ function TutorialScene(scene)
         nextButton('SaladWelcomeQueue')
     elseif scene == 'SaladWelcomeQueue' then
         level.textbox1:die()
-        level.textbox1 = textBox(300, 50, 700, 125, "This is your product queue - Currently stacked with plenty of Radish seeds.", 25)
+        level.textbox1 = textBox(300, 50, 700, 125, "This is your product queue - Currently stacked with plenty of Radish Radish.", 25)
         level.hand1:rotate(30)
         transition.to(level.hand1.sprite, {x=270, y=240, time=200})
         level.hand1.x = 475
@@ -95,14 +95,14 @@ function TutorialScene(scene)
         level.textbox2:die()
         level.hand1:rotate(225)
         transition.to(level.hand1.sprite, {x=300, y=475, time=200})
-        level.textbox1:setText("Tap an empty plot of land to plant the seeds next up in the queue.")
+        level.textbox1:setText("Tap an empty plot of land to plant the Radish next up in the queue.")
         nextButton('SaladPlanting2')
     elseif scene == 'SaladPlanting2' then
         level.textbox1:setText("...and the rest of the items in the queue will drop down for use.")
         local curve = bezier:curve({300, 250, 325}, {475, 400, 450})
         MoveInCurve(level.hand1.sprite, curve, 5, 250)
         timer.performWithDelay(150, function()
-                level.plant1 = plantObject(1, 4, 'Seeds', 1)
+                level.plant1 = plantObject(1, 4, 'Radish', 1)
                 theQueue.weights = {Radish=100}
                 theQueue:stackedNextEntry()
                 level.hand2 = tutorialPointer(275, 175)
@@ -111,30 +111,30 @@ function TutorialScene(scene)
     elseif scene == 'SaladPlanting3' then
         level.hand2:die()
         level.textbox1:die()
-        level.textbox1 = textBox(300, 50, 700, 125, "As you continue to plant new seeds, your older plants will grow by a day per turn.", 15)
+        level.textbox1 = textBox(300, 50, 700, 125, "As you continue to plant new Radish, your older plants will grow by a day per turn.", 15)
         level.hand1.x = level.hand1.sprite.x
         level.hand1.y = level.hand1.sprite.y
         level.hand1:BounceTo(2, 4)
         local function planting(stage)
             if stage == 1 then
                 theQueue:stackedNextEntry()
-                level.plant1:changeTo('Radish', 1)
-                level.plant2 = plantObject(2, 4, 'Seeds', 1)
+                level.plant1:changeTo('Radish', 2)
+                level.plant2 = plantObject(2, 4, 'Radish', 1)
                 level.hand1:BounceTo(3, 4)
                 timer.performWithDelay(400, function() planting(2) end, 1)
             elseif stage == 2 then
                 theQueue:stackedNextEntry()
-                level.plant1:changeTo('Radish', 2)
-                level.plant2:changeTo('Radish', 1)
-                level.plant3 = plantObject(3, 4, 'Seeds', 1)
+                level.plant1:changeTo('Radish', 3)
+                level.plant2:changeTo('Radish', 2)
+                level.plant3 = plantObject(3, 4, 'Radish', 1)
                 level.hand1:BounceTo(4, 4)
                 timer.performWithDelay(400, function() planting(3) end, 1)
             elseif stage == 3 then
                 theQueue:stackedNextEntry()
-                level.plant1:changeTo('Radish', 3)
-                level.plant2:changeTo('Radish', 2)
-                level.plant3:changeTo('Radish', 1)
-                level.plant4 = plantObject(4, 4, 'Seeds', 1)
+                level.plant1:changeTo('Radish', 4)
+                level.plant2:changeTo('Radish', 3)
+                level.plant3:changeTo('Radish', 2)
+                level.plant4 = plantObject(4, 4, 'Radish', 1)
             end
         end
         timer.performWithDelay(400, function() planting(1) end, 1)
@@ -145,11 +145,11 @@ function TutorialScene(scene)
         local function planting(stage)
             if stage == 1 then
                 theQueue:stackedNextEntry()
-                level.plant1:changeTo('Radish', 4)
-                level.plant2:changeTo('Radish', 3)
-                level.plant3:changeTo('Radish', 2)
-                level.plant4:changeTo('Radish', 1)
-                level.plant5 = plantObject(5, 4, 'Seeds', 1)
+                level.plant1:changeTo('Radish', 5)
+                level.plant2:changeTo('Radish', 4)
+                level.plant3:changeTo('Radish', 3)
+                level.plant4:changeTo('Radish', 2)
+                level.plant5 = plantObject(5, 4, 'Radish', 1)
             end
         end
         timer.performWithDelay(400, function() planting(1) end, 1)
@@ -169,9 +169,9 @@ function TutorialScene(scene)
     elseif scene == 'SaladHarvest2' then
         level.textbox1:setText("All mature plants of the same type will be harvested at once, creating a chain combo.")
         level.plant2:show()
-        level.plant3:changeTo('Radish', 3)
-        level.plant4:changeTo('Radish', 3)
-        level.plant5:changeTo('Radish', 3)
+        level.plant3:changeTo('Radish', 4)
+        level.plant4:changeTo('Radish', 4)
+        level.plant5:changeTo('Radish', 4)
         local function harvest(stage)
             if stage == 1 then
                 level.hand1:rotate(225)
@@ -208,10 +208,10 @@ function TutorialScene(scene)
         level.radishes = {}
         level.lettuce = {}
         for i, v in ipairs(radish_locs) do
-            level.radishes[v[1]..','..v[2]] = plantObject(v[1], v[2], 'Radish', Plants.mature)
+            level.radishes[v[1]..','..v[2]] = plantObject(v[1], v[2], 'Radish', 4)
         end
         for i, v in ipairs(lettuce_locs) do
-            level.lettuce[v[1]..','..v[2]] = plantObject(v[1], v[2], 'Lettuce', Plants.mature)
+            level.lettuce[v[1]..','..v[2]] = plantObject(v[1], v[2], 'Lettuce', 4)
         end
         nextButton('SaladPest1')
     elseif scene == 'SaladPest1' then
@@ -249,7 +249,7 @@ function TutorialScene(scene)
         level.hand1:BounceToXY(300,  600)
         nextButton('SaladBox2')
     elseif scene == 'SaladBox2' then
-        level.textbox2 = textBox(300, 450, 700, 150, "This is perfect for storing Mallets or Seeds for when you need them most.", 15)
+        level.textbox2 = textBox(300, 450, 700, 150, "This is perfect for storing Mallets or Radish for when you need them most.", 15)
         level.hand1:BounceToXY(300, 600)
         timer.performWithDelay(200, function()
                 theBasket.decorator:setSequence('seqMallet')
@@ -324,9 +324,9 @@ plantObject = class(function(plant, i, j, type, frame)
     sprite:setFrame(frame)
 
     local decorator = newSprite('seqBlank', plant.x, plant.y)
-    if frame == 3 then
+    if frame == 4 then
         decorator:setSequence('seqTag')
-    elseif frame == 4 then
+    elseif frame == 5 then
         decorator:setSequence('seqSmell')
         decorator:play()
     else
@@ -353,10 +353,10 @@ end
 function plantObject:changeTo(type, frame)
     self.sprite:setSequence('seq'..type)
     self.sprite:setFrame(frame)
-    if frame == 3 then
+    if frame == 4 then
         self.decorator:setSequence('seqTag')
         self.decorator.alpha = 1
-    elseif frame == 4 then
+    elseif frame == 5 then
         self.decorator:setSequence('seqSmell')
         self.decorator:play()
         self.decorator.alpha = 1
@@ -573,6 +573,7 @@ end
 
 function tutorialGopher:die()
     local hammer = newSprite('seqMallet', self.x-100, self.y-100)
+    hammer.xScale=-1
     hammer:play()
     local function kill()
         self.sprite:setSequence('seqGopherDie')

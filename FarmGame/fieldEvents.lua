@@ -61,7 +61,7 @@ function onSquareTap(self, event)
                 ------------------------------------------------------------
                 print("--@onSquareTap: placing a "..nextElement.." at "..self.id)
                 self.isPlant=true
-                getSquare(self.id):setImage(nextElement, 0)
+                getSquare(self.id):setImage(nextElement, 1)
             end
             if self.pest ~= false and self.pest.weapon == nextElement then
                 start = system.getTimer()

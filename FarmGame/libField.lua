@@ -92,7 +92,7 @@ function Field:chkGameOver()
     square = self.first
     while square do
         tmp = square.sprite
-        if tmp.myType == 'blank' or (tmp.isPlant == true and (tmp.myStage == 4 or tmp.myStage == 3))  then
+        if tmp.myType == 'blank' or (tmp.isPlant == true and (tmp.myStage == Plants.mature or tmp.myStage == Plants.rot))  then
             --print("Not Game Over: blank/mature/rotten @: "..tmp.id)
             return false
         end
@@ -109,9 +109,11 @@ function Field:nextDay()
         --print("--@nextDay: harvest(in nextDay)")
         plantXP = getSquare(clickedID).sprite.xp
         getSquare(clickedID).sprite:checkNeighbors()
-        --print("Adding Points: XP Value "..plantXP.." * # Harvested: "..getPlantsHarvested().." || Total Score = "..(plantXP * getPlantsHarvested() * getPlantsHarvested()))
-        thePlayer:addScore(plantXP * getPlantsHarvested() * getPlantsHarvested())
-        setPlantsHarvested(0)
+        for i, v in pairs(getPlantsHarvested()) do
+            v:square():harvest(plantXP, #getPlantsHarvested())
+        end
+        thePlayer:addScore(plantXP * #getPlantsHarvested() * #getPlantsHarvested())
+        clearPlantsHarvested()
         clickAction=""
     end
     if clickAction=='clear' then
@@ -129,11 +131,11 @@ function Field:nextDay()
         if sprite.id~=clickedID and (not sprite.empty or sprite.isBarren) then
             if sprite.isPlant or sprite.isBarren then
                 sprite.myProgress = sprite.myProgress + 1
-                print("--@Field:nextDay: progress "..sprite.myProgress.." at "..sprite.id)
+                print("--@Field:nextDay: progress "..sprite.myProgress.." and stage: "..sprite.myStage.." at "..sprite.id)
                 if sprite.myProgress > sprite.toNext then
                     if sprite.isBarren then
                         square:clearImage()
-                    elseif sprite.myStage < Plants.rot then
+                    elseif sprite.myStage <= Plants.rot then
                         sprite:grow()
                     end
                 end

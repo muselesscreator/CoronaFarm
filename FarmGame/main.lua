@@ -12,38 +12,55 @@ storyboard.purgeOnSceneChange = true
 --> Import Sprite Sheet
 sheetInfo = require("plant_sheet")
 myImageSheet = graphics.newImageSheet("plant_sheet.png", sheetInfo:getSheet())
+print(myImageSheet)
 sequenceData =
 {
     { name="seqArrowLeft", frames={ 1 }},
     { name="seqArrowRight", frames={ 2 }},
     { name="seqBarren", frames={ 3 }},
-    { name="seqBird", frames={5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, time=800},
-    { name="seqBirdDead", frames={15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}, time=1500, loopCount = 1},
-    { name="seqBlank", frames={ 30 }},
-    { name="seqBoxClosed", frames={ 31 }},
-    { name="seqBoxOpen", frames={ 32 }},
-    { name="seqCarrot", frames = {33, 34, 35, 36, 37}},
-    { name="seqCelery", frames = {38, 39, 40, 41, 42}},
-    { name="seqChamomile", frames = {43, 44, 45, 46, 47}},
-    { name="seqGopher", frames = { 52, 51, 50, 49, 49}, time=250, loopCount=1},
-    { name="seqGopherOut", frames = { 49, 49, 50, 51, 52 }, time=250, loopCount=1},    
-    { name="seqGopherDie", frames = {53, 54, 55, 56}, time=800},
-    { name="seqJalapeno", frames={58, 59, 60, 61, 57}},
-    { name="seqLettuce", frames={62, 63, 64, 65, 66}},
-    { name="seqMallet", frames={ 67 }, time=200, loopCount=1},
-    { name="seqMint", frames={68, 69, 70, 71, 72}},
-    { name="seqPotato", frames={74, 75, 76, 77, 73}},
-    { name="seqRadish", frames={82, 83, 84, 85, 86}},
-    { name="seqRock", frames={ 87 }},
-    { name="seqScoreStar", frames={ 88 }},
-    { name="seqSeeds", frames={ 89 }},
-    { name="seqSlingshot", frames={ 90 }, time=200, loopCount=1},
-    { name="seqSmell", frames={91, 92, 93, 94}, time=225},
-    { name="seqStage00", frames={ 95 }},
-    { name="seqSwoop", frames={96, 97, 98, 99, 100, 101}, time=800, loopCount=1},
-    { name="seqTag", frames={ 102 }},
-    { name="seqTomato", frames={103, 104, 105, 106, 107}},
-    { name="seqTutorialHand", frames={ 108 }}
+    { name="seqBird", frames={4, 5, 6, 7, 8, 9, 10, 11, 12, 13}, time=800},
+    { name="seqBirdDead", frames={14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28}, time=1500, loopCount = 1},
+    { name="seqBlank", frames={ 29 }},
+    { name="seqBoxClosed", frames={ 30 }},
+    { name="seqBoxOpen", frames={ 31 }},
+    { name="seqCarrot", frames = {39, 32, 33, 34, 38}},
+    { name="seqCarrotFrame", frame = {37, 35, 36}},
+    { name="seqCelery", frames = {48, 41, 42, 43, 47}},
+    { name="seqCeleryFrame", frame = {46, 44, 45}},
+    { name="seqChamomile", frames = {57, 50, 51, 52, 56}},
+    { name="seqChamomileFrame", frames = {55, 53, 54}},
+    { name="seqGopher", frames = { 63, 62, 61, 60, 59}, time=200, loopCount=1},
+    { name="seqGopherOut", frames = { 59, 60, 61, 62, 63 }, time=200, loopCount=1},    
+    { name="seqGopherDie", frames = {64, 65, 66, 67}, time=800},
+    { name="seqJalapeno", frames={75, 68, 69, 70, 74}},
+    { name="seqJalapenoFrame", frames={73, 71, 72}},
+    { name="seqLettuce", frames={84, 77, 78, 79, 83}},
+    { name="seqLettuceFrame", frames={82, 80, 81}},
+    { name="seqMallet", frames={ 86, 87, 88, 89, 90, 91 }, time=200, loopCount=1},
+    { name="seqMint", frames={99, 92, 93, 94, 98}},
+    { name="seqMintFrame", frames={97, 95, 96}},
+    { name="seqPotato", frames={108, 101, 102, 103, 107}},
+    { name="seqPotatoFrame", frames={106, 104, 105}},
+    { name="seqRadish", frames={117, 110, 111, 112, 116}},
+    { name="seqRadishFrame", frames={115, 113, 114}},
+    { name="seqRock", frames={ 119 }},
+    { name="seqScoreStar", frames={ 120 }},
+    { name="seqSlingshot", frames={ 121 }, time=200, loopCount=1},
+    { name="seqSmell", frames={122, 123, 124, 125}, time=225},
+    { name="seqSwoop", frames={162, 163, 164, 165, 166, 167}, time=800, loopCount=1},
+    { name="seqTag", frames={168}},
+    { name="seqTomato", frames={176, 169, 170, 171, 175}},
+    { name="seqTomato", frames={174, 172, 173}},
+    { name="seqTutorialHand", frames={ 178, 179 }},
+    { name='seqStoneCarrot', frames={126, 127, 128, 129}},
+    { name='seqStoneCelert', frames={130, 131, 132, 133}},
+    { name='seqStoneChamomile', frames={134, 135, 136, 137}},
+    { name='seqStoneJalapeno', frames={138, 139, 140, 141}},
+    { name='seqStoneLettuce', frames={142, 143, 144, 145}},
+    { name='seqStoneMint', frames={146, 147, 148, 149}},
+    { name='seqStonePotatoes', frames={150, 151, 152, 153}},
+    { name='seqStoneRadish', frames={154, 155, 156, 157}},
+    { name='seqStoneTomatos', frames={158, 159, 160, 161}}
 }
 --> Import Queue class
 require 'class'
@@ -79,7 +96,7 @@ layers = {}
 local clickedID
 local score = 0
 local clickAction = ""
-local plantsHarvested = 0
+local plantsHarvested = {}
 
 
 ------------------------------------------------------
@@ -97,18 +114,28 @@ function getSquare(id)
     return theField.grid[x][y]
 end
 
-function AddPlantsHarvested(inc)
-    print("Adding "..inc.." plants harvested")
-    plantsHarvested = plantsHarvested + inc
+function AddPlantsHarvested(plant)
+    print("Adding plants harvested")
+    table.insert(plantsHarvested, plant)
 end
 
 function getPlantsHarvested()
     return plantsHarvested
 end
 
-function setPlantsHarvested(n)
-    plantsHarvested = n
+function clearPlantsHarvested()
+    plantsHarvested = {}
 end
+
+
+function newSprite(sequence, x, y)
+    sprite = display.newSprite(myImageSheet, sequenceData)
+    sprite:setSequence(sequence)
+    sprite.x = x
+    sprite.y = y
+    return sprite
+end
+
 -----------------------------------------------------
 --Main Create Function
 -----------------------------------------------------

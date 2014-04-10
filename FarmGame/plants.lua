@@ -1,8 +1,8 @@
-mature = 3
-rot = 4
+mature = 4
+rot = 5
 Plants = {}
-Plants.rot = 4
-Plants.mature = 3
+Plants.rot = 5
+Plants.mature = 4
 Plants.Radish ={
     dim = {1,1},
     turns = {1, 2, 2, 5, 5},

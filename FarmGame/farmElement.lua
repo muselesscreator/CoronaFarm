@@ -128,17 +128,7 @@ function FarmElement:setSpriteFunctions()
         end
         sprite.timesHarvested = sprite.timesHarvested + 1
         sprite.checked = true
-        AddPlantsHarvested(1)
-        --addScore(sprite.xp)
-        --print("--@checkNeighbors: new timesHarvested: "..sprite.timesHarvested..' vs maxHarvest '..plant['maxHarvest'])
-        if sprite.timesHarvested >= sprite.maxHarvest then
-            parent:clearImage()
-        else
-            print('--@farmElement.sprite:checkNeighbors  reverting stage')
-            parent:setImage(myType, self.myStage-1, false)
-            parent:clearDecorator()
-        end
-
+        AddPlantsHarvested(self)
         for i, tmp in pairs(sprite.neighbors) do
             if tmp then
                 if tmp.checked == false and tmp.myType==myType then
@@ -155,6 +145,61 @@ function FarmElement:setSpriteFunctions()
     end
 end
 
+function FarmElement:harvest(score, multiplier)
+    if multiplier == 1 then 
+        multiplier = false
+    else
+        multiplier = ('x'..multiplier)
+    end
+    local mult = {}
+    x = self.sprite.x
+    y = self.sprite.y
+    local star = newSprite('seqScoreStar', x, y)
+    star.width = 25
+    star.heigh = 25
+    layers.overlays:insert(star)
+    transition.to(star, {y=y - 100, width = 85, height = 85, alpha=.8, time=100})
+    local score = display.newText('1', x+115, y+5, 250, 250, gameFont, 35)
+    score.alpha = 1
+    layers.overlays:insert(score)
+    if multiplier then
+        mult = display.newText(multiplier, x+175, y-150, 250, 250, gameFont, 35)
+        mult:setFillColor(.3, .3, .8)
+        mult.alpha = 0
+        mult.size=45
+        mult:rotate(-45)
+        layers.overlays:insert(mult)
+    end
+    local function burst(stage)
+        if stage == 1 then
+            transition.to(star, {width = 150, height=150, alpha = 0, time=300})
+            score.alpha = 1
+            score:setFillColor(.3, .3, .8)
+            transition.to(score, {width=300, height=300, size=35, alpha=0, time=200})
+            if multiplier then
+                mult.alpha = 1
+                transition.to(mult, {width=300, height=300, size=45, alpha=0, time=300})
+            end
+            if self.sprite.timesHarvested >= self.sprite.maxHarvest then
+                self:clearImage()
+            else
+                self:setImage(myType, self.myStage-1, false)
+                self:clearDecorator()
+            end
+            timer.performWithDelay(350, function()
+                    star:removeSelf()
+                    star = nil
+                    score:removeSelf()
+                    score = nil
+                    if multiplier then
+                        mult:removeSelf()
+                        mult = nil
+                    end
+                end, 1)
+        end
+    end
+    timer.performWithDelay( 250, function() burst(1) end, 1 )
+end
 
 function FarmElement:setSequence(seq)
     self.sprite:setSequence(seq)
@@ -180,11 +225,11 @@ function FarmElement:setImage(myType, phase, pest)
         print(myType)
         sprite.isPlant = true
         sprite.plant = Plants[myType]
-        sprite.toNext = sprite.plant.turns[phase + 1]
+        sprite.toNext = sprite.plant.turns[phase]
         sprite.xp = sprite.plant.xp
-        if phase == 0 then
+        if phase == 1 then
             --print('--@FarmElement:setImage: placing seeds')
-            self:setSequence('seqSeeds')
+            self:setSequence('seq'..myType)
             r = math.random(1, #Plants[myType].maxHarvest)
             self.sprite.maxHarvest = Plants[myType].maxHarvest[r]
         else
