@@ -183,7 +183,7 @@ function FarmElement:harvest(score, multiplier)
             if self.sprite.timesHarvested >= self.sprite.maxHarvest then
                 self:clearImage()
             else
-                self:setImage(myType, self.myStage-1, false)
+                self:setImage(self.sprite.myType, self.sprite.myStage-1, false)
                 self:clearDecorator()
             end
             timer.performWithDelay(350, function()
@@ -288,7 +288,7 @@ function FarmElement:makeBarren()
     self.sprite.alpha = 1
     self:clearDecorator()
     self.sprite.isBarren = true
-    self.sprite.myStage = 5
+    self.sprite.myStage = 6
     self.sprite.empty = false
 end
 
@@ -321,7 +321,7 @@ function FarmElement:clearDecorator()
 end
 
 function FarmElement:addPest(pest)
-    print('--@FarmElement:addPest pest at '..self.id..'=')
+    print('--@FarmElement:addPest pest at '..self.id)
     self.sprite.pest = pest
     if pest.myType == 'air' then
         self.birdLayer:setSequence('seqBird')

@@ -169,7 +169,6 @@ function Pest:die(killed)
             print('--@pest:die killed')
             self.square.sprite.pest = false
             self.square.pest = false
-            start = system.getTimer()
             self.square.birdLayer:setSequence('seqBirdDead')
             self.square.birdLayer:play()
             self.dying = true
@@ -188,6 +187,14 @@ function Pest:die(killed)
         else
             print('--@pest:die not killed')
             self.square.birdLayer.alpha=0
+            for i, val in ipairs(theField.pests[self.myBreed]) do
+                print(val.square.id)
+                if val.square == self.square then
+                    print('--@Pest:die removing self!!!!!!!!!!!!!!!!!!!!')
+                    table.remove(theField.pests[self.myBreed], i)
+                    break
+                end
+            end
         end
     end
     print("???????????????????")

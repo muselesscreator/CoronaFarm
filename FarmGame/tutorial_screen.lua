@@ -30,6 +30,7 @@ storyboard.purgeOnSceneChange = true
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
     touchesAllowed = false
+    fieldType = 'Salad'
     --local backgroundMusic = audio.loadStream('sound/farm_song.wav')
     --backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
     local group = self.view
@@ -57,68 +58,38 @@ toggleOptions = function ( event )
         layers.popup.visible = true
     end
 end
+
 -- Called BEFORE scene has moved onscreen:
 function scene:willEnterScene( event )
         local group = self.view
-
-        -----------------------------------------------------------------------------
-
-        --      This event requires build 2012.782 or later.
-
-        -----------------------------------------------------------------------------
-
 end
 
 
 -- Called immediately after scene has moved onscreen:
 function scene:enterScene( event )
         local group = self.view
-
-        -----------------------------------------------------------------------------
-
-        --      INSERT code here (e.g. start timers, load audio, start listeners, etc.)
-
-        -----------------------------------------------------------------------------
-
 end
 
 
 -- Called when scene is about to move offscreen:
 function scene:exitScene( event )
         local group = self.view
-
-        -----------------------------------------------------------------------------
-
-        --      INSERT code here (e.g. stop timers, remove listeners, unload sounds, etc.)
-
-        -----------------------------------------------------------------------------
-
+        if level.next ~= nil then
+            level.next:removeSelf()
+            level.next = nil
+        end
 end
 
 
 -- Called AFTER scene has finished moving offscreen:
 function scene:didExitScene( event )
         local group = self.view
-
-        -----------------------------------------------------------------------------
-
-        --      This event requires build 2012.782 or later.
-
-        -----------------------------------------------------------------------------
-
 end
 
 
 -- Called prior to the removal of scene's "view" (display group)
 function scene:destroyScene( event )
         local group = self.view
-
-        -----------------------------------------------------------------------------
-
-        --      INSERT code here (e.g. remove listeners, widgets, save state, etc.)
-
-        -----------------------------------------------------------------------------
-
 end
 
 
@@ -126,13 +97,6 @@ end
 function scene:overlayBegan( event )
         local group = self.view
         local overlay_name = event.sceneName  -- name of the overlay scene
-
-        -----------------------------------------------------------------------------
-
-        --      This event requires build 2012.797 or later.
-
-        -----------------------------------------------------------------------------
-
 end
 
 
@@ -140,13 +104,6 @@ end
 function scene:overlayEnded( event )
         local group = self.view
         local overlay_name = event.sceneName  -- name of the overlay scene
-
-        -----------------------------------------------------------------------------
-
-        --      This event requires build 2012.797 or later.
-
-        -----------------------------------------------------------------------------
-
 end
 
 

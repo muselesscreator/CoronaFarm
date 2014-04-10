@@ -60,16 +60,27 @@ function Field:cleanup()
         end
         square = square.next
     end
+    square = self.first
     while square do
         tmp = square.sprite
         if not tmp.empty and not tmp.isBarren then
             if tmp.isPlant then
                 if tmp.myStage==0 then
                     tmp:setSequence('seqSeeds')
+                elseif tmp.myStage == Plants.mature then
+                    if tmp.myProgress > (tmp.toNext - 4) then
+                        print('--------------'..tmp.myProgress-tmp.toNext)
+                        local frame = tmp.toNext - tmp.myProgress
+                        tmp:setSequence('seq'..tmp.myType..'Frame'..frame)
+                        tmp:play()
+                    end
                 else
                     tmp:setSequence('seq'..tmp.myType)
                     tmp:setFrame(tmp.myStage)
                 end
+            elseif tmp.pest ~= false then
+                tmp:setSequence('seq'..tmp.myType)
+                tmp:play()
             else
                 --print(mytype)
                 tmp:setSequence('seq'..tmp.myType)
@@ -135,7 +146,7 @@ function Field:nextDay()
                 if sprite.myProgress > sprite.toNext then
                     if sprite.isBarren then
                         square:clearImage()
-                    elseif sprite.myStage <= Plants.rot then
+                    elseif sprite.myStage < Plants.rot then
                         sprite:grow()
                     end
                 end

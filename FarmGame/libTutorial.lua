@@ -3,33 +3,20 @@ require 'libField'
 require 'plants'
 local bezier = require 'bezier'
 local storyboard = require 'storyboard'
+storyboard.purgeOnSceneChange = true
 local widget = require("widget")
 tutorials = {}
 
 tutorials.Salad = {
     level = {fieldType ='Salad'},
-    scenes = 
-        {
-            'SaladWelcome'
-        },
+    first_scene = 'SaladWelcome',
     initial_queue = {'Radish', 'Radish', 'Radish'},
-    initial_weights = {Mallet=100}
 }
-
 function runTutorial(fieldType)
     level = tutorials[fieldType].level
     scenes = tutorials[fieldType].scenes
-    for i, step in ipairs(scenes) do
-        TutorialScene('SaladWelcome')
-    end
-end
+    TutorialScene(tutorials[fieldType].first_scene)
 
-function newSprite(sequence, x, y)
-    sprite = display.newSprite(myImageSheet, sequenceData)
-    sprite:setSequence(sequence)
-    sprite.x = x
-    sprite.y = y
-    return sprite
 end
 
 
@@ -38,6 +25,9 @@ function nextButton(fn)
     if level.next ~= nil then
         level.next:removeSelf()
         level.next = nil
+    end
+    if fn == nil then
+        return false
     end
     local tmpButton = widget.newButton
     {
@@ -56,27 +46,39 @@ function nextButton(fn)
     layers.tutorial:insert(tmpButton)
     level.next = tmpButton
 end
-
+function setupScene(args)
+    print(args.nextFunction)
+    touchesAllowed = false
+    print(args.length)
+    timer.performWithDelay(args.length+50, function() touchesAllowed = true end, 1)
+    if args.nextFunction == nil then
+        nextButton()
+    else
+        print(args.nextFunction)
+        nextButton(args.nextFunction)
+    end
+end
 function TutorialScene(scene)
     if scene == 'SaladWelcome' then
+        setupScene( {length = 10, nextFunction = 'SaladWelcome1'} )
         level.hand1 = hand1
         textbox1 = textBox(300, 50, 700, 100, 'Welcome to the world of Farmageddon!', 25)
         level.textbox1 = textbox1
         level.text1 = text1
-        nextButton('SaladWelcome1')
     elseif scene == 'SaladWelcome1' then
+        setupScene( { length = 10, nextFunction = 'SaladWelcomeField'})
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 175, "Our last line of defense against a global pest crisis is your ability to farm epic produce combos.", 25)
-        nextButton('SaladWelcomeField')
     elseif scene == 'SaladWelcomeField' then
+        setupScene( { length = 600, nextFunction = 'SaladWelcomeQueue' })
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 250, "This is your field.\nDifferent fields are suitable for growing different types of crops.\nThis field is suitable for growing Radishes and Lettuce.", 25)
         level.hand1 = tutorialPointer(475, 450)
         layers.tutorial:insert(level.hand1.sprite)
         level.hand1:rotate(140)
         MoveCircle(level.hand1.sprite, 400, 20, 600)
-        nextButton('SaladWelcomeQueue')
     elseif scene == 'SaladWelcomeQueue' then
+        setupScene( { length = 500, nextFunction = 'SaladPlanting1' } )
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 125, "This is your product queue - Currently stacked with plenty of Radish Radish.", 25)
         level.hand1:rotate(30)
@@ -89,15 +91,15 @@ function TutorialScene(scene)
         level.hand2:rotate(330)
         level.hand2.sprite.xScale = .8
         level.hand2.sprite.yScale = .8
-        nextButton('SaladPlanting1')
     elseif scene == 'SaladPlanting1' then
+        setupScene( { length = 500, nextFunction = 'SaladPlanting2' } )
         level.hand2:die()
         level.textbox2:die()
         level.hand1:rotate(225)
         transition.to(level.hand1.sprite, {x=300, y=475, time=200})
         level.textbox1:setText("Tap an empty plot of land to plant the Radish next up in the queue.")
-        nextButton('SaladPlanting2')
     elseif scene == 'SaladPlanting2' then
+        setupScene({ length = 350, nextFunction = 'SaladPlanting3'})        
         level.textbox1:setText("...and the rest of the items in the queue will drop down for use.")
         local curve = bezier:curve({300, 250, 325}, {475, 400, 450})
         MoveInCurve(level.hand1.sprite, curve, 5, 250)
@@ -107,8 +109,8 @@ function TutorialScene(scene)
                 theQueue:stackedNextEntry()
                 level.hand2 = tutorialPointer(275, 175)
             end, 1)
-        nextButton('SaladPlanting3')
     elseif scene == 'SaladPlanting3' then
+        setupScene( { length = 1200, nextFunction = 'SaladPlanting4' } )
         level.hand2:die()
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 125, "As you continue to plant new Radish, your older plants will grow by a day per turn.", 15)
@@ -138,8 +140,8 @@ function TutorialScene(scene)
             end
         end
         timer.performWithDelay(400, function() planting(1) end, 1)
-        nextButton('SaladPlanting4')
     elseif scene == 'SaladPlanting4' then
+        setupScene( { length = 400, nextFunction = 'SaladHarvest1' } )
         level.textbox1:setText("If plants are left unattended for too long, they will wither and rot.")
         level.hand1:BounceTo(5, 4)
         local function planting(stage)
@@ -153,8 +155,8 @@ function TutorialScene(scene)
             end
         end
         timer.performWithDelay(400, function() planting(1) end, 1)
-        nextButton('SaladHarvest1')
     elseif scene == 'SaladHarvest1' then
+        setupScene( { length = 600, nextFunction = 'SaladHarvest2' } )
         level.textbox1:setText("Be sure to harvest mature plants before that happens by tapping them.")
         level.hand1:rotate(315)
         level.hand1:BounceTo(2, 4)
@@ -165,8 +167,8 @@ function TutorialScene(scene)
             end
         end
         timer.performWithDelay( 400, function() harvest(1) end, 1 )
-        nextButton('SaladHarvest2')
     elseif scene == 'SaladHarvest2' then
+        setupScene( { length = 900, nextFunction = 'SaladRot' } )
         level.textbox1:setText("All mature plants of the same type will be harvested at once, creating a chain combo.")
         level.plant2:show()
         level.plant3:changeTo('Radish', 4)
@@ -184,9 +186,9 @@ function TutorialScene(scene)
                 scoreHUD.text = 17
             end
         end
-        nextButton('SaladRot')
         timer.performWithDelay( 300, function() harvest(1) end, 1)
     elseif scene == 'SaladRot' then
+        setupScene( { length = 400, nextFunction = 'SaladStrategy' } )
         level.textbox1:setText("Clear Withered plants by tapping them.")
         level.textbox1.img.height = 100
         level.textbox2 = textBox(300, 175, 700, 150, 'Clearing a withered plant leaves behind a blighted plot.  No new plants can be planted here for several turns.', 10)
@@ -195,8 +197,8 @@ function TutorialScene(scene)
         timer.performWithDelay(400, function() 
             level.plant1:changeTo('Barren', 1)
          end, 1)
-        nextButton('SaladStrategy')
     elseif scene == 'SaladStrategy' then
+        setupScene( { nextFunction = 'SaladPest1', length = 10})
         level.hand1:die()
         level.textbox2:die()
         level.textbox1:setText('Continue setting up combos by planting similar plants next to each other and...')
@@ -213,25 +215,25 @@ function TutorialScene(scene)
         for i, v in ipairs(lettuce_locs) do
             level.lettuce[v[1]..','..v[2]] = plantObject(v[1], v[2], 'Lettuce', 4)
         end
-        nextButton('SaladPest1')
     elseif scene == 'SaladPest1' then
+        setupScene( { length = 250, nextFunction = 'SaladPest2' } )
         level.textbox2 = textBox(300, 400, 700, 150, '...Oh no!  It has begun!  Quickly, destroy the vile pests before all is lost!', 15)
         level.gopher1 = tutorialGopher(2, 2)
-        nextButton('SaladPest2')
     elseif scene == 'SaladPest2' then
+        setupScene( { length = 300, nextFunction = 'SaladPest3' } )
         level.textbox2:die()
         level.textbox1:setText('If left unchecked, pests can consume growing crops... or worse...')
         level.gopher1:eat(level.radishes['2,4'])
-        nextButton('SaladPest3')
     elseif scene == 'SaladPest3' then
+        setupScene( { length = 100, nextFunction = 'SaladPest4' } )
         level.textbox1:setText('Destroy earthbound pests with this Mallet of Justice!')
         level.hand1 = tutorialPointer(300, 415)
         theQueue[2].sprite:setSequence('seqMallet')
         theQueue[2].square_type='Mallet'
         theQueue[1].sprite:setSequence('seqMallet')
         level.gopher1:eat(level.lettuce['5,3'])
-        nextButton('SaladPest4')
     elseif scene == 'SaladPest4' then
+        setupScene( { length = 700, nextFunction = 'SaladBox' } )
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 200, 'Defeated pests leave stone gravemarkers behind, making the plot unuseable for the remainder of the current level', 15)
         level.hand1:rotate(225)
@@ -241,14 +243,14 @@ function TutorialScene(scene)
                 theQueue:stackedNextEntry()
                 level.textbox2 = textBox(300, 450, 700, 150, "*Make sure you don't whack a pest that's sitting on an important junction.  Wait for the right time to strike.", 15)
             end, 1)
-        nextButton('SaladBox')
     elseif scene == 'SaladBox' then
+        setupScene({length = 250, nextFunction = 'SaladBox2'})
         level.textbox2:die()
         level.textbox1:setText('You can store the next item in your queue to be used at a later time by putting it in your crate.')
         level.hand1:rotate(345)
         level.hand1:BounceToXY(300,  600)
-        nextButton('SaladBox2')
     elseif scene == 'SaladBox2' then
+        setupScene({length = 400, nextFunction = 'SaladBox3'})
         level.textbox2 = textBox(300, 450, 700, 150, "This is perfect for storing Mallets or Radish for when you need them most.", 15)
         level.hand1:BounceToXY(300, 600)
         timer.performWithDelay(200, function()
@@ -256,20 +258,20 @@ function TutorialScene(scene)
                 theBasket.decorator.alpha = 1
                 theQueue:stackedNextEntry()
             end, 1)
-        nextButton('SaladBox3')
     elseif scene == 'SaladBox3' then
+        setupScene({ length = 250, nextFunction = 'SaladGoForth'})
         level.textbox2:die()
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 115, 'To use the stored item, just tap the storage bin.', 15)
         level.hand1:BounceToXY(275, 600)
         timer.performWithDelay(200, function() theBasket.box:setSequence('seqBoxOpen') end, 1)
-        nextButton('SaladGoForth')
     elseif scene == 'SaladGoForth' then
+        setupScene({ length = 150, nextFunction='Farm'})
         level.hand1:die()
         level.textbox1:die()
         level.textbox1 = textBox(300, 50, 700, 150, 'Now go forth and farm!  Farm like the world is depending on you... you know... because it is.', 15)
-        nextButton('Farm')
     elseif scene == 'Farm' then
+        nextButton()
         storyboard.gotoScene('farm_screen')
     end
 
@@ -306,13 +308,11 @@ function CurveStep(sprite, curve, step, wait)
 end
 
 function MoveInCurve(sprite, curve, depth, time)
-    touchesAllowed = false
     step = 1/(depth)
     wait = time/(depth+2)
     print('--@MoveInCurve: wait= '..wait)
     stepNum = 0
     timer.performWithDelay(wait, function() CurveStep(sprite, curve, step, wait) end, depth+1)
-    timer.performWithDelay(time, function() touchesAllowed = true end, 1)
 end
 
 plantObject = class(function(plant, i, j, type, frame)
@@ -437,7 +437,7 @@ textBox = class(function(textbox, x, y, w, h, content, padding)
     img.anchorY = 0
     layers.overFrame:insert(img)
     textbox.img = img
-    local txt = display.newText(content, x+padding, y+padding, w-padding, h-padding*2, gameFont, 35)
+    local txt = display.newText(content, x+padding, y+padding, w-2*padding, h-padding*2, gameFont, 30)
     txt.anchorX = 0
     txt.anchorY = 0
     txt.align = "center"
@@ -568,7 +568,7 @@ end
 
 function tutorialGopher:eat(plant)
     self:moveTo(plant.i, plant.j)
-    timer.performWithDelay(250, function() plant:die() end, 1)
+    timer.performWithDelay(50, function() plant:die() end, 1)
 end
 
 function tutorialGopher:die()
