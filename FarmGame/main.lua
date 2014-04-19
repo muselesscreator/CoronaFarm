@@ -167,7 +167,7 @@ end
 
 function log(message, level)
     if log_levels[level] <= log_levels[log_level] then
-        print(level..' : '..message)
+        print(message)
     end
 end
 -----------------------------------------------------
