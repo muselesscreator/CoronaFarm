@@ -34,8 +34,8 @@ FarmElement = class(function(elem, x, y, i, j)
                 sequenceData)
             weaponLayer:setSequence("seqBlank")
             weaponLayer.alpha = .01
-            weaponLayer.x = x
-            weaponLayer.y = y
+            weaponLayer.x = x-50
+            weaponLayer.y = y-100
 
             sprite.row = j
             sprite.column = i
@@ -219,6 +219,7 @@ function FarmElement:setImage(myType, phase, pest)
         self.isPlant = false
         self.myType = 'Rock'
         self.pestProof=true
+        self.sprite.pest = false
         self:clearDecorator()
         self:setSequence('seqRock')
     elseif pest == false then
@@ -290,6 +291,7 @@ function FarmElement:makeBarren()
     self.sprite.isBarren = true
     self.sprite.myStage = 6
     self.sprite.empty = false
+    self.sprite.myProgress = 0
 end
 
 function FarmElement:setDecorator(dec)

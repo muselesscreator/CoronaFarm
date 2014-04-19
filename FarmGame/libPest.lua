@@ -29,11 +29,37 @@ function Pest:random()
     end
 end
 
+function key_is_in(x, list)
+    for i, v in pairs(list) do
+        if x == i then
+            return true
+        end
+    end
+    return false
+end
+
 function Pest:find_allowed(criteria)
-    while true do
-        tmp = self:random()
-        if Pest:is_allowed(tmp, criteria) then
-            break
+    if key_is_in('neighbor', self.move_point) then
+        for i, v in pairs(self.square.sprite.neighbors) do
+            if v then
+                if self:is_allowed(v, self.move_point) then
+                    opts[#opts+1] = v
+                end
+            end
+        end
+        while true do
+            n = math.random(1, #opts)
+            tmp = opts[n]
+            if self:is_allowed(tmp, self.move_point) then
+                break
+            end
+        end
+    else
+        while true do
+            tmp = self:random()
+            if self:is_allowed(tmp, criteria) then
+                break
+            end
         end
     end
     print(tmp.id)
@@ -41,6 +67,11 @@ function Pest:find_allowed(criteria)
 end
 
 function Pest:is_allowed(tmp, criteria)
+    print('--@pest:is_allowed')
+    print(self.square)
+    print(self.square.sprite)
+    print(tmp.id)
+    --print(self:is_neighbor(tmp))
     local flag = 0
     for i, crit in pairs(criteria) do
         if crit=="empty" and tmp.empty==false then
@@ -106,7 +137,6 @@ end
 
 function Pest:move()
     print('-----@Pest:move()')
-    print(self.dying)
     if self.dying == true then
         return 0
     end
@@ -122,6 +152,7 @@ function Pest:move()
             return 0
         end
     else
+        print(self.square.sprite)
         dest = self:find_allowed(self.move_point)
     end
     if dest.sprite.isPlant == true then
@@ -143,9 +174,12 @@ function Pest:move()
             return 0
         end
     end
-    self.square:clearImage()
-    dest:addPest(self)
-    self.square = dest
+    if self.square.id ~= dest.id then
+        print("I've moved")
+        self.square:clearImage()
+        dest:addPest(self)
+        self.square = dest
+    end
 end
 
 function Pest:die(killed)
@@ -161,6 +195,13 @@ function Pest:die(killed)
                 self:die(false)
             end
             timer.performWithDelay(800, die, 1)
+            for i, val in ipairs(theField.pests[self.myBreed]) do
+                print(val.square.id)
+                if val.square == self.square then
+                    table.remove(theField.pests[self.myBreed], i)
+                    break
+                end
+            end
         else
             self.square:setImage('Rock')
         end
@@ -178,7 +219,6 @@ function Pest:die(killed)
             for i, val in ipairs(theField.pests[self.myBreed]) do
                 print(val.square.id)
                 if val.square == self.square then
-                    print('--@Pest:die removing self!!!!!!!!!!!!!!!!!!!!')
                     table.remove(theField.pests[self.myBreed], i)
                     break
                 end
@@ -190,20 +230,17 @@ function Pest:die(killed)
             for i, val in ipairs(theField.pests[self.myBreed]) do
                 print(val.square.id)
                 if val.square == self.square then
-                    print('--@Pest:die removing self!!!!!!!!!!!!!!!!!!!!')
                     table.remove(theField.pests[self.myBreed], i)
                     break
                 end
             end
         end
     end
-    print("???????????????????")
     if killed == true then
         print ('--@Pest:die my breed = '..self.myBreed)
         for i, val in ipairs(theField.pests[self.myBreed]) do
             print(val.square.id)
             if val.square == self.square then
-                print('--@Pest:die removing self!!!!!!!!!!!!!!!!!!!!')
                 table.remove(theField.pests[self.myBreed], i)
                 break
             end
@@ -257,7 +294,7 @@ end
 Pests = {}
 Pests.Gopher = {
     image='seqGopher',
-    move_point={"not blocked", "not pest proof", "not rotten"},
+    move_point={"not blocked", "not pest proof", "not rotten", "neighbor"},
     move_priority = false,
     myType = 'land',
 }

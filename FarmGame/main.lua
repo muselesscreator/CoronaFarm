@@ -3,6 +3,7 @@
 -----------------------------------------------------
 --> Create physics (do we need this??)
 local physics = require "physics"
+local socket = require "socket"
 physics.start()
 physics.setGravity( 0, 0 )
 physics.setDrawMode( hybrid )
@@ -46,7 +47,7 @@ sequenceData =
     { name="seqLettuceFrame1", frames={81, 79}, time=350},
     { name="seqLettuceFrame2", frames={80, 79}, time=350},
     { name="seqLettuceFrame3", frames={82, 79}, time=350},
-    { name="seqMallet", frames={ 86, 87, 88, 89, 90, 91 }, time=200, loopCount=1},
+    { name="seqMallet", frames={ 86, 87, 88, 89, 90, 91 }, time=250, loopCount=1},
     { name="seqMint", frames={99, 92, 93, 94, 98}},
     { name="seqMintFrame1", frames={96, 94}, time=350},
     { name="seqMintFrame2", frames={95, 94}, time=350},
@@ -115,7 +116,7 @@ local clickedID
 local score = 0
 local clickAction = ""
 local plantsHarvested = {}
-
+tutorial = false
 
 ------------------------------------------------------
 -- 3. Global Functions
@@ -154,6 +155,10 @@ function newSprite(sequence, x, y)
     return sprite
 end
 
+function sleep(sec)
+    socket.select(nil, nil, sec)
+    return true
+end
 -----------------------------------------------------
 --Main Create Function
 -----------------------------------------------------

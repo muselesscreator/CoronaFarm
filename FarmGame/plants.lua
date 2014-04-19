@@ -5,7 +5,7 @@ Plants.rot = 5
 Plants.mature = 4
 Plants.Radish ={
     dim = {1,1},
-    turns = {1, 2, 2, 5, 5},
+    turns = {2, 2, 3, 6, 6},
     maxHarvest = {1},
     xp = 1,
 }

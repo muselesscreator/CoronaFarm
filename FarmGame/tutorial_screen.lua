@@ -74,9 +74,15 @@ end
 -- Called when scene is about to move offscreen:
 function scene:exitScene( event )
         local group = self.view
-        if level.next ~= nil then
-            level.next:removeSelf()
-            level.next = nil
+        for i, v in pairs(level) do
+            if i == 'next' then
+                v:removeSelf()
+                v = nil
+            elseif i:sub(1, 7) == 'textbox' or i:sub(1, 4) == 'hand' then
+                v:die()
+            elseif i:sub(1, 6) == 'gopher' then
+                v:delete()
+            end
         end
 end
 
