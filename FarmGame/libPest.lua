@@ -215,7 +215,6 @@ function Pest:die(killed)
         if killed == true then
             print('--@pest:die killed')
             self.square.sprite.pest = false
-            self.square.pest = false
             self.square.birdLayer:setSequence('seqBirdDead')
             self.square.birdLayer:play()
             self.dying = true
@@ -232,6 +231,7 @@ function Pest:die(killed)
             timer.performWithDelay(1500, fall, 1)
         else
             print('--@pest:die not killed')
+            self.square.sprite.pest = false
             self.square.birdLayer.alpha=0
             for i, val in ipairs(theField.pests[self.myBreed]) do
                 print(val.square.id)
