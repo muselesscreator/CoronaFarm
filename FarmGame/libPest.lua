@@ -45,7 +45,7 @@ function key_is_in(x, list)
 end
 
 function Pest:find_allowed(criteria)
-    if key_is_in('neighbor', self.move_point) then
+    if self.move_point ~= nil and key_is_in('neighbor', self.move_point) then
         for i, v in pairs(self.square.sprite.neighbors) do
             if v then
                 if self:is_allowed(v, self.move_point) then
