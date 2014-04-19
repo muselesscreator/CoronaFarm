@@ -71,6 +71,11 @@ function scene:createScene( event)
 
         return true
     end
+
+    local function tapOverlay( event )
+            return true
+    end
+
     layers.field = widget.newScrollView
     {
         left = 0,
@@ -104,16 +109,25 @@ function scene:createScene( event)
     layers.field:insert(layers.birdLayer)
     layers.field:insert(layers.weaponLayer)
 
+    clickBlock = display.newRect(0, 45, 269, 680)
+    clickBlock.tap = tapOverlay
+    clickBlock:addEventListener("tap", clickBlock)
+    clickBlock.anchorX = 0
+    clickBlock.anchorY = 0
+    layers.frame:insert(clickBlock)
+
     frame_img = display.newImage('images/overlay.png')
     frame_img.anchorX = 0
     frame_img.anchorY = 0
+    --frame_img.tap = tapOverlay
+    --frame_img:addEventListener("tap", frame_img)
     layers.frame:insert(frame_img)
 
     local Chute = display.newImage('images/chute.png')
     Chute.x = 180
     Chute.y = 185
     layers.frame:insert(Chute)
-
+    
     local basketImg = display.newImage('images/basketBack.png')
     basketImg.x = 180
     basketImg.y = 500
