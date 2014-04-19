@@ -117,8 +117,12 @@ local score = 0
 local clickAction = ""
 local plantsHarvested = {}
 tutorial = false
-no_pests = true
-
+no_pests = false
+log_levels = {  Info = 3,
+                Debug = 2,
+                Warn = 1,
+                Error = 0}
+log_level = 'Debug'
 ------------------------------------------------------
 -- 3. Global Functions
 ------------------------------------------------------
@@ -159,6 +163,12 @@ end
 function sleep(sec)
     socket.select(nil, nil, sec)
     return true
+end
+
+function log(message, level)
+    if log_levels[level] <= log_levels[log_level] then
+        print(level..' : '..message)
+    end
 end
 -----------------------------------------------------
 --Main Create Function

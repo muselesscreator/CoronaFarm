@@ -25,7 +25,7 @@ Pest = class(function(pest, myBreed)
         return pest
     end)
 
-function Pest:random()
+function Pest:random_square()
     while true do
         r_x = math.random(theField.columns)
         r_y = math.random(theField.rows)
@@ -62,7 +62,7 @@ function Pest:find_allowed(criteria)
         end
     else
         while true do
-            tmp = self:random()
+            tmp = self:random_square()
             if self:is_allowed(tmp, criteria) then
                 break
             end
@@ -327,6 +327,7 @@ function Pests.does_spawn(pest)
     local myType = Pests[pest].myType
     r = math.random(1, 100)
     print('--@Pests.does_spawn():  r = '..r)
+    --debug code to 
     if no_pests then
         return 0
     end

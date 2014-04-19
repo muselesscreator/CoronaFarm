@@ -59,13 +59,13 @@ function scene:createScene( event)
         -- If the scrollView has reached it's scroll limit
         if event.limitReached then
             if "up" == direction then
-                print( "Reached Top Limit" )
+                log( "Reached Top Limit", 'Info' )
             elseif "down" == direction then
-                print( "Reached Bottom Limit" )
+                log( "Reached Bottom Limit", 'Info' )
             elseif "left" == direction then
-                print( "Reached Left Limit" )
+                log( "Reached Left Limit", 'Info' )
             elseif "right" == direction then
-                print( "Reached Right Limit" )
+                log( "Reached Right Limit", 'Info' )
             end
         end
 

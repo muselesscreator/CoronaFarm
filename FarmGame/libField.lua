@@ -69,9 +69,7 @@ function Field:cleanup()
                     tmp:setSequence('seqSeeds')
                 elseif tmp.myStage == Plants.mature then
                     if tmp.myProgress > (tmp.toNext - 3) then
-                        print('-----------'..tmp.myProgress)
-                        print('--------------'..tmp.myProgress-tmp.toNext)
-                        local frame = tmp.toNext - tmp.myProgress+1
+                        local frame = tmp.toNext - tmp.myProgress
                         tmp:setSequence('seq'..tmp.myType..'Frame'..frame)
                         tmp:play()
                     end

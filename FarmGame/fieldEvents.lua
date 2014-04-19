@@ -71,7 +71,7 @@ function onSquareTap(self, event)
                         self.pest:die()
                         parent.weaponLayer.alpha = 0
                     end
-                    timer.performWithDelay(200, kill, 1)
+                    timer.performWithDelay(250, kill, 1)
                 end
                 parent.weaponLayer:setSequence('seq'..nextElement)
                 parent.weaponLayer.alpha = 1

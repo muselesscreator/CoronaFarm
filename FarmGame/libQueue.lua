@@ -6,7 +6,6 @@ libQueue = class(function(queue, weights, length)
     queue.length = length
     queue.sequenceData = sequenceData
     queue.myImageSheet = myImageSheet
-    print(weights)
     return queue
     end)
 
@@ -18,7 +17,6 @@ function libQueue:initialize() --push to fill the queue to the specified number
 end
 
 function libQueue:nextEntry(weights) --push and pop, return the queue and the element that was popped
-    print(weights)
     if weights ~= nil then
         theField.weights = weights
     else
@@ -33,18 +31,18 @@ function libQueue:nextEntry(weights) --push and pop, return the queue and the el
     layers.frame:insert(sprite)
     self[1].sprite.alpha = 0
     self[1].sprite:removeSelf()
-    print('--@libQueue:nextEntry():  theQueue')
+    log('--@libQueue:nextEntry():  theQueue', 'Info')
     for i=1, self.length-1 do
         self[i].sprite = self[i+1].sprite
         self[i].square_type = self[i+1].square_type
-        print(i..' '..self[i].square_type)
+        log(i..' '..self[i].square_type, 'Debug')
     end
     self[l].sprite = sprite
     self[l].square_type = myType
 
     for i=1, self.length do
         new_y = theField.Queue.Y - (125*(i-1))
-        print(new_y)
+        log(new_y, 'Debug')
         if i==1 then
             transition.to(self[i].sprite, {time=300, y=new_y, transition=easing.outBounce})
         else
@@ -63,11 +61,11 @@ function libQueue:stackedNextEntry() --push and pop, return the queue and the el
     layers.frame:insert(sprite)
     self[1].sprite.alpha = 0
     self[1].sprite:removeSelf()
-    print('--@libQueue:nextEntry():  theQueue')
+    log('--@libQueue:nextEntry():  theQueue', 'Info')
     for i=1, self.length-1 do
         self[i].sprite = self[i+1].sprite
         self[i].square_type = self[i+1].square_type
-        print(i..' '..self[i].square_type)
+        log(i..' '..self[i].square_type, 'Debug')
     end
     self[l].sprite = sprite
     self[l].square_type = myType
