@@ -30,8 +30,8 @@ sequenceData =
     { name="seqCarrotFrame3", frames = {37, 34}, time=350},
     { name="seqCelery", frames = {48, 41, 42, 43, 47}},
     { name="seqCeleryFrame1", frames = {45, 43}, time=350},
-    { name="seqCeleryFrame2", frames = {44, 44}, time=350},
-    { name="seqCeleryFrame3", frames = {46, 44}, time=350},
+    { name="seqCeleryFrame2", frames = {44, 43}, time=350},
+    { name="seqCeleryFrame3", frames = {46, 43}, time=350},
     { name="seqChamomile", frames = {57, 50, 51, 52, 56}},
     { name="seqChamomileFrame1", frames = {54, 52}, time=350},
     { name="seqChamomileFrame2", frames = {53, 52}, time=350},
@@ -117,6 +117,7 @@ local score = 0
 local clickAction = ""
 local plantsHarvested = {}
 tutorial = false
+no_pests = true
 
 ------------------------------------------------------
 -- 3. Global Functions

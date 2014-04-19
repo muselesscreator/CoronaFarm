@@ -1,4 +1,10 @@
 require 'class'
+--[[
+-- Pests:
+-- Pests have individual properties, stored in the "Pests" array 
+
+]]--
+
 
 Pest = class(function(pest, myBreed)
         pest.square = {}
@@ -321,6 +327,9 @@ function Pests.does_spawn(pest)
     local myType = Pests[pest].myType
     r = math.random(1, 100)
     print('--@Pests.does_spawn():  r = '..r)
+    if no_pests then
+        return 0
+    end
     if myType == 'land' then
         if r <= 50 and (#theField.pests[pest] == 0) then
             return true

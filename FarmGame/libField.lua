@@ -68,9 +68,10 @@ function Field:cleanup()
                 if tmp.myStage==0 then
                     tmp:setSequence('seqSeeds')
                 elseif tmp.myStage == Plants.mature then
-                    if tmp.myProgress > (tmp.toNext - 4) then
+                    if tmp.myProgress > (tmp.toNext - 3) then
+                        print('-----------'..tmp.myProgress)
                         print('--------------'..tmp.myProgress-tmp.toNext)
-                        local frame = tmp.toNext - tmp.myProgress
+                        local frame = tmp.toNext - tmp.myProgress+1
                         tmp:setSequence('seq'..tmp.myType..'Frame'..frame)
                         tmp:play()
                     end
@@ -114,7 +115,7 @@ end
 
 function Field:nextDay()
 
-    print('--@nextDay: Next Day Function')
+    --print('--@nextDay: Next Day Function')
     --print("--@nextDay: clicked ID: "..clickedID)
     if clickAction=='harvest' then
         --print("--@nextDay: harvest(in nextDay)")
@@ -132,7 +133,7 @@ function Field:nextDay()
         getSquare(clickedID):makeBarren()
         clickAction=""
     end
-    print('--@nextDay: updating unclicked plots')
+    --print('--@nextDay: updating unclicked plots')
     self:movePests()
     square = self.first
     while square do
@@ -142,7 +143,7 @@ function Field:nextDay()
         if sprite.id~=clickedID and (not sprite.empty or sprite.isBarren) then
             if sprite.isPlant or sprite.isBarren then
                 sprite.myProgress = sprite.myProgress + 1
-                print("--@Field:nextDay: progress "..sprite.myProgress.." and stage: "..sprite.myStage.." at "..sprite.id)
+                --print("--@Field:nextDay: progress "..sprite.myProgress.." and stage: "..sprite.myStage.." at "..sprite.id)
                 if sprite.myProgress > sprite.toNext then
                     if sprite.isBarren then
                         square:clearImage()
@@ -160,7 +161,7 @@ function Field:nextDay()
 end
 
 function Field:spawnPests()
-    print('--@Field:spawnPests')
+    --print('--@Field:spawnPests')
     for i, v in pairs(self.allowedPests) do
         if Pests[v].myType == 'air' then
             local num = Pests.does_spawn(v)
@@ -183,7 +184,7 @@ function Field:spawnPests()
 end
 
 function Field:movePests()
-    print('--@Field:movePests')
+    --print('--@Field:movePests')
     for i, v in pairs(self.allowedPests) do
         for j, pest in pairs(self.pests[v]) do
             print('--@Field:movePests: Pest on square '..pest.square.id..' moves')
@@ -194,7 +195,7 @@ function Field:movePests()
 end
 
 function Field:clearPests()
-    print('--@Field:clearPests')
+    --print('--@Field:clearPests')
     for i, v in pairs(self.allowedPests) do
         for j=1, #self.pests[v] do
             while true do
@@ -210,7 +211,7 @@ function Field:clearPests()
     end
     self:cleanup()
     if self:chkGameOver() == true then
-        print("--@Field:nextDay:  Game Over Man")
+        --print("--@Field:nextDay:  Game Over Man")
         storyboard.gotoScene( "title_screen", "fade", 400 )
     end
 
