@@ -53,9 +53,9 @@ sequenceData =
     { name="seqMintFrame2", frames={95, 94}, time=350},
     { name="seqMintFrame3", frames={97, 94}, time=350},
     { name="seqPotato", frames={108, 101, 102, 103, 107}},
-    { name="seqPotatoFrame1", frames={106, 103}, time=350},
+    { name="seqPotatoFrame1", frames={105, 103}, time=350},
     { name="seqPotatoFrame2", frames={104, 103}, time=350},
-    { name="seqPotatoFrame3", frames={105, 103}, time=350},
+    { name="seqPotatoFrame3", frames={106, 103}, time=350},
     { name="seqRadish", frames={117, 110, 111, 112, 116}},
     { name="seqRadishFrame1", frames={114, 112}, time=350},
     { name="seqRadishFrame2", frames={113, 112}, time=350},
@@ -123,6 +123,7 @@ log_levels = {  Info = 3,
                 Warn = 1,
                 Error = 0}
 log_level = 'Debug'
+
 ------------------------------------------------------
 -- 3. Global Functions
 ------------------------------------------------------
