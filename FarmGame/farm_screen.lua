@@ -38,7 +38,13 @@ end
 function scene:createScene( event)
     touchesAllowed = false
     thePlayer:newLevel()
-    local backgroundMusic = audio.loadStream('sound/farm_song.wav')
+    local r = math.random(1, 100)
+    if r < 5 then
+        fn = 'sound/gopherSong.wav'
+    else
+        fn = 'sound/farm_song.wav'
+    end
+    local backgroundMusic = audio.loadStream(fn)
     backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
     print('farm_screen')
     local group = self.view

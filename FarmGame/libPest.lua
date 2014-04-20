@@ -137,6 +137,16 @@ end
 function Pest:spawn()
     print('--@Pest:spawn()')
     local dest = self:find_allowed({'empty', 'not blocked'})
+    if self.myType == 'land' then
+        print("?asdfasefasdf")
+        local arrive = audio.loadStream('sound/GopherLaugh.wav')
+        arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
+
+    else
+        local arrive = audio.loadStream('sound/Cockatrice.wav')
+        arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
+
+    end
     dest:addPest(self)
     self.square = dest
 end
@@ -153,6 +163,10 @@ function Pest:move()
             print("can't move")
             self.hunger = self.hunger + 1
             if self.hunger == 5 then
+                local r = math.random(1, 4)
+                fn = 'sound/starve_'..r..'.wav'
+                local die_sound = audio.loadStream(fn)
+                dieChannel = audio.play( die_sound, { channel=5, fadein=100 } )
                 self:die()
             end
             return 0
@@ -163,6 +177,8 @@ function Pest:move()
     end
     if dest.sprite.isPlant == true then
         print('--@Pest:move() OM NOM BITCHES!   '..self.numPlants)
+        local om_nom = audio.loadStream('sound/gopherEat.wav')
+        om_nom = audio.play( om_nom, { channel=2, loops=1} )
         self.numPlants = self.numPlants + 1
         self.hunger = 0
         if self.numPlants == 3 then
@@ -176,6 +192,7 @@ function Pest:move()
         self.hunger = self.hunger + 1
         print("hunger "..self.hunger.." at "..self.square.id)
         if self.hunger == 5 then
+
             self:die()
             return 0
         end
@@ -193,7 +210,10 @@ function Pest:die(killed)
     print('Pest:die()')
     if self.myType == 'land' then
         if killed == true then
-            start = system.getTimer()
+            local r = math.random(1, 7)
+            fn = 'sound/mallet_'..r..'.wav'
+            local die_sound = audio.loadStream(fn)
+            dieChannel = audio.play( die_sound, { channel=5, fadein=100 } )
             self.square.sprite:setSequence('seqGopherDie')
             self.square.sprite:play()
             self.dying = true
@@ -267,7 +287,7 @@ function Pest:kill()
             print('make barren')
             print(self.square.id)
             self.square:makeBarren()
-            self.square.sprite.toNext=5
+            self.square.sprite.toNext=10
         end
     end
 end
@@ -280,6 +300,8 @@ function Pest:next_day()
         if self.turns == self.turns_to_act and self.dying == false then
             start = system.getTimer()
             self.square:birdSwoop()
+            local om_nom = audio.loadStream('sound/Crow.wav')
+            om_nom_channel = audio.play( om_nom, { channel=3, fadein=100 } )
             local function swoop()
                 self:kill()
                 local function leave()
@@ -336,18 +358,41 @@ function Pests.does_spawn(pest)
             return true
         end
     elseif myType == 'air' then
-        chances = {}
-        chances[1] = math.min(5 + math.floor(theField.turns/10), 30)
-        chances[2] = math.min(math.floor(theField.turns/30), 15)
-        chances[3] = math.min(math.floor(theField.turns/100), 5)
-        if r <= chances[1] then
-            return 1
-        elseif r <= chances[1] + chances[2] then
-            return 2
-        elseif r <= chances[1] + chances[2] + chances[3] then
-            return 3
+
+        chances = {0, 0, 0, 0, 0}
+        local i = theField.turns
+        if i <= 10 then
+            chances[0] = 50-(i/2)
+            chances[1] = 50
+            chances[2] = i/2
+        elseif i <= 50 then
+            chances[0] = 45-(1-10)/4
+            chances[1] = 50
+            chances[2] = 5+(i-10)/4
+            chances[3] = (i-10)/8
+        elseif i <= 100 then
+            chances[0] = 45-(i/5)
+            chances[1] = 55-(i/5)
+            chances[2] = 5+(i/10)
+            chances[3] = i/10
+            chances[4] = i/10 - 5
+        elseif i <= 200 then
+            chances[0] = 25
+            chances[1] = 60-(3*i)/20
+            chances[2] = 15
+            chances[3] = 5+(1/20)
+            chances[4] = i/20
+            chances[5] = 1/20-5
         else
-            return 0
+
         end
+        total = 0
+        for i, v in ipairs(chances) do
+            if r <= total + v then
+                return i
+            end
+            total = total + v
+        end
+        return 0
     end
 end

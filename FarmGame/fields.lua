@@ -4,7 +4,7 @@ fields = {}
 
 fields.Salad = {
     allowedPlants = {'Lettuce', 'Radish'},
-    allowedPests = {'Gopher'},
+    allowedPests = {'LazyGopher'},
     rows = 5,
     columns = 5,
     initialWeights = {Lettuce=42, Radish=43, Mallet=5},
