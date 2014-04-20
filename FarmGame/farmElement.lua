@@ -219,6 +219,7 @@ function FarmElement:setImage(myType, phase, pest)
         self.isPlant = false
         self.myType = 'Rock'
         self.pestProof=true
+        self.sprite.isBarren = false
         self.sprite.pest = false
         self:clearDecorator()
         self:setSequence('seqRock')

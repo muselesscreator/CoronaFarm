@@ -17,6 +17,7 @@ Pest = class(function(pest, myBreed)
         end
         pest.turns = 0
         pest.hunger = 0
+        pest.killing = false
         if pest.myType == 'land' then
             pest.weapon = 'Mallet'
         else
@@ -192,7 +193,6 @@ function Pest:move()
         self.hunger = self.hunger + 1
         print("hunger "..self.hunger.." at "..self.square.id)
         if self.hunger == 5 then
-
             self:die()
             return 0
         end
@@ -279,15 +279,22 @@ end
 
 function Pest:kill()
     print '--@Pest:kill()'
+    print(self.square.sprite.isBarren)
     if self.square.sprite.isPlant then
         if self.kill_act == 'rock' then
             print('make rock')
             self.square:setImage('Rock')
-        elseif self.kill_act == 'barren5' then
-            print('make barren')
-            print(self.square.id)
-            self.square:makeBarren()
-            self.square.sprite.toNext=15
+        elseif self.kill_act == 'barren5' and self.square.myType ~= 'Rock' then
+            print(self.square.sprite.isBarren)
+            if self.square.sprite.isBarren then
+                print("BARREN TO ROCK!!!!!!!!!!!!!!")
+                self.square:setImage('Rock')
+            else
+                print('make barren')
+                print(self.square.id)
+                self.square:makeBarren()
+                self.square.sprite.toNext=15
+            end
         end
     end
 end
@@ -297,8 +304,8 @@ function Pest:next_day()
     if self.myType == 'land' then
         self:move()
     elseif self.myType == 'air' then
-        if self.turns == self.turns_to_act and self.dying == false then
-            start = system.getTimer()
+        if self.turns == self.turns_to_act and self.dying == false and self.killing == false then
+            self.killing = true
             self.square:birdSwoop()
             local om_nom = audio.loadStream('sound/Crow.wav')
             om_nom_channel = audio.play( om_nom, { channel=3, fadein=100 } )
@@ -307,9 +314,10 @@ function Pest:next_day()
                 local function leave()
                     self:die(false)
                 end
-                print(self.square.sprite.isBarren)
                 timer.performWithDelay(600, leave, 1)
             end
+            print('IS BARREN??????????')
+            print(self.square.sprite.isBarren)
             print(self.square.id)
             timer.performWithDelay(200, swoop, 1)
         elseif self.turns_to_act > 0 then
