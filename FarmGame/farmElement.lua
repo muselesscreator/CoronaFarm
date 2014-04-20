@@ -154,16 +154,17 @@ function FarmElement:harvest(score, multiplier)
     local mult = {}
     x = self.sprite.x
     y = self.sprite.y
+    points = self.sprite.plant.xp
     local star = newSprite('seqScoreStar', x, y)
     star.width = 25
     star.heigh = 25
     layers.overlays:insert(star)
     transition.to(star, {y=y - 100, width = 85, height = 85, alpha=.8, time=100})
-    local score = display.newText('1', x+115, y+5, 250, 250, gameFont, 35)
+    local score = display.newText(points, x+115, y+5, 250, 250, CustomFont, 35)
     score.alpha = 1
     layers.overlays:insert(score)
     if multiplier then
-        mult = display.newText(multiplier, x+175, y-150, 250, 250, gameFont, 35)
+        mult = display.newText(multiplier, x+175, y-150, 250, 250, CustomFont, 35)
         mult:setFillColor(.3, .3, .8)
         mult.alpha = 0
         mult.size=45
