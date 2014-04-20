@@ -78,8 +78,10 @@ function Field:cleanup()
                     tmp:setFrame(tmp.myStage)
                 end
             elseif tmp.pest ~= false then
-                tmp:setSequence('seq'..tmp.myType)
-                tmp:play()
+                if tmp.pest.myType == 'air' then
+                    tmp:setSequence('seq'..tmp.myType)
+                    tmp:play()
+                end
             else
                 --print(mytype)
                 tmp:setSequence('seq'..tmp.myType)

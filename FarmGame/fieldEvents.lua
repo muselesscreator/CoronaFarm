@@ -123,30 +123,33 @@ function onSquareTap(self, event)
                     end
                     theField:nextDay()
                 end
-            elseif nextElement == 'Mallet' and self.myStage ~= Plants.mature then
-                print('--@onSquareTap: Mallet')
-                --Use the mallet to prune this square
-                if self.myType~="Rock" then
-                    print('--@onSquareTap: pruning')
-                    print(self.id)
-                    getSquare(self.id):clearImage()
+            end
+            if self.pest == false or self.pest.myType == 'air' then
+                if nextElement == 'Mallet' and self.myStage ~= Plants.mature then
+                    print('--@onSquareTap: Mallet')
+                    --Use the mallet to prune this square
+                    if self.myType~="Rock" then
+                        print('--@onSquareTap: pruning')
+                        print(self.id)
+                        getSquare(self.id):clearImage()
+                    end
+                    print(theBasket)
+                    if theBasket.box.selected then
+                        theBasket:empty()
+                    else
+                        theQueue:nextEntry()
+                    end
+                    theField:nextDay()
+                elseif self.myStage==Plants.mature then
+                    print("--@onSquareTap: harvest")
+                    clickAction = "harvest"
+                    theField:nextDay()
+                    square = theField.first
+                elseif self.myStage==Plants.rot then
+                    print("--@onSquareTap: clear")
+                    clickAction = "clear"
+                    theField:nextDay()
                 end
-                print(theBasket)
-                if theBasket.box.selected then
-                    theBasket:empty()
-                else
-                    theQueue:nextEntry()
-                end
-                theField:nextDay()
-            elseif self.myStage==Plants.mature then
-                print("--@onSquareTap: harvest")
-                clickAction = "harvest"
-                theField:nextDay()
-                square = theField.first
-            elseif self.myStage==Plants.rot then
-                print("--@onSquareTap: clear")
-                clickAction = "clear"
-                theField:nextDay()
             end
         end
     end

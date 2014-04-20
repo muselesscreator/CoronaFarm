@@ -92,7 +92,7 @@ function Pest:is_allowed(tmp, criteria)
             flag = 1
         elseif crit=="plant" and not tmp.isPlant then
             flag = 1
-        elseif crit=="not rotten" and tmp.myStage == 4 then
+        elseif crit=="not rotten" and tmp.myStage == Plants.rot then
             flag = 1
         end
     end
@@ -112,7 +112,7 @@ function Pest:find_preferred(criteria)
     n = #opts
     if self.move_priority == 'growth' then
         new_opts = {}
-        for i=3, 1, -1 do
+        for i=Plants.mature, 1, -1 do
             stage = i
             new_opts={}
             for i, v in ipairs(opts) do
@@ -287,7 +287,7 @@ function Pest:kill()
             print('make barren')
             print(self.square.id)
             self.square:makeBarren()
-            self.square.sprite.toNext=10
+            self.square.sprite.toNext=15
         end
     end
 end
@@ -328,7 +328,7 @@ Pests.Gopher = {
 }
 Pests.LazyGopher = {
     image = 'seqGopher',
-    move_point = {'neighbor', 'plant', 'not seed', 'not rotten'},
+    move_point = {'neighbor', 'not pest proof', 'plant', 'not seed', 'not rotten'},
     move_priority = 'growth',
     myType = 'land'
 }
