@@ -128,11 +128,11 @@ function onSquareTap(self, event)
                 if nextElement == 'Mallet' and self.myStage ~= Plants.mature then
                     print('--@onSquareTap: Mallet')
                     --Use the mallet to prune this square
-                    if self.myType~="Rock" then
+                    --if self.myType~="Rock" then
                         print('--@onSquareTap: pruning')
                         print(self.id)
                         getSquare(self.id):clearImage()
-                    end
+                    --end
                     print(theBasket)
                     if theBasket.box.selected then
                         theBasket:empty()

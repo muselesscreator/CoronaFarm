@@ -10,7 +10,7 @@
 if "Win" == system.getInfo( "platformName" ) then
     CustomFont = "Comic Neue"
 elseif "Android" == system.getInfo( "platformName" ) then
-    CustomFont = "ComicNeue-Bold"
+    CustomFont = "ComicNeue-Bold.ttf"
 else
     -- Mac and iOS
     CustomFont = "ComicNeue-Bold"
