@@ -153,7 +153,7 @@ function fieldInit(group, fieldType, tutorial)
     layers.overFrame:insert(ScoreCard)
 
 --> Set Label
-    scoreHUD = display.newText(0, 0, 0, gameFont, 42)
+    scoreHUD = display.newText(0, 0, 0, CustomFont, 42)
     scoreHUD.anchorX = 0
     scoreHUD.anchorY = 0
     scoreHUD.x = 140

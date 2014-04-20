@@ -41,7 +41,7 @@ function scene:createScene( event )
     bg.anchorY = 0
     screenGroup:insert(bg)
 
-    text1 = display.newText( "Farmaggedon!", 0, 0, native.systemFontBold, 50 )
+    text1 = display.newText( "Farmaggedon!", 0, 0, CustomFont, 50 )
     text1:setTextColor( 255 )
     text1.x, text1.y = display.contentWidth * 0.5, 300
     screenGroup:insert( text1 )

@@ -231,12 +231,12 @@ function plantObject:harvest(score, multiplier)
     local function score(stage)
         if stage == 1 then
             transition.to(star, {width = 150, height=150, alpha = 0, time=300})
-            local score = display.newText('1', self.x+115, self.y+5, 250, 250, gameFont, 35)
+            local score = display.newText('1', self.x+115, self.y+5, 250, 250, CustomFont, 35)
             score:setFillColor(.3, .3, .8)
             score.alpha = .8
             transition.to(score, {width=300, height=300, size=35, alpha=0, time=200})
             if multiplier then
-                mult = display.newText(multiplier, self.x+175, self.y-150, 250, 250, gameFont, 35)
+                mult = display.newText(multiplier, self.x+175, self.y-150, 250, 250, CustomFont, 35)
                 mult:setFillColor(.3, .3, .8)
                 mult.alpha = .8
                 mult.size=45
@@ -274,7 +274,7 @@ textBox = class(function(textbox, x, y, w, h, content, padding)
     img.anchorY = 0
     layers.overFrame:insert(img)
     textbox.img = img
-    local txt = display.newText(content, x+padding, y+padding, w-2*padding, h-padding*2, gameFont, 30)
+    local txt = display.newText(content, x+padding, y+padding, w-2*padding, h-padding*2, CustomFont, 30)
     txt.anchorX = 0
     txt.anchorY = 0
     txt.align = "center"

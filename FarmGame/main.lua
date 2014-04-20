@@ -1,7 +1,21 @@
 -----------------------------------------------------
 -- 1. Imports and Includes
 -----------------------------------------------------
+
+--theFonts = native.getFontNames()
+--for i=1, #theFonts do 
+--    print(theFonts[i])
+--end
 --> Create physics (do we need this??)
+if "Win" == system.getInfo( "platformName" ) then
+    CustomFont = "Comic Neue"
+elseif "Android" == system.getInfo( "platformName" ) then
+    CustomFont = "ComicNeue-Bold"
+else
+    -- Mac and iOS
+    CustomFont = "ComicNeue-Bold"
+end
+
 local physics = require "physics"
 local socket = require "socket"
 physics.start()
