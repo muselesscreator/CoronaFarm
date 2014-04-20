@@ -164,7 +164,7 @@ function FarmElement:harvest(score, multiplier)
     score.alpha = 1
     layers.overlays:insert(score)
     if multiplier then
-        mult = display.newText(multiplier, x+175, y-150, 250, 250, CustomFont, 35)
+        mult = display.newText(multiplier, x+175, y-200, 250, 250, CustomFont, 35)
         mult:setFillColor(.3, .3, .8)
         mult.alpha = 0
         mult.size=45
