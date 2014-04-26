@@ -81,7 +81,7 @@ function Pest:is_allowed(tmp, criteria)
     --print(self:is_neighbor(tmp))
     local flag = 0
     for i, crit in pairs(criteria) do
-        if crit=="empty" and tmp.empty==false then
+        if crit=="empty" and tmp.sprite.empty==false then
             flag = 1
         elseif crit=="not blocked" and tmp.blocked then
             flag = 1
@@ -168,6 +168,8 @@ function Pest:move()
                 fn = 'sound/starve_'..r..'.wav'
                 local die_sound = audio.loadStream(fn)
                 dieChannel = audio.play( die_sound, { channel=5, fadein=100 } )
+                self.square.sprite:setSequence('seqGopherDie')
+                self.square.sprite:play()
                 self:die()
             end
             return 0
@@ -178,8 +180,8 @@ function Pest:move()
     end
     if dest.sprite.isPlant == true then
         print('--@Pest:move() OM NOM BITCHES!   '..self.numPlants)
-        local om_nom = audio.loadStream('sound/gopherEat.wav')
-        om_nom = audio.play( om_nom, { channel=2, loops=1} )
+        local om_nom = audio.loadSound('sound/gopherEat.wav')
+        om_nom = audio.play( om_nom )
         self.numPlants = self.numPlants + 1
         self.hunger = 0
         if self.numPlants == 3 then
@@ -193,6 +195,8 @@ function Pest:move()
         self.hunger = self.hunger + 1
         print("hunger "..self.hunger.." at "..self.square.id)
         if self.hunger == 5 then
+            self.square.sprite:setSequence('seqGopherDie')
+            self.square.sprite:play()
             self:die()
             return 0
         end
@@ -210,16 +214,15 @@ function Pest:die(killed)
     print('Pest:die()')
     if self.myType == 'land' then
         if killed == true then
-            local r = math.random(1, 7)
+            local r = math.random(1, 5)
             fn = 'sound/mallet_'..r..'.wav'
             local die_sound = audio.loadStream(fn)
             dieChannel = audio.play( die_sound, { channel=5, fadein=100 } )
-            self.square.sprite:setSequence('seqGopherDie')
-            self.square.sprite:play()
             self.dying = true
             local function die()
                 self:die(false)
             end
+            print('800 before "die"')
             timer.performWithDelay(800, die, 1)
             for i, val in ipairs(theField.pests[self.myBreed]) do
                 print(val.square.id)
@@ -229,6 +232,8 @@ function Pest:die(killed)
                 end
             end
         else
+            self.square:setSequence('seqGopherDie')
+            self.square.weaponLayer.alpha = 0
             self.square:setImage('Rock')
         end
     elseif self.myType == 'air' then
@@ -253,6 +258,8 @@ function Pest:die(killed)
             print('--@pest:die not killed')
             self.square.sprite.pest = false
             self.square.birdLayer.alpha=0
+            self.square.weaponLayer.alpha = 0
+
             for i, val in ipairs(theField.pests[self.myBreed]) do
                 print(val.square.id)
                 if val.square == self.square then
@@ -283,6 +290,9 @@ function Pest:kill()
     if self.square.sprite.isPlant then
         if self.kill_act == 'rock' then
             print('make rock')
+            --self.square.sprite.stonePlant = true
+            self.pestProof = true
+
             self.square:setImage('Rock')
         elseif self.kill_act == 'barren5' and self.square.myType ~= 'Rock' then
             print(self.square.sprite.isBarren)

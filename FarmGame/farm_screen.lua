@@ -41,8 +41,12 @@ function scene:createScene( event)
     local r = math.random(1, 100)
     if r < 5 then
         fn = 'sound/gopherSong.wav'
+    elseif fieldType=='Tea' then
+        fn = 'sound/ZenFarm.wav'
+    elseif fieldType=='Stew' then
+        fn = 'sound/DarkFarm.wav'
     else
-        fn = 'sound/farm_song.wav'
+        fn = 'sound/FarmSong.wav'
     end
     local backgroundMusic = audio.loadStream(fn)
     backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )

@@ -34,8 +34,8 @@ FarmElement = class(function(elem, x, y, i, j)
                 sequenceData)
             weaponLayer:setSequence("seqBlank")
             weaponLayer.alpha = .01
-            weaponLayer.x = x-50
-            weaponLayer.y = y-100
+            weaponLayer.x = x-13
+            weaponLayer.y = y-88
 
             sprite.row = j
             sprite.column = i
@@ -154,51 +154,39 @@ function FarmElement:harvest(score, multiplier)
     local mult = {}
     x = self.sprite.x
     y = self.sprite.y
-    local star = newSprite('seqScoreStar', x, y)
-    star.width = 25
-    star.heigh = 25
-    layers.overlays:insert(star)
-    transition.to(star, {y=y - 100, width = 85, height = 85, alpha=.8, time=100})
-    local score = display.newText('1', x+115, y+5, 250, 250, gameFont, 35)
+    local score = display.newText(self.sprite.xp, x+160, y+58, 250, 250, gameFont, 35)
     score.alpha = 1
     layers.overlays:insert(score)
     if multiplier then
-        mult = display.newText(multiplier, x+175, y-150, 250, 250, gameFont, 35)
+        mult = display.newText(multiplier, x+225, y-75, 250, 250, gameFont, 35)
         mult:setFillColor(.3, .3, .8)
-        mult.alpha = 0
+        mult.alpha = 1
         mult.size=45
         mult:rotate(-45)
         layers.overlays:insert(mult)
     end
-    local function burst(stage)
-        if stage == 1 then
-            transition.to(star, {width = 150, height=150, alpha = 0, time=300})
-            score.alpha = 1
-            score:setFillColor(.3, .3, .8)
-            transition.to(score, {width=300, height=300, size=35, alpha=0, time=200})
-            if multiplier then
-                mult.alpha = 1
-                transition.to(mult, {width=300, height=300, size=45, alpha=0, time=300})
-            end
-            if self.sprite.timesHarvested >= self.sprite.maxHarvest then
-                self:clearImage()
-            else
-                self:setImage(self.sprite.myType, self.sprite.myStage-1, false)
-                self:clearDecorator()
-            end
-            timer.performWithDelay(350, function()
-                    star:removeSelf()
-                    star = nil
-                    score:removeSelf()
-                    score = nil
-                    if multiplier then
-                        mult:removeSelf()
-                        mult = nil
-                    end
-                end, 1)
+    self.decorator:setSequence('seqBlank')
+    self.decorator.alpha = 0
+    self.sprite:setSequence('seq'..self.sprite.myType..'Harvest')
+    self.sprite:play()
+    timer.performWithDelay(200, function()
+        if self.sprite.pest then
+            self:clearDecorator()
+        elseif self.sprite.timesHarvested >= self.sprite.maxHarvest then
+            self:clearImage()
+        else
+            self:setImage(self.sprite.myType, self.sprite.myStage-1, false)
+            self:clearDecorator()
         end
-    end
-    timer.performWithDelay( 250, function() burst(1) end, 1 )
+        timer.performWithDelay(350, function()
+                score:removeSelf()
+                score = nil
+                if multiplier then
+                    mult:removeSelf()
+                    mult = nil
+                end
+            end)
+        end)
 end
 
 function FarmElement:setSequence(seq)
@@ -222,6 +210,7 @@ function FarmElement:setImage(myType, phase, pest)
         self.sprite.isBarren = false
         self.sprite.pest = false
         self:clearDecorator()
+        self.sprite.empty = false
         self:setSequence('seqRock')
     elseif pest == false then
         print(myType)

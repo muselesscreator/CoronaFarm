@@ -54,7 +54,7 @@ function scene:createScene( event )
         onRelease = gotoFarm,
     }
     FarmButton.x = display.contentWidth * 0.5
-    FarmButton.y = 370
+    FarmButton.y = 420
     screenGroup:insert(FarmButton)
 
     local LevelButton = widget.newButton
@@ -66,9 +66,10 @@ function scene:createScene( event )
         onRelease = gotoLevel,
     }
     LevelButton.x = display.contentWidth * 0.5
-    LevelButton.y = 450
+    LevelButton.y = 510
     screenGroup:insert(LevelButton)
 
+    --[[
     local TutorialButton = widget.newButton
     {
         defaultFile = "images/buttonRed.png",
@@ -80,6 +81,7 @@ function scene:createScene( event )
     TutorialButton.x = display.contentWidth * 0.5
     TutorialButton.y = 530
     screenGroup:insert(TutorialButton)
+    ]]--
 
     timer.performWithDelay(10, function() touchesAllowed = true end)
 

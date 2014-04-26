@@ -42,11 +42,11 @@ function libQueue:nextEntry(weights) --push and pop, return the queue and the el
 
     for i=1, self.length do
         new_y = theField.Queue.Y - (125*(i-1))
-        log(new_y, 'Debug')
+        print(i..' to '..new_y)
         if i==1 then
             transition.to(self[i].sprite, {time=300, y=new_y, transition=easing.outBounce})
         else
-            transition.to(self[i].sprite, {time=600, y=new_y, transition=easing.outBounce})
+            transition.to(self[i].sprite, {time=400, y=new_y, transition=easing.outBounce})
         end
     end
 end
@@ -71,8 +71,8 @@ function libQueue:stackedNextEntry() --push and pop, return the queue and the el
     self[l].square_type = myType
 
     for i=1, self.length do
-        new_y = theField.Queue.Y - (125*(i-1))
-        print(new_y)
+        local new_y = theField.Queue.Y - (125*(i-1))
+        print(i..' to '..new_y)
         if i==1 then
             transition.to(self[i].sprite, {time=300, y=new_y, transition=easing.outBounce})
         else

@@ -64,20 +64,22 @@ function onSquareTap(self, event)
                 getSquare(self.id):setImage(nextElement, 1)
             end
             if self.pest ~= false and self.pest.weapon == nextElement then
-                start = system.getTimer()
-                local function attack()
-                    parent.weaponLayer:play()
-                    local function kill()
-                        self.pest:die()
-                        parent.weaponLayer.alpha = 0
-                    end
-                    timer.performWithDelay(250, kill, 1)
+                if self.pest.myType == 'land' then
+                    print('HAMMER DIE')
+                    parent.weaponLayer:setSequence('seqGopherHammerDie')
+                else
+                    parent.weaponLayer:setSequence('seqSlingshot')
                 end
-                parent.weaponLayer:setSequence('seq'..nextElement)
                 parent.weaponLayer.alpha = 1
                 self.pest.dying = true
-                attack()
-                   if theBasket.box.selected then
+                parent.weaponLayer:play()
+                local function kill()
+                    print("??????KILL???????")
+                    self.pest:die()
+                    parent.weaponLayer.alpha = 0
+                end
+                timer.performWithDelay(1200, kill, 1)
+                if theBasket.box.selected then
                     theBasket:empty()
                 else
                     theQueue:nextEntry()
@@ -95,7 +97,7 @@ function onSquareTap(self, event)
         end
         -- Alright, so not blocked, menu isn't up, and it isn't empty
         -- If it also isn't barren
-        if not self.empty and not self.isBarren then
+        if not self.empty then
             print('--@onSquareTap: not empty and not barren')
             --if it is a pest and you have the right weapon equipped
             print(self.pest)
@@ -103,19 +105,17 @@ function onSquareTap(self, event)
                 print(self.pest.weapon)
                 print(nextElement)
                 if self.pest.weapon == nextElement then
-                    start = system.getTimer()
-                    local function attack()
-                        parent.weaponLayer:play()
-                        local function kill()
-                            self.pest:die()
-                            parent.weaponLayer.alpha = 0
-                        end
-                        timer.performWithDelay(200, kill, 1)
-                    end    
-                    parent.weaponLayer:setSequence('seq'..nextElement)
+                    if self.pest.myType == 'land' then
+                        print('HAMMER DIE')
+                        parent.weaponLayer:setSequence('seqGopherHammerDie')
+                        self.alpha = 0
+                    else
+                        parent.weaponLayer:setSequence('seqSlingshot')
+                    end
                     parent.weaponLayer.alpha = 1
                     self.pest.dying = true
-                    attack()
+                    parent.weaponLayer:play()
+                    self.pest:die()
                     if theBasket.box.selected then
                         theBasket:empty()
                     else
@@ -125,7 +125,7 @@ function onSquareTap(self, event)
                 end
             end
             if self.pest == false or self.pest.myType == 'air' then
-                if nextElement == 'Mallet' and self.myStage ~= Plants.mature then
+                if nextElement == 'Mallet' and self.myStage ~= Plants.mature and not self.isBarren then
                     print('--@onSquareTap: Mallet')
                     --Use the mallet to prune this square
                     if self.myType~="Rock" then
