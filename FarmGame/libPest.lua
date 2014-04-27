@@ -46,44 +46,37 @@ function key_is_in(x, list)
 end
 
 function Pest:find_allowed(criteria)
-    if self.move_point ~= nil and key_is_in('neighbor', self.move_point) then
-        for i, v in pairs(self.square.sprite.neighbors) do
-            if v then
-                if self:is_allowed(v, self.move_point) then
-                    opts[#opts+1] = v
-                end
-            end
+    print('--@find_allowed')
+    square = theField.first
+    opts = {}
+    while square do
+        if self:is_allowed(square.sprite, criteria) then
+            opts[#opts+1] = square
         end
+        square = square.next
+    end
+    if #opts > 0 then
         while true do
-            n = math.random(1, #opts)
-            tmp = opts[n]
-            if self:is_allowed(tmp, self.move_point) then
+            tmp = self:random_square()
+            if self:is_allowed(tmp.sprite, criteria) then
                 break
             end
         end
     else
-        while true do
-            tmp = self:random_square()
-            if self:is_allowed(tmp, criteria) then
-                break
-            end
-        end
+        return false
     end
-    print(tmp.id)
+    print('--@find_allowed: '..tmp.id)
     return tmp
 end
 
 function Pest:is_allowed(tmp, criteria)
-    print('--@pest:is_allowed')
-    print(self.square)
-    print(self.square.sprite)
-    print(tmp.id)
     --print(self:is_neighbor(tmp))
     local flag = 0
     for i, crit in pairs(criteria) do
-        if crit=="empty" and tmp.sprite.empty==false then
+        if crit=="empty" and tmp.empty==false then
+            print('EMPTY')
             flag = 1
-        elseif crit=="not blocked" and tmp.blocked then
+        elseif crit=="not blocked" and tmp.square().blocked then
             flag = 1
         elseif crit=="Mature" and tmp.stage~=plants.mature then
             flag = 1
@@ -101,28 +94,28 @@ function Pest:is_allowed(tmp, criteria)
 end
 
 function Pest:find_preferred(criteria)
-    print('--@Pest:find_preferred()')
     opts = {}
     for i, v in pairs(self.square.sprite.neighbors) do
         if v then
-            if self:is_allowed(v, self.move_point) then
+            if self:is_allowed(v, self.move_point) or (self:is_allowed(v, {'empty', 'not blocked'}) and fieldType == 'Salsa') then
                 opts[#opts+1] = v
             end
         end
     end
-    n = #opts
-    if self.move_priority == 'growth' then
+    n = #opts 
+    if n > 0 then
         new_opts = {}
-        for i=Plants.mature, 1, -1 do
+        for i=Plants.mature, 0, -1 do
             stage = i
             new_opts={}
-            for i, v in ipairs(opts) do
-                if v.myStage==stage then
+            for j, v in ipairs(opts) do
+                if stage > 0 and v.myStage==stage then
+                    new_opts[#new_opts+1] = v
+                elseif stage == 0 and self:is_allowed(v, {'empty', 'not blocked'}) then
                     new_opts[#new_opts+1] = v
                 end
             end
             if #new_opts > 0 then
-                print('--@Pest:find_preferred() i: '..i)
                 break
             end
         end
@@ -132,34 +125,39 @@ function Pest:find_preferred(criteria)
         else
             return false
         end
+    else
+        return false
     end
 end
 
 function Pest:spawn()
     print('--@Pest:spawn()')
     local dest = self:find_allowed({'empty', 'not blocked'})
-    if self.myType == 'land' then
-        print("?asdfasefasdf")
-        local arrive = audio.loadStream('sound/GopherLaugh.wav')
-        arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
+    if dest then
+        if self.myType == 'land' then
+            local arrive = audio.loadStream('sound/GopherLaugh.wav')
+            arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
 
-    else
-        local arrive = audio.loadStream('sound/Cockatrice.wav')
-        arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
-
+        else
+            local arrive = audio.loadStream('sound/Cockatrice.wav')
+            arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
+        end
+        dest:addPest(self)
+        self.square = dest
     end
-    dest:addPest(self)
-    self.square = dest
 end
 
 function Pest:move()
     print('-----@Pest:move()')
     if self.dying == true then
+        print('--@Pest:move DYING!')
         return 0
     end
     local dest = {}
     if self.move_priority then
         dest = self:find_preferred()
+        print('--@Pest:move find_prefered():')
+        print(dest)
         if dest == false then
             print("can't move")
             self.hunger = self.hunger + 1
@@ -175,37 +173,40 @@ function Pest:move()
             return 0
         end
     else
-        print(self.square.sprite)
         dest = self:find_allowed(self.move_point)
     end
-    if dest.sprite.isPlant == true then
-        print('--@Pest:move() OM NOM BITCHES!   '..self.numPlants)
-        local om_nom = audio.loadSound('sound/gopherEat.wav')
-        om_nom = audio.play( om_nom )
-        self.numPlants = self.numPlants + 1
-        self.hunger = 0
-        if self.numPlants == 3 then
-            print('--@Pest:move() Breeding')
-            local new_pest = Pest(self.myBreed)
-            theField.pests[self.myBreed][#theField.pests[self.myBreed]+1] = new_pest
-            new_pest:spawn()
-            self.numPlants = 0
+    if dest then
+        if dest.sprite.isPlant == true then
+            print('--@Pest:move() OM NOM BITCHES!   '..self.numPlants)
+            local om_nom = audio.loadSound('sound/GopherEat.wav')
+            om_nom = audio.play( om_nom )
+            self.numPlants = self.numPlants + 1
+            self.hunger = 0
+            if self.numPlants == 3 then
+                if #theField.pests[self.myBreed] < theField.maxPests then
+                    print('--@Pest:move() Breeding')
+                    local new_pest = Pest(self.myBreed)
+                    theField.pests[self.myBreed][#theField.pests[self.myBreed]+1] = new_pest
+                    new_pest:spawn()
+                end
+                self.numPlants = 0
+            end
+        else
+            self.hunger = self.hunger + 1
+            print("hunger "..self.hunger.." at "..self.square.id)
+            if self.hunger == 5 then
+                self.square.sprite:setSequence('seqGopherDie')
+                self.square.sprite:play()
+                self:die()
+                return 0
+            end
         end
-    else
-        self.hunger = self.hunger + 1
-        print("hunger "..self.hunger.." at "..self.square.id)
-        if self.hunger == 5 then
-            self.square.sprite:setSequence('seqGopherDie')
-            self.square.sprite:play()
-            self:die()
-            return 0
+        if self.square.id ~= dest.id then
+            print("I've moved")
+            self.square:clearImage()
+            dest:addPest(self)
+            self.square = dest
         end
-    end
-    if self.square.id ~= dest.id then
-        print("I've moved")
-        self.square:clearImage()
-        dest:addPest(self)
-        self.square = dest
     end
 end
 
@@ -372,11 +373,10 @@ function Pests.does_spawn(pest)
         return 0
     end
     if myType == 'land' then
-        if r <= 50 and (#theField.pests[pest] == 0) then
+        if r <= 15 and (#theField.pests[pest] == 0) then
             return true
         end
     elseif myType == 'air' then
-
         chances = {0, 0, 0, 0, 0}
         local i = theField.turns
         if i <= 10 then
@@ -402,7 +402,12 @@ function Pests.does_spawn(pest)
             chances[4] = i/20
             chances[5] = 1/20-5
         else
-
+            chances[0] = 25
+            chances[1] = 30
+            chances[2] = 15
+            chances[3] = 15
+            chances[4] = 10
+            chances[5] = 5
         end
         total = 0
         for i, v in ipairs(chances) do

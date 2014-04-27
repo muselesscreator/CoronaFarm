@@ -49,6 +49,7 @@ FarmElement = class(function(elem, x, y, i, j)
             sprite.pestProof=false
             sprite.isPlant = false
             sprite.isBarren = false
+            sprite.harvesting = false
             sprite.neighbors = {above = false,
                              below = false,
                              right = false,
@@ -165,12 +166,16 @@ function FarmElement:harvest(score, multiplier)
         mult:rotate(-45)
         layers.overlays:insert(mult)
     end
+    self.sprite.isPlant = false
+    self.sprite.empty = true
+    self.sprite.myProgress = 0
+    self.sprite.harvesting = true
     self.decorator:setSequence('seqBlank')
     self.decorator.alpha = 0
     self.sprite:setSequence('seq'..self.sprite.myType..'Harvest')
     self.sprite:play()
     timer.performWithDelay(200, function()
-        if self.sprite.pest then
+        if self.sprite.pest and self.sprite.pest.type=='land' then
             self:clearDecorator()
         elseif self.sprite.timesHarvested >= self.sprite.maxHarvest then
             self:clearImage()
@@ -179,6 +184,7 @@ function FarmElement:harvest(score, multiplier)
             self:clearDecorator()
         end
         timer.performWithDelay(350, function()
+                self.harvesting = false
                 score:removeSelf()
                 score = nil
                 if multiplier then
@@ -263,7 +269,7 @@ function FarmElement:clearImage()
     self.sprite.timesHarvested = 0
     self.sprite.myStage = 0
     self.sprite.myProgress = 0
-    self.sprite.myType = "blank"
+    self.sprite.myType = "Blank"
     self.sprite.pestProof = false
     self.sprite.isPlant = false
     self.sprite.checked = false

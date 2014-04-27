@@ -74,17 +74,18 @@ function onSquareTap(self, event)
                 self.pest.dying = true
                 parent.weaponLayer:play()
                 local function kill()
-                    print("??????KILL???????")
                     self.pest:die()
                     parent.weaponLayer.alpha = 0
                 end
                 timer.performWithDelay(1200, kill, 1)
-                if theBasket.box.selected then
-                    theBasket:empty()
-                else
-                    theQueue:nextEntry()
-                end
-                theField:nextDay()                 
+                timer.performWithDelay(100, function()
+                    if theBasket.box.selected then
+                        theBasket:empty()
+                    else
+                        theQueue:nextEntry()
+                    end
+                    theField:nextDay()                 
+                    end, 1)
             end
             -- Nothing happens if you use a weapon on an empty square
 
@@ -162,7 +163,7 @@ function onBasketTouch(self, event)
     local touchID = event.id
     local parent  = self.parent
 
-    if( not touchesAllowed ) then return true end
+    if( not touchesAllowed or layers.popup.visible) then return true end
     if( target.isBase ) then return true end
 
     if( phase == "began" ) then

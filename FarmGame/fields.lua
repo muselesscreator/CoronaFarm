@@ -2,9 +2,11 @@ require 'libPest'
 
 fields = {}
 
+fields.order = {'Salad', 'Stew', 'Salsa', 'Tea'}
 fields.Salad = {
     allowedPlants = {'Lettuce', 'Radish'},
     allowedPests = {'LazyGopher'},
+    maxPests = 2,
     rows = 5,
     columns = 5,
     initialWeights = {Lettuce=42, Radish=43, Mallet=5},
@@ -23,7 +25,7 @@ fields.Salad = {
     minScore = 0,
 }
 function fields.Salad.updateWeights()
-    theQueue.weights.Mallet = 15*(theField:numPestsOfType('land')+1)
+    mallet_weights()
     plants = 100-theQueue.weights.Mallet
     theQueue.weights.Lettuce = math.floor(plants/2)
     theQueue.weights.Radish = math.ceil(plants/2)
@@ -51,7 +53,7 @@ fields.Stew = {
     minScore = 120,
 }
 function fields.Stew.updateWeights(queue, field)
-    theQueue.weights.Slingshot = 15*(theField:numPestsOfType('air')+1)
+    slingshot_weights()    
     plants = 100-theQueue.weights.Slingshot
     theQueue.weights.Potato = math.floor(plants/3)
     theQueue.weights.Carrot = math.floor(plants/3)
@@ -62,6 +64,7 @@ end
 fields.Salsa = {
     allowedPlants = {'Tomato', 'Jalapeno'},
     allowedPests = {'LazyGopher'},
+    maxPests = 4,
     rows = 8,
     columns = 8,
     initialWeights = {Tomato=42, Jalapeno=43, Mallet=5},
@@ -80,7 +83,7 @@ fields.Salsa = {
     minScore = 500,
 }
 function fields.Salsa.updateWeights()
-    theQueue.weights.Mallet = 15*(theField:numPestsOfType('land')+1)
+    mallet_weights()
     plants = 100-theQueue.weights.Mallet
     theQueue.weights.Tomato = math.floor(plants/2)
     theQueue.weights.Jalapeno = math.ceil(plants/2)
@@ -108,9 +111,28 @@ fields.Tea = {
     minScore = 1000,
 }
 function fields.Tea.updateWeights()
-    theQueue.weights.Slingshot = 15*(theField:numPestsOfType('air')+1)
+    slingshot_weights()
     plants = 100-theQueue.weights.Slingshot
     theQueue.weights.Mint = math.floor(plants/2)
     theQueue.weights.Chamomile = math.ceil(plants/2)
     print('--fields.lua def:  updateWeights')
+end
+
+ function slingshot_weights()
+    if theQueue[#theQueue].square_type == 'Slingshot' then
+        theQueue.weights.Slingshot = 0
+    elseif theBasket.box.type == 'Slingshot' then
+        theQueue.weights.Slingshot = 5
+    else
+        theQueue.weights.Slingshot = 15
+    end
+end
+function mallet_weights()
+    if theQueue[#theQueue].square_type == 'Mallet' then
+        theQueue.weights.Mallet = 0
+    elseif theBasket.box.type=='Mallet' then
+        theQueue.weights.Mallet = 5+10*(theField:numPestsOfType('land'))
+    else
+        theQueue.weights.Mallet = 15+15*(theField:numPestsOfType('land'))
+    end
 end

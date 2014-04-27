@@ -13,6 +13,7 @@ libQueue = class(function(queue, weights, length)
 function libQueue:initialize() --push to fill the queue to the specified number
     for i=1, self.length do
         self[i] = self:pickNext()
+        theField:updateWeights()
     end
 end
 

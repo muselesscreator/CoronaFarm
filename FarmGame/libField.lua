@@ -55,7 +55,7 @@ function Field:cleanup()
         if tmp.isBarren then
             tmp:setSequence('seqBarren')
             tmp.alpha = 1
-        elseif tmp.empty == true then
+        elseif tmp.empty == true and tmp.harvesting == false then
             tmp:setSequence('seqBlank')
         end
         square = square.next
@@ -74,12 +74,15 @@ function Field:cleanup()
                         tmp:setSequence('seq'..tmp.myType..'Frame'..frame)
                         tmp:play()
                     end
-                else
+                elseif not tmp.harvesting then
+                    print('SETTING FRAME FOR '..tmp.id)
                     tmp:setSequence('seq'..tmp.myType)
                     tmp:setFrame(tmp.myStage)
                 end
             elseif tmp.pest ~= false then
-                if tmp.pest.myType == 'air' then
+                if tmp.pest.myType == 'air' and not tmp.pest.dying and not tmp.harvesting then
+                    print('Cleaning up this Bird!')
+                    print(tmp.id)
                     tmp:setSequence('seq'..tmp.myType)
                     tmp:play()
                 end
@@ -191,8 +194,12 @@ function Field:movePests()
     --print('--@Field:movePests')
     for i, v in pairs(self.allowedPests) do
         for j, pest in pairs(self.pests[v]) do
-            print('--@Field:movePests: Pest on square '..pest.square.id..' moves')
-            pest:next_day()
+            print(pest.square)
+            print(pest.square.id)
+            if pest.square.id ~= nil then
+                print('--@Field:movePests: Pest on square '..pest.square.id..' moves')
+                pest:next_day()
+            end
         end
     end
     self:clearPests()

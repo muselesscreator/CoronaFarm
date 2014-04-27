@@ -92,20 +92,21 @@ function scene:createScene( event )
 
     numFields = 0
 
-    for i, val in pairs(fields) do
+    for i, myType in pairs(fields.order) do
+        val = fields[myType]
         if thePlayer.totalScore >= val.minScore then
             numFields = numFields + 1
-            thumb = display.newImage(fields[i].thumb)
+            thumb = display.newImage(val.thumb)
             thumb.anchorX = 0
             thumb.y = display.contentHeight/2
-            thumb.field = i
+            thumb.field = myType
             thumb.tap = onLevelTouch
             thumb:addEventListener("tap", thumb )
             thumb.x = (numFields-1)*600 +300
             screenGroup:insert(thumb)
             scrollView:insert(thumb)
             print('add thumb')
-            print(fields[i].thumb)
+            print(val.thumb)
         end
     end
     scrollView:setScrollWidth((numFields * 600) + 450)

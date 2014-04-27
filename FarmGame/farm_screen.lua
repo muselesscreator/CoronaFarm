@@ -41,12 +41,14 @@ function scene:createScene( event)
     local r = math.random(1, 100)
     if r < 5 then
         fn = 'sound/gopherSong.wav'
-    elseif fieldType=='Tea' then
-        fn = 'sound/ZenFarm.wav'
-    elseif fieldType=='Stew' then
-        fn = 'sound/DarkFarm.wav'
+    elseif fieldType == 'Tea' then
+        fn = 'sound/ZenFarm.mp3'
+    elseif fieldType == 'Stew' then
+        fn = 'sound/DarkFarm.mp3'
+    elseif fieldType == 'Salsa' then
+        fn = 'sound/SalsaFarm.mp3'
     else
-        fn = 'sound/FarmSong.wav'
+        fn = 'sound/FarmSong.mp3'
     end
     local backgroundMusic = audio.loadStream(fn)
     backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
@@ -152,7 +154,7 @@ function scene:createScene( event)
     scoreHUD = display.newText(0, 0, 0, CustomFont, 42)
     scoreHUD.anchorX = 0
     scoreHUD.anchorY = 0
-    scoreHUD.x = 140
+    scoreHUD.x = 120
     scoreHUD.y = 60
     scoreHUD:setFillColor(0, 0, 0)
     layers.overFrame:insert(scoreHUD)
@@ -208,10 +210,9 @@ function scene:createScene( event)
     layers.popup.y = 300
     layers.popup.alpha = 0
 
-
+    theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
     theQueue:fill()
-    theBasket = Basket()
 
     group:insert(layers.field)
     group:insert(layers.frame)
