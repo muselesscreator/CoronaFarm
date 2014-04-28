@@ -40,7 +40,7 @@ function scene:createScene( event)
     thePlayer:newLevel()
     local r = math.random(1, 100)
     if r < 5 then
-        fn = 'sound/gopherSong.wav'
+        fn = 'sound/gopherSong.mp3'
     elseif fieldType == 'Tea' then
         fn = 'sound/ZenFarm.mp3'
     elseif fieldType == 'Stew' then
@@ -151,11 +151,11 @@ function scene:createScene( event)
     layers.overFrame:insert(ScoreCard)
 
 --> Set Label
-    scoreHUD = display.newText(0, 0, 0, CustomFont, 42)
+    scoreHUD = display.newText(0, 0, 0, CustomFont, 30)
     scoreHUD.anchorX = 0
     scoreHUD.anchorY = 0
-    scoreHUD.x = 120
-    scoreHUD.y = 60
+    scoreHUD.x = 110
+    scoreHUD.y = 67
     scoreHUD:setFillColor(0, 0, 0)
     layers.overFrame:insert(scoreHUD)
     --> Define Square and Queue Tables
