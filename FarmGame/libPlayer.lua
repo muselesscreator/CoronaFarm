@@ -46,7 +46,7 @@ Player = class(function(player)
         player.id = 0
         player.levelScore = 0
         player.totalScore = 0
-        player.highScores = {0, 0, 0, 0}
+        player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Stew = 0}
         player.has_played_level = {false, false, false, false}
         player.has_unlocked_level = {false, false, false, false}
         return player
@@ -58,6 +58,9 @@ function Player:addScore(inc)
     scoreHUD.text = self.levelScore
     print("score = "..self.levelScore)
     print("totalScore = "..self.totalScore)
+    if self.levelScore > self.highScores[fieldType] then
+        self.highScores[fieldType] = self.levelScore
+    end
     saveTable(self, 'player.json')
 end
 

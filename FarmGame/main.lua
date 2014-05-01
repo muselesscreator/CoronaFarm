@@ -24,6 +24,9 @@ physics.setDrawMode( hybrid )
 
 local storyboard = require "storyboard"
 storyboard.purgeOnSceneChange = true
+
+display.setStatusBar(display.HiddenStatusBar)
+
 --> Import Sprite Sheet
 sheetInfo = require("plant_sheet")
 myImageSheet = graphics.newImageSheet("plant_sheet.png", sheetInfo:getSheet())
@@ -130,6 +133,7 @@ theQueue = {}
 theField = {}
 theBasket = {}
 thePlayer = Player()
+theLevelScroll = {}
 fieldType = 'Salad'
 field = {}
 local createSquare
@@ -140,6 +144,10 @@ local clickedID
 local score = 0
 local clickAction = ""
 local plantsHarvested = {}
+
+musicVolume = .5
+sfxVolume = .5
+
 tutorial = false
 no_pests = false
 log_levels = {  Info = 3,
@@ -195,6 +203,23 @@ function log(message, level)
         print(message)
     end
 end
+
+toggleOptions = function ( event )
+    print('hi')
+    if(layers.popup.visible) then
+        layers.popup.alpha = 0
+        layers.popup.visible = false
+    else
+        layers.popup.alpha = 1
+        layers.popup.visible = true
+    end
+end
+
+function allowTouches(event)
+    touchesAllowed=true
+    print('You may now touch this!')
+end
+
 -----------------------------------------------------
 --Main Create Function
 -----------------------------------------------------

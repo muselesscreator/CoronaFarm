@@ -9,6 +9,10 @@ function onSquareTap(self, event)
         return true
     end
 
+    if layers.popup.visible then
+        return false
+    end
+
     --don't allow touches for 1/2 a second
     --This is to avoid overlap in the Queue
     touchesAllowed = false

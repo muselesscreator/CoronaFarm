@@ -1,6 +1,8 @@
 local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 local widget = require("widget")
+
+require 'libVolSlider'
 storyboard.purgeOnSceneChange = true
 
 ----------------------------------------------------------------------------------
@@ -16,11 +18,15 @@ storyboard.purgeOnSceneChange = true
 -- local forward references should go here --
 
 local function gotoFarm()
-    storyboard.gotoScene('farm_screen')
+    if not layers.popup.visible then
+        storyboard.gotoScene('farm_screen')
+    end
 end
 
 local function gotoLevel()
-    storyboard.gotoScene('level_screen')
+    if not layers.popup.visible then
+        storyboard.gotoScene('level_screen')
+    end
 end
 
 local function gotoTutorial()
@@ -34,58 +40,100 @@ end
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
     print("title_screen")
-    local screenGroup = self.view
+    group = self.view
 
+    layers = display.newGroup()
+
+    layers.bg = display.newGroup()
     bg = display.newImage('images/fieldBackground.png')
     bg.anchorX = 0
     bg.anchorY = 0
-    screenGroup:insert(bg)
+    layers.bg:insert(bg)
 
     text1 = display.newText( "Farmaggedon!", 0, 0, CustomFont, 50 )
     text1:setTextColor( 255 )
     text1.x, text1.y = display.contentWidth * 0.5, 300
-    screenGroup:insert( text1 )
+    layers.bg:insert( text1 )
+
+    layers.frame = display.newGroup()
     local FarmButton = widget.newButton
     {
-        defaultFile = "images/buttonRed.png",
-        overFile = "images/buttonRedOver.png",
-        label = "Farm Now",
+        defaultFile = "images/playNow.png",
+        overFile = "images/playNowDown.png",
         emboss = true,
         onRelease = gotoFarm,
     }
     FarmButton.x = display.contentWidth * 0.5
     FarmButton.y = 420
-    screenGroup:insert(FarmButton)
+    layers.frame:insert(FarmButton)
 
     local LevelButton = widget.newButton
     {
-        defaultFile = "images/buttonRed.png",
-        overFile = "images/buttonRedOver.png",
-        label = "Level Select",
+        defaultFile = "images/levelSelect.png",
+        overFile = "images/levelSelectDown.png",
         emboss = true,
         onRelease = gotoLevel,
     }
     LevelButton.x = display.contentWidth * 0.5
     LevelButton.y = 510
-    screenGroup:insert(LevelButton)
-
-    --[[
-    local TutorialButton = widget.newButton
+    layers.frame:insert(LevelButton)
+    
+    local tmpButton = widget.newButton
     {
-        defaultFile = "images/buttonRed.png",
-        overFile = "images/buttonRedOver.png",
-        label = "Play Tutorial",
+        defaultFile = "images/popOutMenuButton.png",
         emboss = true,
-        onRelease = gotoTutorial,
+        onRelease = toggleOptions
     }
-    TutorialButton.x = display.contentWidth * 0.5
-    TutorialButton.y = 530
-    screenGroup:insert(TutorialButton)
-    ]]--
+    tmpButton.x = 930
+    tmpButton.y = 700
+    layers.frame:insert(tmpButton)
 
+    layers.popup = display.newGroup()
+    layers:insert(layers.popup)
+
+    local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
+    popupMenu.x = 200
+    popupMenu.y = 200
+    popupMenu.anchorX = 0
+    popupMenu.anchorY = 0
+    layers.popup.visible = false
+
+    local exitButton = widget.newButton
+    {
+        defaultFile = "images/buttonEx.png",
+        overFile = "images/buttonEx.png",
+        emboss = true,
+        onRelease = toggleOptions
+    }
+    exitButton.x = 690
+    exitButton.y = 250
+    exitButton.xScale = .7
+    exitButton.yScale = .7
+    layers.popup:insert(exitButton)
+
+    local txt = display.newText(layers.popup, 'Music Volume', 470, 320, native.systemFontBold, 25)
+    txt:setFillColor(0, 0, 0)
+    local mscSlider = VolSlider({x = 300, y=340, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
+    
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 470, 450, native.systemFontBold, 25)
+    txt:setFillColor(0, 0, 0)
+    local sfxSlider = VolSlider({x = 300, y=480, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
+
+    layers.popup.alpha = 0
+
+
+
+    group:insert(layers.bg)
+    group:insert(layers.frame)
+    group:insert(layers.popup)
     timer.performWithDelay(10, function() touchesAllowed = true end)
 
 end
+
+
+
 
 
 -- Called BEFORE scene has moved onscreen:

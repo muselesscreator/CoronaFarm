@@ -2,6 +2,8 @@ local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 local widget = require("widget")
 
+storyboard.purgeOnSceneChange = true
+
 ----------------------------------------------------------------------------------
 --
 --      NOTE:
@@ -15,14 +17,35 @@ local widget = require("widget")
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 
+local function gotoFarm()
+    storyboard.gotoScene('farm_screen')
+end
+
+local function gotoTitle ()
+   storyboard.gotoScene('title_screen')
+end
+
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
-    local screenGroup = self.view
+    local group = self.view
+
+    layers = display.newGroup()
+    layers.bg = display.newGroup()
+    layers.frame = display.newGroup()
+    layers.scroll = display.newGroup()
+    layers.overFrame = display.newGroup()
+    layers.interface = display.newGroup()
+
+    layers:insert(layers.bg)
+    layers:insert(layers.frame)
+    layers:insert(layers.scroll)
+    layers:insert(layers.overFrame)
+    layers:insert(layers.interface)
 
     bg = display.newImage('images/fieldBackground.png')
     bg.anchorX = 0
     bg.anchorY = 0
-    screenGroup:insert(bg)
+    layers.bg:insert(bg)
 
     -- Our ScrollView listener
     local function scrollListener( event )
@@ -53,6 +76,18 @@ function scene:createScene( event )
         return true
     end
 
+    local tmpButton = widget.newButton
+    {
+        defaultFile = "images/sprites/tutorialHand.png",
+        emboss = true,
+        onRelease = gotoTitle
+    }
+    tmpButton.x = 120
+    tmpButton.y = 90
+    tmpButton.xScale = 1.5
+    tmpButton.yScale = 1.5
+    layers.interface:insert(tmpButton)
+
     -- Create a ScrollView
     local scrollView = widget.newScrollView
     {
@@ -70,7 +105,9 @@ function scene:createScene( event )
         listener = scrollListener,
     }
 
-    screenGroup:insert(scrollView)
+    layers.scroll:insert(scrollView)
+
+
 
     function onLevelTouch(self, event)
         local target  = event.target
@@ -85,32 +122,98 @@ function scene:createScene( event )
         print('my field')
         print(self.field)
         fieldType = self.field
-        storyboard:gotoScene('farm_screen')
+        gotoFarm()
 
         return true
     end
 
-    numFields = 0
+    function LevelSlide( self, event )
+        if event.phase == "began" and not self.sliding then
+            self.slide_event.start_time = event.time
+            self.slide_event.start_x = event.x
+        elseif event.phase == "moved" then
+            if event.time > (self.slide_event.start_time+100) and not self.sliding then
+                if event.x < self.slide_event.start_x - 500 and self.target.index < self.target.levels then
+                    self.sliding = true
+                    self.target.index = self.target.index + 1
+                    self.target:scrollToPosition
+                    {
+                        x = (1-self.target.index) * 500,
+                        time = 800,
+                    }
+                    timer.performWithDelay(800, function() self.sliding = false end, 1)
+                elseif event.x > self.slide_event.start_x + 500 and self.target.index > 1 then
+                    self.sliding = true
+                    self.target.index = self.target.index - 1
+                    self.target:scrollToPosition
+                    {
+                        x = (1-self.target.index) * 500,
+                        time = 800,
+                    }
+                    timer.performWithDelay(800, function() self.sliding = false end, 1)
+                end
+            end
+        end
+        return true
+   end
 
+    touch_interface = display.newRect(0, 0, w, h)
+    touch_interface.alpha = 0
+    touch_interface.isHitTestable = true
+    touch_interface.anchorX = 0
+    touch_interface.anchorY = 0
+    touch_interface.touch = LevelSlide
+    touch_interface.target = scrollView
+    touch_interface.sliding = false
+    touch_interface.slide_event = {}
+    touch_interface:addEventListener("touch", touch_interface)
+    print(touch_interface.target)
+    layers.overFrame:insert(touch_interface)
+
+    numFields = 0
+    scrollView.fields = {}
     for i, myType in pairs(fields.order) do
         val = fields[myType]
+        numFields = numFields + 1
+        local thumb = {}
+        newX = (numFields-1 )* 500 + 550
         if thePlayer.totalScore >= val.minScore then
-            numFields = numFields + 1
             thumb = display.newImage(val.thumb)
-            thumb.anchorX = 0
-            thumb.y = display.contentHeight/2
-            thumb.field = myType
             thumb.tap = onLevelTouch
             thumb:addEventListener("tap", thumb )
-            thumb.x = (numFields-1)*600 +300
-            screenGroup:insert(thumb)
+            print(newX)
+            print(tostring(thePlayer.highScores[myType]))
+            local txt = display.newText(tostring(thePlayer.highScores[myType]), newX, 200, nil, 32)
+            txt:setFillColor(1, 1, 0)
+            scrollView:insert(txt)
+            txt = display.newText('High Score:', newX, 170, nil, 32)
+            txt:setFillColor(1, 1, 0)
+            scrollView:insert(txt)
             scrollView:insert(thumb)
-            print('add thumb')
-            print(val.thumb)
-        end
-    end
-    scrollView:setScrollWidth((numFields * 600) + 450)
 
+        else
+            thumb = display.newImage(val.thumb_dis)
+            scrollView:insert(thumb)
+            local txt = display.newText(tostring(val.minScore), newX, 510, nil, 50)
+            scrollView:insert(txt)
+            txt = display.newText('To unlock', newX, 550, nil, 50)
+            scrollView:insert(txt)
+        end
+        thumb.anchorX = 0
+        thumb.y = display.contentHeight/2+40
+        thumb.xScale = .8
+        thumb.yScale = .8
+        thumb.field = myType
+        thumb.x = (numFields-1)*500 +350
+        scrollView.fields[i] = thumb
+        print('add thumb')
+        print(val.thumb)
+    end
+    scrollView.index = 1
+    scrollView.levels = numFields
+    scrollView:setScrollWidth((numFields * 500) + 950)
+
+    group:insert(layers)
 end
 
 --  BEFORE scene has moved onscreen:

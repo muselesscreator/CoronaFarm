@@ -1,4 +1,5 @@
 require 'class'
+require 'farm_sound'
 --[[
 -- Pests:
 -- Pests have individual properties, stored in the "Pests" array 
@@ -26,6 +27,7 @@ Pest = class(function(pest, myBreed)
         return pest
     end)
 
+
 function Pest:random_square()
     while true do
         r_x = math.random(theField.columns)
@@ -36,6 +38,7 @@ function Pest:random_square()
     end
 end
 
+
 function key_is_in(x, list)
     for i, v in pairs(list) do
         if x == i then
@@ -45,16 +48,20 @@ function key_is_in(x, list)
     return false
 end
 
+
+--Find an alloweable spot for pest to spawn
 function Pest:find_allowed(criteria)
     print('--@find_allowed')
     square = theField.first
     opts = {}
+
     while square do
         if self:is_allowed(square.sprite, criteria) then
             opts[#opts+1] = square
         end
         square = square.next
     end
+
     if #opts > 0 then
         while true do
             tmp = self:random_square()
@@ -65,10 +72,13 @@ function Pest:find_allowed(criteria)
     else
         return false
     end
+
     print('--@find_allowed: '..tmp.id)
     return tmp
 end
 
+
+--Check a sprite for if it matches the given criteria
 function Pest:is_allowed(tmp, criteria)
     --print(self:is_neighbor(tmp))
     local flag = 0
@@ -93,6 +103,7 @@ function Pest:is_allowed(tmp, criteria)
     return flag == 0
 end
 
+
 function Pest:find_preferred(criteria)
     opts = {}
     for i, v in pairs(self.square.sprite.neighbors) do
@@ -102,12 +113,16 @@ function Pest:find_preferred(criteria)
             end
         end
     end
+
     n = #opts 
     if n > 0 then
+
         new_opts = {}
+
         for i=Plants.mature, 0, -1 do
             stage = i
             new_opts={}
+
             for j, v in ipairs(opts) do
                 if stage > 0 and v.myStage==stage then
                     new_opts[#new_opts+1] = v
@@ -115,10 +130,12 @@ function Pest:find_preferred(criteria)
                     new_opts[#new_opts+1] = v
                 end
             end
+
             if #new_opts > 0 then
                 break
             end
         end
+
         if #new_opts > 0 then
             n = math.random(1, #new_opts)
             return new_opts[n].square()
@@ -126,22 +143,23 @@ function Pest:find_preferred(criteria)
             return false
         end
     else
+
         return false
+
     end
 end
 
 function Pest:spawn()
     print('--@Pest:spawn()')
     local dest = self:find_allowed({'empty', 'not blocked'})
+
     if dest then
         if self.myType == 'land' then
-            local arrive = audio.loadStream('sound/GopherLaugh.wav')
-            arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
-
+            playSoundEffect('GopherLaugh')
         else
-            local arrive = audio.loadStream('sound/Cockatrice.wav')
-            arriveChannel = audio.play( arrive, { channel=0,  fadein=100 } )
+            playSoundEffect('Cockatrice')
         end
+
         dest:addPest(self)
         self.square = dest
     end
@@ -163,9 +181,8 @@ function Pest:move()
             self.hunger = self.hunger + 1
             if self.hunger == 5 then
                 local r = math.random(1, 4)
-                fn = 'sound/starve_'..r..'.wav'
-                local die_sound = audio.loadStream(fn)
-                dieChannel = audio.play( die_sound, { channel=5, fadein=100 } )
+                fn = 'starve_'..r
+                playSoundEffect(fn)
                 self.square.sprite:setSequence('seqGopherDie')
                 self.square.sprite:play()
                 self:die()
@@ -178,8 +195,7 @@ function Pest:move()
     if dest then
         if dest.sprite.isPlant == true then
             print('--@Pest:move() OM NOM BITCHES!   '..self.numPlants)
-            local om_nom = audio.loadSound('sound/GopherEat.wav')
-            om_nom = audio.play( om_nom )
+            playSoundEffect('GopherEat')
             self.numPlants = self.numPlants + 1
             self.hunger = 0
             if self.numPlants == 3 then
@@ -216,9 +232,8 @@ function Pest:die(killed)
     if self.myType == 'land' then
         if killed == true then
             local r = math.random(1, 5)
-            fn = 'sound/mallet_'..r..'.wav'
-            local die_sound = audio.loadStream(fn)
-            dieChannel = audio.play( die_sound, { channel=5, fadein=100 } )
+            fn = 'mallet_'..r
+            playSoundEffect(fn)
             self.dying = true
             local function die()
                 self:die(false)
@@ -318,8 +333,7 @@ function Pest:next_day()
         if self.turns == self.turns_to_act and self.dying == false and self.killing == false then
             self.killing = true
             self.square:birdSwoop()
-            local om_nom = audio.loadStream('sound/Crow.wav')
-            om_nom_channel = audio.play( om_nom, { channel=3, fadein=100 } )
+            playSoundEffect('Crow')
             local function swoop()
                 self:kill()
                 local function leave()
@@ -327,9 +341,6 @@ function Pest:next_day()
                 end
                 timer.performWithDelay(600, leave, 1)
             end
-            print('IS BARREN??????????')
-            print(self.square.sprite.isBarren)
-            print(self.square.id)
             timer.performWithDelay(200, swoop, 1)
         elseif self.turns_to_act > 0 then
             self.turns = self.turns + 1

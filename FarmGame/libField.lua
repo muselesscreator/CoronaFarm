@@ -74,7 +74,7 @@ function Field:cleanup()
                         tmp:setSequence('seq'..tmp.myType..'Frame'..frame)
                         tmp:play()
                     end
-                elseif not tmp.harvesting then
+                else
                     print('SETTING FRAME FOR '..tmp.id)
                     tmp:setSequence('seq'..tmp.myType)
                     tmp:setFrame(tmp.myStage)

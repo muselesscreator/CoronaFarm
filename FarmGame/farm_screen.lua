@@ -1,6 +1,9 @@
 local storyboard = require( "storyboard" )
 local widget = require('widget')
 local scene = storyboard.newScene()
+
+require 'farm_sound'
+
 storyboard.purgeOnSceneChange = true
 
 ----------------------------------------------------------------------------------
@@ -21,18 +24,13 @@ storyboard.purgeOnSceneChange = true
 ---------------------------------------------------------------------------------
 
 local function gotoLevel()
+    print('what the fuck?')
     storyboard.gotoScene('level_screen')
 end
+
 local function gotoTitle ( event )
    storyboard.gotoScene('title_screen')
    return true
-end
-local function volumeListener ( event )
-    audio.setVolume(event.value/100, backgroundMusicChannel)
-end
-local function allowTouches(event)
-    touchesAllowed=true
-    print('You may now touch this!')
 end
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
@@ -51,6 +49,8 @@ function scene:createScene( event)
         fn = 'sound/FarmSong.mp3'
     end
     local backgroundMusic = audio.loadStream(fn)
+    print(musicVolume)
+    audio.setVolume(musicVolume, backgroundMusic)
     backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
     print('farm_screen')
     local group = self.view
@@ -163,8 +163,10 @@ function scene:createScene( event)
 
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
-    popupMenu.x = 100
-    popupMenu.y = 100
+    popupMenu.x = 200
+    popupMenu.y = 200
+    popupMenu.anchorX = 0
+    popupMenu.anchorY = 0
     layers.popup.visible = false
     local tmpButton = widget.newButton
     {
@@ -182,8 +184,8 @@ function scene:createScene( event)
         emboss = true,
         onRelease = toggleOptions
     }
-    backButton.x = -20
-    backButton.y = 110
+    backButton.x = 350
+    backButton.y = 340
     layers.popup:insert(backButton)
 
     local exitButton = widget.newButton
@@ -193,22 +195,23 @@ function scene:createScene( event)
         emboss = true,
         onRelease = gotoTitle
     }
-    exitButton.x = 230
-    exitButton.y = 110
+    exitButton.x = 580
+    exitButton.y = 340
     layers.popup:insert(exitButton)
 
-    local volumeSlider = widget.newSlider
-    {
-        top = 180,
-        left = -90,
-        width = 350,
-        value = 50,  -- Start slider at 10% (optional)
-        listener = volumeListener
-    }
-    layers.popup:insert(volumeSlider)
-    layers.popup.x = 400
-    layers.popup.y = 300
+
+    local txt = display.newText(layers.popup, 'Music Volume', 470, 420, native.systemFontBold, 25)
+    txt:setFillColor(0, 0, 0)
+    local mscSlider = VolSlider({x = 300, y=440, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
+    
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 470, 500, native.systemFontBold, 25)
+    txt:setFillColor(0, 0, 0)
+    local sfxSlider = VolSlider({x = 300, y=510, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
+
     layers.popup.alpha = 0
+
 
     theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
@@ -232,16 +235,6 @@ onDrawerButton = function ( event )
         layers.theDrawer.isOpen = true
     end
     return true
-end
-
-toggleOptions = function ( event )
-    if(layers.popup.visible) then
-        layers.popup.alpha = 0
-        layers.popup.visible = false
-    else
-        layers.popup.alpha = 1
-        layers.popup.visible = true
-    end
 end
 
 -- Called BEFORE scene has moved onscreen:
