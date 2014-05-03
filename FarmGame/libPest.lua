@@ -303,23 +303,32 @@ end
 function Pest:kill()
     print '--@Pest:kill()'
     print(self.square.sprite.isBarren)
+
     if self.square.sprite.isPlant then
+
         if self.kill_act == 'rock' then
             print('make rock')
-            --self.square.sprite.stonePlant = true
+            self.square.sprite.stonePlant = true
             self.pestProof = true
 
             self.square:setImage('Rock')
+
         elseif self.kill_act == 'barren5' and self.square.myType ~= 'Rock' then
+
             print(self.square.sprite.isBarren)
+
             if self.square.sprite.isBarren then
+
                 print("BARREN TO ROCK!!!!!!!!!!!!!!")
                 self.square:setImage('Rock')
+
             else
+
                 print('make barren')
                 print(self.square.id)
                 self.square:makeBarren()
                 self.square.sprite.toNext=15
+
             end
         end
     end

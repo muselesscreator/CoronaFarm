@@ -41,12 +41,15 @@ Player = class(function(player)
                 player[i] = v
             end
             print("returning player")
+            player.totalScore = 2500
+            player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
+
             return player
         end
         player.id = 0
         player.levelScore = 0
         player.totalScore = 0
-        player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Stew = 0}
+        player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
         player.has_played_level = {false, false, false, false}
         player.has_unlocked_level = {false, false, false, false}
         return player

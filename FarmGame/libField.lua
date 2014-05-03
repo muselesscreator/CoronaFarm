@@ -64,7 +64,9 @@ function Field:cleanup()
     while square do
         tmp = square.sprite
         if not tmp.empty and not tmp.isBarren then
+
             if tmp.isPlant then
+
                 if tmp.myStage==0 then
                     tmp:setSequence('seqSeeds')
                 elseif tmp.myStage == Plants.mature then
@@ -79,16 +81,21 @@ function Field:cleanup()
                     tmp:setSequence('seq'..tmp.myType)
                     tmp:setFrame(tmp.myStage)
                 end
-            elseif tmp.pest ~= false then
+
+            elseif tmp.pest ~= false then --so, if its a pest, and not a plant
+
                 if tmp.pest.myType == 'air' and not tmp.pest.dying and not tmp.harvesting then
                     print('Cleaning up this Bird!')
                     print(tmp.id)
                     tmp:setSequence('seq'..tmp.myType)
                     tmp:play()
                 end
+
             elseif tmp.stonePlant==true and tmp.myStage > 0 then
+
                 tmp:setSequence('seqStone'..tmp.myType)
                 tmp:setFrame(tmp.myStage)
+
             else
                 --print(mytype)
                 tmp:setSequence('seq'..tmp.myType)

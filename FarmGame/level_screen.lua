@@ -133,7 +133,7 @@ function scene:createScene( event )
             self.slide_event.start_x = event.x
         elseif event.phase == "moved" then
             if event.time > (self.slide_event.start_time+100) and not self.sliding then
-                if event.x < self.slide_event.start_x - 500 and self.target.index < self.target.levels then
+                if event.x < self.slide_event.start_x - 200 and self.target.index < self.target.levels then
                     self.sliding = true
                     self.target.index = self.target.index + 1
                     self.target:scrollToPosition
@@ -142,7 +142,7 @@ function scene:createScene( event )
                         time = 800,
                     }
                     timer.performWithDelay(800, function() self.sliding = false end, 1)
-                elseif event.x > self.slide_event.start_x + 500 and self.target.index > 1 then
+                elseif event.x > self.slide_event.start_x + 200 and self.target.index > 1 then
                     self.sliding = true
                     self.target.index = self.target.index - 1
                     self.target:scrollToPosition
