@@ -9,9 +9,21 @@ function FarmElement:initialize(args)
     local function onClick(event)
         print(event.x..', '..event.y..'            '..self.x..', '..self.y)
         if touchesAllowed then
-            touchesAllowed = false
-            timer.performWithDelay(500, function() touchesAllowed = true end, 1)
-            self:onClick(event)
+            local pest = theField:pestAt(self.i, self.j)
+            if pest then
+                if pest:canClick() then
+                    touchesAllowed = false
+                    timer.performWithDelay(500, function() touchesAllowed = true end, 1)
+                    pest:onClick(event)
+                    return true
+                end
+            end           
+            if self:canClick() then
+                touchesAllowed = false
+                timer.performWithDelay(500, function() touchesAllowed = true end, 1)
+                self:onClick(event)
+                return true
+            end
         end
     end
 
@@ -90,13 +102,16 @@ function FarmElement:nextDay()
 end
 --Done
 function FarmElement:die()
+    print('FarmElement:die')
     if self.base_sprite ~= nil then
         self.base_sprite:removeSelf()
         self.overlay:removeSelf()
         self.base_sprite = nil
         self.overlay = nil
     end
+    print('?')
     self:removeFromField()
+    print('?')
     self = nil
 end
 
@@ -132,6 +147,7 @@ function FarmElement:addToField()
 end
 --Done
 function FarmElement:removeFromField()
+    print('--@FarmElement:removeFromField')
     for i, v in ipairs(theField.elements[self.elem_type]) do
         if v == self then
             table.remove(theField.elements[self.elem_type], i)
@@ -142,8 +158,18 @@ end
 function FarmElement:useWeapon()
     self.base_sprite:setSequence('seq'..self:whatIsNext().type)
     self.base_sprite:play()
-    timer.performWithDelay(250, function() self.base_sprite.alpha = 0 end, 1)
+    timer.performWithDelay(250, function()
+        self.base_sprite.alpha = 0 
+        self.base_sprite:setSequence('seqBlank')
+        end, 1)
 end
 
 
+function FarmElement:hide()
+    self.base_sprite.alpha = 0
+    self.overlay.alpha = 0
+end
 
+function FarmElement:show()
+    self.base_sprite.alpha = 1
+end

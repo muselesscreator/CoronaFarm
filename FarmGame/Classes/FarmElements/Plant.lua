@@ -5,6 +5,10 @@ function Plant:initialize(args)
     Super.initialize(self, args)
     self.type = args.type
 
+    print('-- @Plant:initialize()!!!!!!!!!!!!!!!!!!!!')
+    print(Plants)
+    print(self.type)
+    print(Plants[self.type])
     self.turns = Plants[self.type].turns
     self.xp = Plants[self.type].xp
     local tmp = Plants[self.type].maxHarvest
@@ -40,7 +44,7 @@ end
 function Plant:grow()
     print('--@Plant:grow')
     self.myStage = self.myStage + 1
-    self.base_sprite:setSequence(self.myType)
+    self.base_sprite:setSequence('seq'..self.type)
     self.base_sprite:setFrame(self.myStage)
     print(self.myStage)
     self.myProgress = 0
@@ -83,7 +87,10 @@ function Plant:onClick()
                 v:harvest(mult)
                 thePlayer:addScore(v.xp * mult)
             end
-            timer.performWithDelay(550, function() theField:nextDay() end, 1)
+            theField:nextDay()
+        elseif self.myStage == self.rot then
+            local tmp = Barren:new({i=self.i, j=self.j, turns_remaining = self.turns[#self.turns]})
+            self:die()
         elseif self:nextIsValid() then
             local pest = theField:pestAt(self.i, self.j)
             if pest ~= false then
@@ -102,14 +109,14 @@ end
 function Plant:useWeapon()
     if self:whatIsNext().type == 'Mallet' then
         FarmElement.useWeapon(self)
+        theField:nextDay()
         timer.performWithDelay(250, function()
             local tmp = Blank:new({i=self.i, j=self.j})
             self:die()
-            theField:nextDay()
             end, 1)
     else
         FarmElement.useWeapon(self)
-        timer.performWithDelay(250, function() theField:nextDay() end, 1)
+        theField:nextDay()
     end
 end
 
@@ -138,25 +145,37 @@ function Plant:harvest(multiplier)
     self.base_sprite:setSequence('seq'..self.type..'Harvest')
     self.base_sprite:play()
     self.timesHarvested = self.timesHarvested + 1
-    timer.performWithDelay(200, function()
-        if theField:pestAt(self.i, self.j) ~= false then
-            self.overlay:setSequence('seqBlank')
-            self.overlay.alpha = 0
-        elseif self.timesHarvested >= self.maxHarvest then
-            self:toBlank()
-        else
-            self.base_sprite:setFrame(self.mature-1)
-            self:clearDecorator()
-        end
-        timer.performWithDelay(350, function()
+
+    if self.timesHarvested >= self.maxHarvest then
+        self.empty = true
+        self:removeFromField()
+        local tmp = Blank:new({i=self.i, j = self.j})
+        timer.performWithDelay(200, function()
+            self:die()
+            timer.performWithDelay(350, function()
                 score:removeSelf()
                 score = nil
                 if multiplier then
                     mult:removeSelf()
                     mult = nil
                 end
-            end)
-        end)
+            end, 1)
+        end, 1)
+    else
+        self.myStage = self.myStage - 1
+        timer.performWithDelay(200, function()
+            self.base_sprite:setFrame(self.myStage)
+            self:clearDecorator()
+            timer.performWithDelay(350, function()
+                score:removeSelf()
+                score = nil
+                if multiplier then
+                    mult:removeSelf()
+                    mult = nil
+                end
+            end, 1)
+        end, 1)
+    end
 end
 
 function Plant:clearDecorator()
@@ -183,7 +202,7 @@ function Plant:checkNeighbors(bunch)
 end
 
 
-function Blank:removeFromField()
+function Plant:removeFromField()
     for i, v in ipairs(theField.elements.Plant) do
         if v == self then
             table.remove(theField.elements.Plant, i)

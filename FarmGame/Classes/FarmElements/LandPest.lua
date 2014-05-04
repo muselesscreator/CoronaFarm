@@ -28,10 +28,14 @@ function LandPest:doesSpawn()
     if no_pests then
         return 0
     end
-    if r <= 15 and (#theField.elements.Pest == 0) and #theField.elements.Blank > 0 then
+    if r <= 15 and (#theField.elements.Pest == 0) and self:canSpawn() then
         return true
     end
     return false
+end
+
+function LandPest:canSpawn()
+    return #theField.elements.Blank > 0
 end
 
 function LandPest:whereDoesSpawn()
@@ -97,55 +101,17 @@ end
 --==Functions to Do things  ====
 --==============================
 
-function LandPest:eat()
-    playSoundEffect('Gophereat')
-    self.hunger = 0
-    self.numPlants = self.numPlants + 1
-    if self.numPlants == 3 then
-        self.numPlants = 0
-        self:breed()
-    end
-end
-
-function LandPest:useWeapon()
-    local r = math.random(1, 5)
-    fn = 'mallet_'..r
-    playSoundEffect(fn)
-    self.base_sprite.y = self.base_sprite.y - 75
-    self.base_sprite:setSequence('seqGopherHammerDie')
-    self.base_sprite:play()
-    timer.performWithDelay(800, function() self:die() end, 1)
-end
-
-function LandPest:starve()
-    local r = math.random(1, 4)
-    fn = 'starve_'..r
-    playSoundEffect(fn)
-
-    self.base_sprite:setSequence('seqGopherDie')
-    self.base_sprite:play()
-    timer.performWithDelay(800, function() self:die() end, 1)
-end
-
-function LandPest:die()
-    local tmp = Rock:new({i=self.i, j=self.j})
-    self.base_sprite:removeSelf()
-    self.overlay:removeSelf()
-    self:removeFromField()
-    self = nil
-end
 
 function LandPest:nextDay()
     self.hunger = self.hunger + 1
-    self:move()
-    if self.hunger > 5 then
-        self:starve()
+    if not self.dying then
+        self:move()
+        if self.hunger > 5 then
+            self:starve()
+        end
     end
 end
 
-function LandPest:breed()
-    return true
-end
 
 function LandPest:move()
     print('--@LandPest:move')
@@ -164,6 +130,55 @@ function LandPest:move()
     end
 end
 
+function LandPest:eat()
+    playSoundEffect('Gophereat')
+    self.hunger = 0
+    self.numPlants = self.numPlants + 1
+    if self.numPlants == 3 then
+        self.numPlants = 0
+        self:breed()
+    end
+end
+
+function LandPest:breed()
+    print('-- @LandPest:breed')
+    self:spawn()
+end
+
+function LandPest:starve()
+    local r = math.random(1, 4)
+    fn = 'starve_'..r
+    playSoundEffect(fn)
+
+    self.base_sprite:setSequence('seqGopherDie')
+    self.base_sprite:play()
+    timer.performWithDelay(800, function() self:die() end, 1)
+end
+
+function LandPest:useWeapon()
+    local r = math.random(1, 5)
+    fn = 'mallet_'..r
+    playSoundEffect(fn)
+    self.base_sprite.y = self.base_sprite.y - 75
+    self.base_sprite:setSequence('seqGopherHammerDie')
+    self.base_sprite:play()
+    self.dying = true
+    timer.performWithDelay(800, function() self:die() end, 1)
+end
+
+function LandPest:die()
+    local tmp = Rock:new({i=self.i, j=self.j})
+    if self.base_sprite ~= nil then
+        self.base_sprite:removeSelf()
+        self.overlay:removeSelf()
+        self.base_sprite = nil
+        self.overlay = nil
+    end
+    self:removeFromField()
+    self = nil
+end
+
+
 
 
 
@@ -180,6 +195,13 @@ function LazyGopher:spawn()
     end
 end
 
+function LazyGopher:breed()
+    if self:canSpawn() then
+        local dest = self:whereDoesSpawn()
+        tmp = LazyGopher:new({i=dest.i, j=dest.j})
+        dest:die()
+    end
+end
 
 SmartGopher = Class(LandPest)
 function SmartGopher:initialize(args)
@@ -204,4 +226,12 @@ function SmartGopher:moveOptions()
         end
     end
     return opts
+end
+
+function SmartGopher:breed()
+    if self:canSpawn() then
+        local dest = self:whereDoesSpawn()
+        tmp = SmartGopher:new({i=dest.i, j=dest.j})
+        dest:die()
+    end
 end

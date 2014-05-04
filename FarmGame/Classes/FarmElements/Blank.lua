@@ -14,30 +14,12 @@ function Blank:initialize(args)
     self:addSpritesToLayers()
 end
 
-function Blank:onClick( event )
-    if self:canClick() then
-        print('can click')
-        next = self:whatIsNext()
-        if next.is_weapon then
-            self:useWeapon()
-            timer.performWithDelay(250, function() 
-                    theField:nextDay()
-                    self:useNext()
-                end, 1)
-        else
-            self:toPlant()
-            print('nextDay?')
-            self:useNext()
-            self:die()
-            theField:nextDay()            
-        end
-        return true
-    end
-end
 
 function Blank:removeFromField()
+    print('Remove Blank')
     for i, v in ipairs(theField.elements.Blank) do
         if v == self then
+            print(v)
             table.remove(theField.elements.Blank, i)
         end
     end
@@ -52,4 +34,25 @@ end
 function Blank:nextIsValid()
     print('--@Blank: nextIsValid')
     return true
+end
+
+function Blank:onClick( event )
+    if self:canClick() then
+        print('can click')
+        next = self:whatIsNext()
+        if next.is_weapon then
+            self:useWeapon()
+            theField:nextDay()
+            self:useNext()
+
+        else
+            self:toPlant()
+            self:useNext()
+            print('--@Blank:onClick Die()')
+            self:die()
+            print('nextDay?')
+            theField:nextDay()            
+        end
+        return true
+    end
 end
