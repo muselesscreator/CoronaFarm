@@ -128,7 +128,7 @@ function LandPest:starve()
 end
 
 function LandPest:die()
-    tmp = Rock:new({i=self.i, j=self.j})
+    local tmp = Rock:new({i=self.i, j=self.j})
     self.base_sprite:removeSelf()
     self.overlay:removeSelf()
     self:removeFromField()

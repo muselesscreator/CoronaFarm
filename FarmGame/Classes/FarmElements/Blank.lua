@@ -4,7 +4,7 @@ Blank = Class(Super)
 function Blank:initialize(args)
     Super.initialize(self, args)
     self.elem_type = 'Blank'
-    self.base_sprite.alpha = 0.5
+    self.base_sprite.alpha = 0
     self.base_sprite.isHitTestable = true
     --print('===============')
     --    for i, v in pairs(theField.allElements) do
