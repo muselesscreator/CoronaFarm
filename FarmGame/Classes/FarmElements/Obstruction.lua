@@ -112,10 +112,11 @@ end
 --====   Barren                     ================================================
 --==================================================================================
 
-Barren = class(Obstruction)
+Barren = Class(Obstruction)
 function Barren:initialize(args)
     Obstruction.initialize(self, args)
     self.elem_type = 'Barren'
+    self.base_sprite:setSequence('seqBarren')
     self.progress = 0
     self.turns_remaining = args.turns_remaining
 end
@@ -123,7 +124,7 @@ end
 function Barren:nextDay()
     self.progress = self.progress + 1
     if self.progress > self.turns_remaining then
-        tmp = Blank(self.i, self.j)
+        tmp = Blank:new({i=self.i, j=self.j})
         self:die()
     end
 end

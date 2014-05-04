@@ -130,9 +130,9 @@ end
     end
 end
 function mallet_weights()
-    if theQueue[#theQueue].square_type == 'Mallet' then
+    if theQueue[#theQueue].contents.type == 'Mallet' then
         theQueue.weights.Mallet = 0
-    elseif theBasket.box.type=='Mallet' then
+    elseif theBasket.box.contents.type=='Mallet' then
         theQueue.weights.Mallet = 5+10*(#theField.elements.Pest)
     else
         theQueue.weights.Mallet = 15+15*(#theField.elements.Pest)

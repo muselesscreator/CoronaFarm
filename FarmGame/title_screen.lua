@@ -128,14 +128,6 @@ function scene:createScene( event )
     group:insert(layers.frame)
     group:insert(layers.popup)
     timer.performWithDelay(10, function() touchesAllowed = true end)
-
-    tmpImage = display.newImage('images/sprites/tutorialHand.png')
-    tmpImage.x = 250
-    tmpImage.y = 250
-    layers.frame:insert(tmpImage)
-    tmpImage.touch = try_stuff
-    tmpImage:addEventListener('touch', tmpImage)
-
 end
 
 function try_stuff(self, event)

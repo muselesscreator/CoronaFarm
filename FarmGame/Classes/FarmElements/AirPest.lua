@@ -7,7 +7,7 @@ local Super = Pest
 
 AirPest = Class(Super)
 function AirPest:initialize(args)
-    Super.initiliaze(self, args)
+    Super.initialize(self, args)
     self.base_sprite.alpha = 0
     self.base_sprite.isHitTestable = true
 
@@ -83,18 +83,25 @@ end
 
 function AirPest:whereDoesspawn()
     local opts = {}
-    for i, v in theField.elements.Blank do
-        if not theField:birdAt(v.i, v.j) then
+    for i, v in pairs(theField.elements) do
+        for k, val in ipairs(v) do
+            if not theField:pestAt(val.i, val.j) and not v.elem_type == 'Turtle' then
+                opts[#opts+1] = val
+            end
+        end
+    end
+    for i, v in ipairs(theField.elements.Blank) do
+        if not theField:pestAt(v.i, v.j) then
             opts[#opts+1] = v
         end
     end
-    for i, v in theField.elements.Plant do
-        if not theField:birdAt(v.i, v.j) then
+    for i, v in ipairs(theField.elements.Plant) do
+        if not theField:pestAt(v.i, v.j) then
             opts[#opts+1] = v
         end
     end
-    for i, v in theField.elements.Obstruction do
-        if v.elem_type ~= 'Turtle' and not theField:birdAt(v.i, v.j) then
+    for i, v in ipairs(theField.elements.Obstruction) do
+        if v.elem_type ~= 'Turtle' and not theField:pestAt(v.i, v.j) then
             opts[#opts+1] = value
         end
     end
@@ -103,9 +110,14 @@ function AirPest:whereDoesspawn()
 end
 
 function AirPest:myTarget()
-    local items = theField:whatsAt(self.i, self.j)
-    for i, v in pairs(items) do
-        if not v == self then
+    print('--@ AirPest:myTarget')
+    local items = theField:whatIsAt(self.i, self.j)
+    for i, v in ipairs(items) do
+        print(i)
+        print(v)
+        print('------------')
+        if v ~= self then
+            print(v)
             return v
         end
     end
@@ -122,11 +134,12 @@ function AirPest:swoop()
     self.bird_sprite:setSequence('seqSwoop')
     self.bird_sprite:play()
     playSoundEffect('Crow')
-    timer.performWithDelay(800, function() self:attack() end, 1)
+    timer.performWithDelay(600, function() self:attack() end, 1)
+    timer.performWithDelay(1200, function() self:die() end, 1)
 end
 
 function AirPest:attack()
-    target = self.myTarget
+    local target = self:myTarget()
     local i = target.i
     local j = target.j
     if target.elem_type == 'Barren' then
@@ -134,7 +147,7 @@ function AirPest:attack()
         local tmp = Urn(i, j) 
     else
         target:die()
-        local tmp = Barren(i, j, {turns_remaining=5})
+        local tmp = Barren:new({i=i, j=j, turns_remaining=5})
     end
 end
 
@@ -175,7 +188,7 @@ end
 function Cockatrice:spawn()
     if self:doesSpawn() then
         local dest = self:whereDoesspawn()
-        local tmp = Cockatrice:new(dest.i, dest.j) 
+        local tmp = Cockatrice:new({i=dest.i, j=dest.j}) 
     end
 end
 
