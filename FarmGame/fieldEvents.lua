@@ -1,4 +1,3 @@
-require 'plants'
 function enable_touch(event)
     print('touches allowed again!')
     touchesAllowed = true
@@ -162,6 +161,7 @@ function onSquareTap(self, event)
 end
 
 function onBasketTouch(self, event)
+    print('on basket touch')
     local target  = event.target
     local phase   = event.phase
     local touchID = event.id

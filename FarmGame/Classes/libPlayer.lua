@@ -1,4 +1,3 @@
-require 'class'
 local json = require('json')
 
 -----------------------------------------

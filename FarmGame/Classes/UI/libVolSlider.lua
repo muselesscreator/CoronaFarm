@@ -1,6 +1,4 @@
 --Volume Slider
-require 'class'
-
 
 function volSlide(self, event)
     if event.phase == 'moved' and event.id == self.target.move_id then

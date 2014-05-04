@@ -1,7 +1,3 @@
-require 'class'
-require 'plants'
-require 'fieldEvents'
-require 'libField'
 
 FarmElement = class(function(elem, x, y, i, j)
             for num, v in pairs(theField.blocked) do
