@@ -42,6 +42,7 @@ function Plant:grow()
     self.myStage = self.myStage + 1
     self.base_sprite:setSequence(self.myType)
     self.base_sprite:setFrame(self.myStage)
+    print(self.myStage)
     self.myProgress = 0
     if self.myStage == self.mature then
         self.overlay:setSequence('seqTag')

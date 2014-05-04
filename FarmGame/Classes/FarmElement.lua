@@ -10,7 +10,7 @@ function FarmElement:initialize(args)
         print(event.x..', '..event.y..'            '..self.x..', '..self.y)
         if touchesAllowed then
             touchesAllowed = false
-            timer.performWithDelay(750, function() touchesAllowed = true end, 1)
+            timer.performWithDelay(500, function() touchesAllowed = true end, 1)
             self:onClick(event)
         end
     end
@@ -90,15 +90,12 @@ function FarmElement:nextDay()
 end
 --Done
 function FarmElement:die()
-    print(self.elem_type)
-    print(self.i..', '..self.j)
-    for i, v in pairs(self.base_sprite) do
-        print(i)
-        print(v)
-        print('---------------')
+    if self.base_sprite ~= nil then
+        self.base_sprite:removeSelf()
+        self.overlay:removeSelf()
+        self.base_sprite = nil
+        self.overlay = nil
     end
-    pcall(self.base_sprite:removeSelf())
-    pcall(self.overlay:removeSelf())
     self:removeFromField()
     self = nil
 end
