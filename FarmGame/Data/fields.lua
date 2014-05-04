@@ -1,11 +1,9 @@
-require 'libPest'
-
 fields = {}
 
 fields.order = {'Salad', 'Stew', 'Salsa', 'Tea'}
 fields.Salad = {
     allowedPlants = {'Lettuce', 'Radish'},
-    allowedPests = {'LazyGopher'},
+    Pest = 'LazyGopher',
     maxPests = 2,
     rows = 5,
     columns = 5,
@@ -35,7 +33,7 @@ end
 
 fields.Stew = {
     allowedPlants = {'Celery', 'Potato', 'Carrot'},
-    allowedPests = {'Crow'},
+    Pest = 'Crow',
     rows = 6,
     columns = 7,
     initialWeights = {Potato = 29, Carrot = 28, Celery = 28},
@@ -65,7 +63,7 @@ end
 
 fields.Salsa = {
     allowedPlants = {'Tomato', 'Jalapeno'},
-    allowedPests = {'LazyGopher'},
+    Pest = 'SmartGopher',
     maxPests = 4,
     rows = 8,
     columns = 8,
@@ -95,7 +93,7 @@ end
 
 fields.Tea = {
     allowedPlants = {'Mint', 'Chamomile'},
-    allowedPests = {'Cockatrice'},
+    Pest = 'Cockatrice',
     rows = 8,
     columns = 9,
     initialWeights = {Mint=42, Chamomile=43},
@@ -135,8 +133,8 @@ function mallet_weights()
     if theQueue[#theQueue].square_type == 'Mallet' then
         theQueue.weights.Mallet = 0
     elseif theBasket.box.type=='Mallet' then
-        theQueue.weights.Mallet = 5+10*(theField:numPestsOfType('land'))
+        theQueue.weights.Mallet = 5+10*(#theField.elements.Pest)
     else
-        theQueue.weights.Mallet = 15+15*(theField:numPestsOfType('land'))
+        theQueue.weights.Mallet = 15+15*(#theField.elements.Pest)
     end
 end

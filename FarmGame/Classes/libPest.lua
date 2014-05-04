@@ -1,5 +1,3 @@
-require 'class'
-require 'farm_sound'
 --[[
 -- Pests:
 -- Pests have individual properties, stored in the "Pests" array 
@@ -116,13 +114,10 @@ function Pest:find_preferred(criteria)
 
     n = #opts 
     if n > 0 then
-
         new_opts = {}
-
         for i=Plants.mature, 0, -1 do
             stage = i
             new_opts={}
-
             for j, v in ipairs(opts) do
                 if stage > 0 and v.myStage==stage then
                     new_opts[#new_opts+1] = v
@@ -130,12 +125,10 @@ function Pest:find_preferred(criteria)
                     new_opts[#new_opts+1] = v
                 end
             end
-
             if #new_opts > 0 then
                 break
             end
         end
-
         if #new_opts > 0 then
             n = math.random(1, #new_opts)
             return new_opts[n].square()
@@ -143,9 +136,7 @@ function Pest:find_preferred(criteria)
             return false
         end
     else
-
         return false
-
     end
 end
 

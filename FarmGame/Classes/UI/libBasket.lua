@@ -1,4 +1,3 @@
-require 'class'
 local storyboard = require 'storyboard'
 
 Basket = class(function(basket)
@@ -28,24 +27,24 @@ Basket = class(function(basket)
         basket.box.empty = true
         basket.box.selected = false
         basket.box.type = nil
+        basket.box.contents = {}
     end)
 
 function Basket:fill()
-    print('filling the basket')
     local sprite = self.decorator
-    local type = theQueue[1].square_type
-    print('with '..type)
-    sprite:setSequence("seq"..type)
+    local contents = theQueue[1].contents
+
+    sprite:setSequence("seq"..contents.type)
     sprite:setFrame(1)
     sprite.alpha = 1
-    self.box.type = type
+
     self.box.empty = false
     self.box.selected = false
+    self.box.contents = contents
     theQueue:nextEntry()
-    if theField:chkGameOver() == true then
-        print("--@Basket:fill:  Game Over Man")
-        storyboard.gotoScene( "title_screen", "fade", 400 )
-    end
+
+    theField:chkGameOver()
+
 end
 
 function Basket:select()
@@ -67,7 +66,7 @@ function Basket:empty(square)
     self.decorator.alpha = .2
     self.box.empty = true
     self.box.selected = false
-    self.box.type = nil
+    self.box.contents = {}
 end
 
 function Basket:respond()
