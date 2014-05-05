@@ -56,3 +56,15 @@ function Blank:onClick( event )
         return true
     end
 end
+
+function Blank:useWeapon()
+    self.base_sprite:setSequence('seq'..self:whatIsNext().type)
+    self.base_sprite.alpha = 1
+    self.base_sprite:play()
+    timer.performWithDelay(250, function()
+        if self.base_sprite ~= nil then
+            self.base_sprite.alpha = 0
+            self.base_sprite:setSequence("seqBlank")
+        end
+        end, 1)
+end

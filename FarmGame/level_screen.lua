@@ -170,35 +170,58 @@ function scene:createScene( event )
     print(touch_interface.target)
     layers.overFrame:insert(touch_interface)
 
+
+
     numFields = 0
     scrollView.fields = {}
+
     for i, myType in pairs(fields.order) do
+
         val = fields[myType]
         numFields = numFields + 1
         local thumb = {}
         newX = (numFields-1 )* 500 + 550
+
         if thePlayer.totalScore >= val.minScore then
+
             thumb = display.newImage(val.thumb)
             thumb.tap = onLevelTouch
             thumb:addEventListener("tap", thumb )
+
             print(newX)
             print(tostring(thePlayer.highScores[myType]))
-            local txt = display.newText(tostring(thePlayer.highScores[myType]), newX, 200, nil, 32)
-            txt:setFillColor(1, 1, 0)
+
+            local scorecard = display.newImage('images/scorebar2.png')
+            scorecard.x = newX
+            scorecard.y = 183
+            scrollView:insert(scorecard)
+            local txt = display.newText(tostring(thePlayer.highScores[myType]), newX, 200, nil, 33)
+            txt:setFillColor(.7, .7, 0)
             scrollView:insert(txt)
-            txt = display.newText('High Score:', newX, 170, nil, 32)
-            txt:setFillColor(1, 1, 0)
+            txt = display.newText(tostring(thePlayer.highScores[myType]), newX, 200, nil, 35)
+            txt:setFillColor(.2, .2, 1)
+            scrollView:insert(txt)
+            txt = display.newText('High Score:', newX, 170, nil, 30)
+            txt:setFillColor(0, .5, 0)
             scrollView:insert(txt)
             scrollView:insert(thumb)
 
         else
+
             thumb = display.newImage(val.thumb_dis)
             scrollView:insert(thumb)
             local txt = display.newText(tostring(val.minScore), newX, 510, nil, 50)
             scrollView:insert(txt)
             txt = display.newText('To unlock', newX, 550, nil, 50)
             scrollView:insert(txt)
+
         end
+
+
+
+
+
+
         thumb.anchorX = 0
         thumb.y = display.contentHeight/2+40
         thumb.xScale = .8

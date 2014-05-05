@@ -71,11 +71,6 @@ function LandPest:preferredDest()
             stage = i
             new_opts={}
             for j, v in ipairs(opts) do
-                for k, val in pairs(v) do
-                    print(k)
-                    print(val)
-                    print('--------------')
-                end
                 if stage > 0 and v.myStage==stage then
                     new_opts[#new_opts+1] = v
                 elseif stage == 0 and v.elem_type == 'Blank' then
@@ -189,6 +184,7 @@ end
 
 function LazyGopher:spawn()
     if self:doesSpawn() then
+        playSoundEffect('GopherLaugh')
         local dest = self:whereDoesSpawn()
         tmp = LazyGopher:new({i=dest.i, j=dest.j})
         dest:die()
@@ -210,6 +206,7 @@ end
 
 function SmartGopher:spawn()
     if self:doesSpawn() then
+        playSoundEffect('GopherLaugh')
         local dest = self:whereDoesSpawn()
         local tmp = SmartGopher:new({i=dest.i, j=dest.j})
         dest:die()
@@ -219,9 +216,13 @@ end
 function SmartGopher:moveOptions()
     local opts = {}
     for i, v in pairs(self:getNeighbors()) do
-        if v ~= nil then
-            if (v.elem_type == 'Plant' and v.myStage ~= Plants.rot) or v.elem_type == 'Blank' then
-                opts[#opts + 1] = v
+        if #v > 0 then
+            for j, val in ipairs(v) do
+                if val ~= nil then
+                    if (val.elem_type == 'Plant' and val.myStage ~= Plants.rot) or val.elem_type == 'Blank' then
+                        opts[#opts + 1] = val
+                    end
+                end
             end
         end
     end

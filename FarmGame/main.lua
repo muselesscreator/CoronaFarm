@@ -128,9 +128,6 @@ require 'Classes.FarmElements.Obstruction'
 require 'farm_sound'
 require 'fieldEvents'
 
-
-
-
 --> Import the Widget tool
 local widget
 

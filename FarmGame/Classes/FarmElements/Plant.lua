@@ -60,7 +60,7 @@ end
 
 function Plant:nextDay()
     self.myProgress = self.myProgress + 1
-    if self.myProgress > self.turns[self.myStage] then
+    if self.myStage < self.rot and self.myProgress > self.turns[self.myStage] then
         self:grow()
     elseif self.myStage == self.mature and self.myProgress > self.turns[self.myStage]-3 then
         self.base_sprite:setSequence('seq'..self.type..'Frame'..(3+self.myProgress-self.turns[self.myStage]))
@@ -147,6 +147,7 @@ function Plant:harvest(multiplier)
     self.timesHarvested = self.timesHarvested + 1
 
     if self.timesHarvested >= self.maxHarvest then
+        print('Done Harvesting')
         self.empty = true
         self:removeFromField()
         local tmp = Blank:new({i=self.i, j = self.j})
@@ -162,8 +163,11 @@ function Plant:harvest(multiplier)
             end, 1)
         end, 1)
     else
-        self.myStage = self.myStage - 1
+        print('Back Down a stage')
+        self.myStage = self.mature - 1
+        self.myProgress = 0 
         timer.performWithDelay(200, function()
+            self.base_sprite:setSequence('seq'..self.type)
             self.base_sprite:setFrame(self.myStage)
             self:clearDecorator()
             timer.performWithDelay(350, function()
@@ -179,8 +183,8 @@ function Plant:harvest(multiplier)
 end
 
 function Plant:clearDecorator()
-    self.decorator:setSequence('seqBlank')
-    self.decorator.alpha = 0
+    self.overlay:setSequence('seqBlank')
+    self.overlay.alpha = 0
 end
 
 function Plant:checkNeighbors(bunch)

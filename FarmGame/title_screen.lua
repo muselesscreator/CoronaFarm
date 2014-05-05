@@ -49,10 +49,12 @@ function scene:createScene( event )
     bg.anchorY = 0
     layers.bg:insert(bg)
 
-    text1 = display.newText( "Farmaggedon!", 0, 0, CustomFont, 50 )
-    text1:setTextColor( 255 )
-    text1.x, text1.y = display.contentWidth * 0.5, 300
-    layers.bg:insert( text1 )
+    local logo = display.newImage('images/farmLogo.png')
+    logo.x = display.contentWidth/2
+    logo.y = 300
+    logo.xScale = 1.8
+    logo.yScale = 2.2
+    layers.bg:insert(logo)
 
     layers.frame = display.newGroup()
     local FarmButton = widget.newButton
@@ -63,7 +65,9 @@ function scene:createScene( event )
         onRelease = gotoFarm,
     }
     FarmButton.x = display.contentWidth * 0.5
-    FarmButton.y = 420
+    FarmButton.y = 470
+    FarmButton.xScale = 1.5
+    FarmButton.yScale = 1.5
     layers.frame:insert(FarmButton)
 
     local LevelButton = widget.newButton
@@ -74,7 +78,9 @@ function scene:createScene( event )
         onRelease = gotoLevel,
     }
     LevelButton.x = display.contentWidth * 0.5
-    LevelButton.y = 510
+    LevelButton.y = 580
+    LevelButton.xScale = 1.5
+    LevelButton.yScale = 1.5
     layers.frame:insert(LevelButton)
     
     local tmpButton = widget.newButton
@@ -128,11 +134,41 @@ function scene:createScene( event )
     group:insert(layers.frame)
     group:insert(layers.popup)
     timer.performWithDelay(10, function() touchesAllowed = true end)
+
+    tmpImage = display.newImage('images/plus.png')
+    tmpImage.x = 100
+    tmpImage.y = 75
+    tmpImage.alpha = .3
+    layers.frame:insert(tmpImage)
+    tmpImage.touch = promote_player
+    tmpImage:addEventListener('touch', tmpImage)
+
+    tmpImage = display.newImage('images/minus.png')
+    tmpImage.x = 900
+    tmpImage.y = 75
+    tmpImage.alpha = .3
+    layers.frame:insert(tmpImage)
+    tmpImage.touch = clear_player
+    tmpImage:addEventListener('touch', tmpImage)
+
 end
 
-function try_stuff(self, event)
-    print(self.x)
+function clear_player(self, event)
+    thePlayer.id = 0
+    thePlayer.levelScore = 0
+    thePlayer.totalScore = 0
+    thePlayer.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
+    thePlayer.has_played_level = {false, false, false, false}
+    saveTable(thePlayer, 'player.json')
+end
 
+function promote_player(self, event)
+    thePlayer.id = 0
+    thePlayer.levelScore = 0
+    thePlayer.totalScore = 25000
+    thePlayer.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
+    thePlayer.has_played_level = {false, false, false, false}
+    saveTable(thePlayer, 'player.json')
 end
 
 

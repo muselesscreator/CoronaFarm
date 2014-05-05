@@ -128,7 +128,6 @@ function Field:nextDay()
         v:nextDay()
     end
     for i, v in ipairs(theField.elements.Pest) do
-        print(i)
         v:nextDay()
     end
     self:cleanup()
@@ -144,28 +143,15 @@ end
 
 
 function Field:whatIsAt(i, j)
-    local elems = {}
-    for k, v in ipairs(self.elements.Plant) do
-        if v.i == i and v.j == j then
-            elems[#elems+1] = v
-        end
-    end     
-    for k, v in ipairs(self.elements.Obstruction) do
-        if v.i == i and v.j == j then
-            elems[#elems+1] = v
-        end
-    end     
-    for k, v in ipairs(self.elements.Pest) do
-        if v.i == i and v.j == j then
-            elems[#elems+1] = v
-        end
-    end 
-    for k, v in ipairs(self.elements.Blank) do
-        if v.i == i and v.j == j then
-            elems[#elems+1] = v
+    local opts = {}
+    for l, v in pairs(theField.elements) do
+        for k, val in ipairs(v) do
+            if val.i == i and val.j == j then
+                opts[#opts+1] = val
+            end
         end
     end
-    return elems
+    return opts
 end
 
 function Field:pestAt(i, j)

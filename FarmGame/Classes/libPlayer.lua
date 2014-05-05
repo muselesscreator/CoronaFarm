@@ -41,8 +41,6 @@ Player = class(function(player)
             end
             print("returning player")
             player.totalScore = 2500
-            player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
-
             return player
         end
         player.id = 0
