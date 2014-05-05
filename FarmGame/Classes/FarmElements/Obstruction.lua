@@ -1,10 +1,25 @@
+
+--local obsSheetInfo = require("ImageSheets.Obstruction_sheet")
+--local obsSequenceData = obsSheetInfo:getSequenceData()
+--local obsImageSheet = graphics.newImageSheet("plant_sheet.png", obsSheetInfo:getSheet())
+
 local Super = FarmElement
+
+
 Obstruction = Class(FarmElement)
 
 function Obstruction:initialize(args)
     Super.initialize(self, args)
     self.elem_type = 'Obstruction'
+    
+    obs_sprite = display.newSprite(myImageSheet, sequenceData)
+    obs_sprite.x = self.x
+    obs_sprite.y = self.y
+    self.base_sprite.alpha = 0
+    self.obs_sprite = obs_sprite
+
     theField:addElement(self)
+
     self:addSpritesToLayers()
 end
 
@@ -16,6 +31,13 @@ function Obstruction:onClick()
             self:useNext()
             end, 1)
     end
+end
+
+function Obstruction:addSpritesToLayers()
+    local layer = theField.layers[self.j]
+    layer:insert(self.base_sprite)
+    layer:insert(self.obs_sprite)
+    layer:insert(self.overlay)
 end
 
 function Obstruction:removeFromField()
@@ -68,7 +90,7 @@ end
 Rock = Class(Obstruction)
 function Rock:initialize(args)
     Obstruction.initialize(self, args)
-    self.base_sprite:setSequence('seqRock')
+    self.obs_sprite:setSequence('seqRock')
 end
 
 --Done
@@ -78,12 +100,16 @@ end
 --Done?
 function Rock:useWeapon()
     print('-- @ Rock UseWeapon')
-    weapon = self:whatIsNext().value
+    weapon = self:whatIsNext().type
+    print(weapon)
+
     if weapon == 'Mallet' then
         print('breakRock')
-        --set break animation. wait before blank
+        self.overlay:setSequence('seqMallet')
+        self.overlay.alpha = 1
+        self.overlay:play()
         local tmp = Blank:new({i=self.i, j=self.j})
-        self:die()
+        timer.performWithDelay(250, function() self:die() end, 1)
     else
         FarmElement.useWeapon(self)
     end
@@ -100,8 +126,8 @@ function StonePlant:initialize(args)
     self.type = args.type
     self.myStage = args.stage
 
-    self.base_sprite:setSequence('seqStone'..plant.type)
-    self.base_sprite:setFrame(plant.myStage)
+    self.obs_sprite:setSequence('seqStone'..self.type)
+    self.obs_sprite:setFrame(self.myStage)
 end
 --Done
 function StonePlant:nextIsValid()
@@ -116,7 +142,7 @@ Barren = Class(Obstruction)
 function Barren:initialize(args)
     Obstruction.initialize(self, args)
     self.elem_type = 'Barren'
-    self.base_sprite:setSequence('seqBarren')
+    self.obs_sprite:setSequence('seqBarren')
     self.progress = 0
     self.turns_remaining = args.turns_remaining
 end
@@ -143,6 +169,10 @@ Urn = Class(Obstruction)
 function Urn:initialize(args)
     Obstruction.initialize(self, args)
     self.elem_type = 'Urn'
+end
+
+function Urn:nextIsValid()
+    return false
 end
 
 function Urn:nextIsValid()

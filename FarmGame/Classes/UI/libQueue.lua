@@ -79,7 +79,7 @@ function libQueue:pickNext()  --pick the next element in the queue based on weig
     for n in pairs(self.weights) do
 
         if rand < used + self.weights[n] then
-            if n == 'Mallet' or n == 'slingshot' then
+            if n == 'Mallet' or n == 'Slingshot' then
                 return {type = n, is_weapon = true}
             else
                 return {type = n, is_weapon = false}

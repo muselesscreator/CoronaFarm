@@ -8,10 +8,14 @@ function FarmElement:initialize(args)
   
     local function onClick(event)
         print(event.x..', '..event.y..'            '..self.x..', '..self.y)
-        if touchesAllowed then
+        print(event.phase)
+        if touchesAllowed and event.phase == 'began' and not layers.popup.visible then
+
             local pest = theField:pestAt(self.i, self.j)
-            if pest then
+            print(pest)
+            if pest ~= false then
                 if pest:canClick() then
+                    print('CLICK ON PEST')
                     touchesAllowed = false
                     timer.performWithDelay(500, function() touchesAllowed = true end, 1)
                     pest:onClick(event)

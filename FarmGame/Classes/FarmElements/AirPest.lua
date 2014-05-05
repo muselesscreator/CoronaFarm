@@ -34,6 +34,8 @@ function AirPest:addSpritesToLayers()
 end
 
 function AirPest:nextIsValid()
+    print('--AirPest:nextIsValid')
+    print(self:whatIsNext().is_weapon)
     return self:whatIsNext().is_weapon
 end
 
@@ -81,28 +83,15 @@ function AirPest:doesSpawn()
     return 0
 end
 
-function AirPest:whereDoesspawn()
+function AirPest:whereDoesSpawn()
     local opts = {}
     for i, v in pairs(theField.elements) do
         for k, val in ipairs(v) do
-            if not theField:pestAt(val.i, val.j) and not v.elem_type == 'Turtle' then
+            print(val.elem_type)
+            if theField:pestAt(val.i, val.j) == false and val.elem_type ~= 'Turtle' then
+                print("?")
                 opts[#opts+1] = val
             end
-        end
-    end
-    for i, v in ipairs(theField.elements.Blank) do
-        if not theField:pestAt(v.i, v.j) then
-            opts[#opts+1] = v
-        end
-    end
-    for i, v in ipairs(theField.elements.Plant) do
-        if not theField:pestAt(v.i, v.j) then
-            opts[#opts+1] = v
-        end
-    end
-    for i, v in ipairs(theField.elements.Obstruction) do
-        if v.elem_type ~= 'Turtle' and not theField:pestAt(v.i, v.j) then
-            opts[#opts+1] = value
         end
     end
     r = math.random(1, #opts)
@@ -113,9 +102,6 @@ function AirPest:myTarget()
     print('--@ AirPest:myTarget')
     local items = theField:whatIsAt(self.i, self.j)
     for i, v in ipairs(items) do
-        print(i)
-        print(v)
-        print('------------')
         if v ~= self then
             print(v)
             return v
@@ -124,9 +110,11 @@ function AirPest:myTarget()
 end
 
 function AirPest:nextDay()
-    self.turns = self.turns + 1
-    if self.turns == self.maxTurns then
-        self:swoop()
+    if not self.dying then
+        self.turns = self.turns + 1
+        if self.turns == self.maxTurns then
+            self:swoop()
+        end
     end
 end
 
@@ -134,33 +122,40 @@ function AirPest:swoop()
     self.bird_sprite:setSequence('seqSwoop')
     self.bird_sprite:play()
     playSoundEffect('Crow')
-    timer.performWithDelay(600, function() self:attack() end, 1)
-    timer.performWithDelay(1200, function() self:die() end, 1)
+    timer.performWithDelay(400, function() self:attack() end, 1)
+    timer.performWithDelay(800, function() self:die() end, 1)
 end
 
 function AirPest:attack()
     local target = self:myTarget()
     local i = target.i
     local j = target.j
+    print(target.elem_type)
     if target.elem_type == 'Barren' then
         target:die()
-        local tmp = Urn(i, j) 
-    else
+        local tmp = Urn:new({i=i, j=j}) 
+    elseif target.elem_type == 'Plant' then
         target:die()
-        local tmp = Barren:new({i=i, j=j, turns_remaining=5})
+        local tmp = Barren:new({i=i, j=j, turns_remaining=10})
     end
 end
 
 function AirPest:useWeapon()
     self.bird_sprite:setSequence('seqBirdDead')
     self.bird_sprite:play()
+    self.dying = true
     timer.performWithDelay(700, function() self:die() end, 1)
 end
 
 function AirPest:die()
-    self.base_sprite:removeSelf()
-    self.bird_sprite:removeSelf()
-    self.overlay:removeSelf()
+    if self.base_sprite ~= nil then
+        self.base_sprite:removeSelf()
+        self.base_sprite = nil
+        self.bird_sprite:removeSelf()
+        self.bird_sprite = nil
+        self.overlay:removeSelf()
+        self.overlay = nil
+    end
     self:removeFromField()
     self = nil
 end
@@ -174,7 +169,7 @@ function Crow:spawn()
     local numSpawn = self:doesSpawn()
     if numSpawn > 0 then
         for i=1, numSpawn do
-            local dest = self:whereDoesspawn()
+            local dest = self:whereDoesSpawn()
             local tmp = Crow:new({i=dest.i, j=dest.j}) 
         end
     end
@@ -187,19 +182,19 @@ end
 
 function Cockatrice:spawn()
     if self:doesSpawn() then
-        local dest = self:whereDoesspawn()
+        local dest = self:whereDoesSpawn()
         local tmp = Cockatrice:new({i=dest.i, j=dest.j}) 
     end
 end
 
 function Cockatrice:attack()
-    target = self.myTarget
+    local target = self:myTarget()
     local i = target.i
     local j = target.j
-    local seq = target.myType
+    local seq = target.type
     local frame = target.myStage
     if target.elem_type == 'Plant' then
         target:die()
-        local tmp = StonePlant({i=i, j=j, type=seq, stage=frame})
+        local tmp = StonePlant:new({i=i, j=j, type=seq, stage=frame})
     end
 end
