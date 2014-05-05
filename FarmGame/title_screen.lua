@@ -51,10 +51,19 @@ function scene:createScene( event )
 
     local logo = display.newImage('images/farmLogo.png')
     logo.x = display.contentWidth/2
-    logo.y = 300
+    logo.y = 230
     logo.xScale = 1.8
     logo.yScale = 2.2
     layers.bg:insert(logo)
+
+    local gopher = display.newImage('images/sprites/gopher.png')
+    gopher.x = display.contentWidth/2
+    gopher.y = 470
+    gopher.xScale = 4
+    gopher.yScale = 4
+    layers.bg:insert(gopher)
+
+
 
     layers.frame = display.newGroup()
     local FarmButton = widget.newButton
@@ -65,9 +74,9 @@ function scene:createScene( event )
         onRelease = gotoFarm,
     }
     FarmButton.x = display.contentWidth * 0.5
-    FarmButton.y = 470
-    FarmButton.xScale = 1.5
-    FarmButton.yScale = 1.5
+    FarmButton.y = 440
+    FarmButton.xScale = 1.1
+    FarmButton.yScale = 1.1
     layers.frame:insert(FarmButton)
 
     local LevelButton = widget.newButton
@@ -78,10 +87,28 @@ function scene:createScene( event )
         onRelease = gotoLevel,
     }
     LevelButton.x = display.contentWidth * 0.5
-    LevelButton.y = 580
-    LevelButton.xScale = 1.5
-    LevelButton.yScale = 1.5
+    LevelButton.y = 510
+    LevelButton.xScale = 1.1
+    LevelButton.yScale = 1.1
     layers.frame:insert(LevelButton)
+
+    local LevelButton = widget.newButton
+    {
+        defaultFile = "images/buttonRed.png",
+        overFile = "images/buttonRedOver.png",
+        label = "Visit Our Site!",
+        font = native.systemFontBold,
+        fontSize = 27,
+        labelColor={ default={1, 1, 1, 1}, over={1, 1, 1, .5}},
+        emboss = true,
+        onRelease = gotoLevel,
+    }
+    LevelButton.x = display.contentWidth * 0.5
+    LevelButton.y = 580
+    LevelButton.xScale = 1.1
+    LevelButton.yScale = 1.1
+    layers.frame:insert(LevelButton)
+
     
     local tmpButton = widget.newButton
     {
@@ -95,6 +122,22 @@ function scene:createScene( event )
 
     layers.popup = display.newGroup()
     layers:insert(layers.popup)
+
+
+    local scoreTxt = display.newText( 'Total Score', 195, 670, nil, 36)
+    scoreTxt:setFillColor(0, 0, 0)
+    layers.frame:insert(scoreTxt)
+    local scorecard = display.newImage('images/scorebar.png')
+    scorecard.x = 535
+    scorecard.y = 670
+    scorecard.yScale = .8
+    layers.frame:insert(scorecard)
+    scoreTxt = display.newText( thePlayer.totalScore, 320, 670, nill, 40)
+    scoreTxt.anchorX = 0
+    scoreTxt:setFillColor(0, 0, 1)
+    layers.frame:insert(scoreTxt)
+
+
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
     popupMenu.x = 200
