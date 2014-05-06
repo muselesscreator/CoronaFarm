@@ -1,4 +1,3 @@
-local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 local widget = require("widget")
 
@@ -28,6 +27,10 @@ local function gotoLevel()
     end
 end
 
+local function gotoSite()
+    system.openURL('www.nerdpilegames.com')
+end
+
 local function gotoTutorial()
     storyboard.gotoScene('tutorial_screen')
 end
@@ -39,6 +42,7 @@ end
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
     print("title_screen")
+    storyboard.returnTo='title_screen'
     group = self.view
 
     layers = display.newGroup()
@@ -56,11 +60,9 @@ function scene:createScene( event )
     logo.yScale = 2.2
     layers.bg:insert(logo)
 
-    local gopher = display.newImage('images/sprites/gopher.png')
-    gopher.x = display.contentWidth/2
-    gopher.y = 470
-    gopher.xScale = 4
-    gopher.yScale = 4
+    local gopher = display.newImage('images/gopherBig.png')
+    gopher.x = display.contentWidth/2 - 12
+    gopher.y = 450
     layers.bg:insert(gopher)
 
 
@@ -73,10 +75,10 @@ function scene:createScene( event )
         emboss = true,
         onRelease = gotoFarm,
     }
-    FarmButton.x = display.contentWidth * 0.5
-    FarmButton.y = 440
-    FarmButton.xScale = .9
-    FarmButton.yScale = .9
+    FarmButton.x = display.contentWidth/2
+    FarmButton.y = 520
+    FarmButton.xScale = 1.1
+    FarmButton.yScale = 1.1
     layers.frame:insert(FarmButton)
 
     local LevelButton = widget.newButton
@@ -86,10 +88,10 @@ function scene:createScene( event )
         emboss = true,
         onRelease = gotoLevel,
     }
-    LevelButton.x = display.contentWidth * 0.5
-    LevelButton.y = 510
-    LevelButton.xScale = .9
-    LevelButton.yScale = .9
+    LevelButton.x = display.contentWidth/2
+    LevelButton.y = 590
+    LevelButton.xScale = 1.1
+    LevelButton.yScale = 1.1
     layers.frame:insert(LevelButton)
 
     local LevelButton = widget.newButton
@@ -101,12 +103,12 @@ function scene:createScene( event )
         fontSize = 27,
         labelColor={ default={1, 1, 1, 1}, over={1, 1, 1, .5}},
         emboss = true,
-        onRelease = gotoLevel,
+        onRelease = gotoSite,
     }
     LevelButton.x = display.contentWidth * 0.5
-    LevelButton.y = 580
-    LevelButton.xScale = .9
-    LevelButton.yScale = .9
+    LevelButton.y = 660
+    LevelButton.xScale = 1.1
+    LevelButton.yScale = 1.1
     layers.frame:insert(LevelButton)
 
     
@@ -117,22 +119,22 @@ function scene:createScene( event )
         onRelease = toggleOptions
     }
     tmpButton.x = 930
-    tmpButton.y = 700
+    tmpButton.y = 710
     layers.frame:insert(tmpButton)
 
     layers.popup = display.newGroup()
     layers:insert(layers.popup)
 
 
-    local scoreTxt = display.newText( 'Total Score', 195, 670, nil, 36)
+    local scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
     scoreTxt:setFillColor(0, 0, 0)
     layers.frame:insert(scoreTxt)
     local scorecard = display.newImage('images/scorebar.png')
     scorecard.x = 535
-    scorecard.y = 670
+    scorecard.y = 730
     scorecard.yScale = .8
     layers.frame:insert(scorecard)
-    scoreTxt = display.newText( thePlayer.totalScore, 320, 670, nill, 40)
+    scoreTxt = display.newText( thePlayer.totalScore, 320, 730, nill, 40)
     scoreTxt.anchorX = 0
     scoreTxt:setFillColor(0, 0, 1)
     layers.frame:insert(scoreTxt)

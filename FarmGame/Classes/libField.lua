@@ -27,6 +27,30 @@ Field = class(function(tmpField, type)
         bg.h = tmpField.bg_h
         bg.w = tmpField.bg_w
         layers.field:insert(bg)
+
+        local monster = display.newImage(tmpField.monster)
+        monster.anchorX = 0
+        monster.anchorY = 0
+        monster.x = 50
+        monster.y = -1000
+        monster.h = tmpField.monster_h
+        monster.w = tmpField.monster_w        
+        monster.alpha = 0
+        tmpField.monster_layer = monster
+        layers.gameOver:insert(monster)
+
+
+        local overlay = display.newImage('images/gameOverOverlay.png')
+        overlay.anchorX = 0
+        overlay.anchorY = 0
+        overlay.x = 0
+        overlay.y = 0
+        overlay.h = tmpField.overlay_h
+        overlay.w = tmpField.overlay_w 
+        overlay.alpha = 0       
+        tmpField.overlay = overlay
+        layers.gameOver:insert(overlay)
+
         return tmpField
     end)
 
@@ -60,6 +84,21 @@ function Field:cleanup()
     end
 end
 
+function Field:pestGameOver()
+    self.monster_layer.alpha = 1
+    transition.to(self.monster_layer, {y=150, time=1500})
+    timer.performWithDelay(2000, function() 
+        transition.to(self.overlay, {alpha=1, time=500}) 
+        timer.performWithDelay(1500, function() storyboard:gotoScene('title_screen') end, 1)
+        end, 1)
+end
+
+
+function Field:boringGameOver()
+    transition.to(self.overlay, {alpha=1, time=1000})
+    timer.performWithDelay(1500, function() storyboard:gotoScene('title_screen') end, 1)
+end
+
 function Field:chkGameOver()
     print("--@Field:chkGameOver: checking for game over")
     local box = theBasket.box.contents
@@ -73,9 +112,8 @@ function Field:chkGameOver()
             end
         end
         if num_flags > 5 then
-            print('CAAAAAAAWWWWWW...n!!!!!!!!!!')
-            print('Crow God!!!!!!!!!!!!!!!!')
-            storyboard:gotoScene('title_screen')
+            gameOver = true
+            self:pestGameOver()
             return true
         end
     elseif fieldType == 'Tea' then
@@ -85,27 +123,25 @@ function Field:chkGameOver()
                 num_flags = num_flags + 1
             end
         end
-        if num_flags > self.total_squares*0.5 then
-            print('CRWWWWWWASDFASDF!!!')
-            print('Cockatrice God!!!!!!!!!!!!')
-            storyboard:gotoScene('title_screen')
+        if num_flags > 30 then
+            gameOver = true
+            self:pestGameOver()
             return true
         end
     else
         local num_flags = 0
         for i, v in ipairs(self.elements.Obstruction) do
-            if v.elem_type == 'Stone' then
+            if v.elem_type == 'Rock' then
                 num_flags = num_flags + 1
             end
         end
-        if num_flags > self.total_squares * 0.5 then
-            print("OOOOOOOOOOOOOOOOMMM NOOOOOOOOOMMMMMM!!!")
-            print('Fat Stone Gopher!!!!!!!!!!!!!!')
-            storyboard:gotoScene('title_screen')
+        if ((num_flags >= 10) and fieldType=='Salad') or num_flags > 20 then
+            gameOver = true
+            self:pestGameOver()
             return true
         end
     end
-    if box.is_weapon or box.empty or basket.is_weapon or #self.elements.Blank then
+    if box.is_weapon or box.empty or basket.is_weapon or #self.elements.Blank > 0 then
         return true
     end
     for i, v in ipairs(self.elements.Plant) do
@@ -115,7 +151,8 @@ function Field:chkGameOver()
     end
     print('DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOMMMMMMMMM!!!')
     print('Out of Turns!')
-    storyboard:gotoScene('title_screen')
+    gameOver = true
+    self:boringGameOver()
     return true
 end
 
