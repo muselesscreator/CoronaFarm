@@ -40,7 +40,6 @@ Player = class(function(player)
                 player[i] = v
             end
             print("returning player")
-            player.totalScore = 2500
             return player
         end
         player.id = 0
