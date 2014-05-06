@@ -36,6 +36,18 @@ function Blank:nextIsValid()
     return true
 end
 
+
+function Blank:onClick( event )
+    if self:canClick() then
+        print('can click')
+        tmp = Urn:new({i=self.i, j=self.j, type='Carrot', stage=1})
+        self:die()
+        theField:nextDay()
+        return true
+    end
+end
+
+--[[
 function Blank:onClick( event )
     if self:canClick() then
         print('can click')
@@ -56,7 +68,7 @@ function Blank:onClick( event )
         return true
     end
 end
-
+]]--
 function Blank:useWeapon()
     self.base_sprite:setSequence('seq'..self:whatIsNext().type)
     self.base_sprite.alpha = 1

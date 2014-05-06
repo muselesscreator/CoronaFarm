@@ -22,7 +22,7 @@ physics.start()
 physics.setGravity( 0, 0 )
 physics.setDrawMode( hybrid )
 
-local storyboard = require "storyboard"
+storyboard = require "storyboard"
 storyboard.purgeOnSceneChange = true
 
 display.setStatusBar(display.HiddenStatusBar)
@@ -33,7 +33,7 @@ myImageSheet = graphics.newImageSheet("plant_sheet.png", sheetInfo:getSheet())
 print(myImageSheet)
 sequenceData =
 {
-    { name="seqArrowLeft", frames={ 1 }},
+    { name="seqArrowLeft", sheet=myImageSheet, frames={ 1 }},
     { name="seqArrowRight", frames={ 2 }},
     { name="seqBarren", frames={ 3 }},
     { name="seqBird", frames={4, 5, 6, 7, 8, 9, 10, 11, 12, 13}, time=800},
@@ -157,6 +157,7 @@ local plantsHarvested = {}
 musicVolume = .5
 sfxVolume = .5
 
+gameOver = false
 tutorial = false
 no_pests = false
 log_levels = {  Info = 3,
@@ -214,13 +215,15 @@ function log(message, level)
 end
 
 toggleOptions = function ( event )
-    print('hi')
-    if(layers.popup.visible) then
-        layers.popup.alpha = 0
-        layers.popup.visible = false
-    else
-        layers.popup.alpha = 1
-        layers.popup.visible = true
+    if not gameOver then
+        print('hi')
+        if(layers.popup.visible) then
+            layers.popup.alpha = 0
+            layers.popup.visible = false
+        else
+            layers.popup.alpha = 1
+            layers.popup.visible = true
+        end
     end
 end
 
@@ -232,6 +235,51 @@ end
 -----------------------------------------------------
 --Main Create Function
 -----------------------------------------------------
+local function onKeyEvent( event )
+
+   local phase = event.phase
+   local keyName = event.keyName
+   print( event.phase, event.keyName )
+
+   if ( "back" == keyName and phase == "up" ) then
+      if ( storyboard.currentScene == "splash" ) then
+         native.requestExit()
+      else
+         if ( storyboard.isOverlay ) then
+            storyboard.hideOverlay()
+         else
+            if ( lastScene ) then
+               storyboard.gotoScene( 'title_screen', { effect="crossFade", time=500 } )
+            else
+               native.requestExit()
+            end
+         end
+      end
+   end
+
+   if ( keyName == "volumeUp" and phase == "down" ) then
+      local masterVolume = audio.getVolume()
+      print( "volume:", masterVolume )
+      if ( masterVolume < 1.0 ) then
+         masterVolume = masterVolume + 0.1
+         audio.setVolume( masterVolume )
+      end
+      return true
+   elseif ( keyName == "volumeDown" and phase == "down" ) then
+      local masterVolume = audio.getVolume()
+      print( "volume:", masterVolume )
+      if ( masterVolume > 0.0 ) then
+         masterVolume = masterVolume - 0.1
+         audio.setVolume( masterVolume )
+      end
+      return true
+   end
+   return false  --SEE NOTE BELOW
+end
+
+--add the key callback
+Runtime:addEventListener( "key", onKeyEvent )
+
 
 storyboard.gotoScene( "title_screen", "fade", 400 )
 

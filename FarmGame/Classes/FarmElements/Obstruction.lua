@@ -9,7 +9,10 @@ local Super = FarmElement
 Obstruction = Class(FarmElement)
 
 function Obstruction:initialize(args)
+    print('before FE.init')
+    print(args.i)
     Super.initialize(self, args)
+
     self.elem_type = 'Obstruction'
     
     obs_sprite = display.newSprite(myImageSheet, sequenceData)
@@ -91,6 +94,7 @@ Rock = Class(Obstruction)
 function Rock:initialize(args)
     Obstruction.initialize(self, args)
     self.obs_sprite:setSequence('seqRock')
+    self.elem_type = 'Rock'
 end
 
 --Done
@@ -125,7 +129,7 @@ function StonePlant:initialize(args)
     Obstruction.initialize(self, args)
     self.type = args.type
     self.myStage = args.stage
-
+    self.elem_type = 'StonePlant'
     self.obs_sprite:setSequence('seqStone'..self.type)
     self.obs_sprite:setFrame(self.myStage)
 end

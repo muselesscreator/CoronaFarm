@@ -5,11 +5,11 @@ function FarmElement:initialize(args)
     self.i = args.i
     self.j = args.j
     self:deriveXY()
-  
+    print(args.i)
     local function onClick(event)
         print(event.x..', '..event.y..'            '..self.x..', '..self.y)
         print(event.phase)
-        if touchesAllowed and event.phase == 'began' and not layers.popup.visible then
+        if touchesAllowed and event.phase == 'began' and not layers.popup.visible and not gameOver then
 
             local pest = theField:pestAt(self.i, self.j)
             print(pest)

@@ -34,6 +34,7 @@ local function gotoTitle ( event )
 end
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
+    gameOver = false
     touchesAllowed = false
     thePlayer:newLevel()
     local r = math.random(1, 100)
@@ -113,6 +114,7 @@ function scene:createScene( event)
     layers.birdLayer = display.newGroup()
     layers.weaponLayer = display.newGroup()
     layers.popup = display.newGroup()
+    layers.gameOver = display.newGroup()
     theField = Field(fieldType)
 
     theField:fill()
@@ -221,20 +223,10 @@ function scene:createScene( event)
     group:insert(layers.frame)
     group:insert(layers.overFrame)
     group:insert(layers.popup)
+    group:insert(layers.gameOver)
 
     touchesAllowed = true
     --timer.performWithDelay(800, allowTouches, -1)
-end
-
-onDrawerButton = function ( event )
-    if(layers.theDrawer.isOpen) then
-        transition.to( layers.theDrawer, {x =  layers.theDrawer.x - 110 + 20, time = 200} )
-        layers.theDrawer.isOpen = false
-    else
-        transition.to( layers.theDrawer, {x =  layers.theDrawer.x + 110 - 20, time = 200} )
-        layers.theDrawer.isOpen = true
-    end
-    return true
 end
 
 -- Called BEFORE scene has moved onscreen:
