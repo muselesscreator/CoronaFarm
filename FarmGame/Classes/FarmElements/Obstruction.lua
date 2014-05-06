@@ -172,6 +172,7 @@ end
 Urn = Class(Obstruction)
 function Urn:initialize(args)
     Obstruction.initialize(self, args)
+    self.obs_sprite:setSequence('seqRock')
     self.elem_type = 'Urn'
 end
 
