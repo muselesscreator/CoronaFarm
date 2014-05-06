@@ -75,8 +75,8 @@ function scene:createScene( event )
     }
     FarmButton.x = display.contentWidth * 0.5
     FarmButton.y = 440
-    FarmButton.xScale = 1.1
-    FarmButton.yScale = 1.1
+    FarmButton.xScale = .9
+    FarmButton.yScale = .9
     layers.frame:insert(FarmButton)
 
     local LevelButton = widget.newButton
@@ -88,8 +88,8 @@ function scene:createScene( event )
     }
     LevelButton.x = display.contentWidth * 0.5
     LevelButton.y = 510
-    LevelButton.xScale = 1.1
-    LevelButton.yScale = 1.1
+    LevelButton.xScale = .9
+    LevelButton.yScale = .9
     layers.frame:insert(LevelButton)
 
     local LevelButton = widget.newButton
@@ -105,8 +105,8 @@ function scene:createScene( event )
     }
     LevelButton.x = display.contentWidth * 0.5
     LevelButton.y = 580
-    LevelButton.xScale = 1.1
-    LevelButton.yScale = 1.1
+    LevelButton.xScale = .9
+    LevelButton.yScale = .9
     layers.frame:insert(LevelButton)
 
     
@@ -181,6 +181,8 @@ function scene:createScene( event )
     tmpImage = display.newImage('images/plus.png')
     tmpImage.x = 100
     tmpImage.y = 75
+    tmpImage.xScale = .5
+    tmpImage.yScale = .5
     tmpImage.alpha = .3
     layers.frame:insert(tmpImage)
     tmpImage.touch = promote_player
@@ -189,6 +191,8 @@ function scene:createScene( event )
     tmpImage = display.newImage('images/minus.png')
     tmpImage.x = 900
     tmpImage.y = 75
+    tmpImage.xScale = .5
+    tmpImage.yScale = .5
     tmpImage.alpha = .3
     layers.frame:insert(tmpImage)
     tmpImage.touch = clear_player
