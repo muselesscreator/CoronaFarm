@@ -36,7 +36,7 @@ function Blank:nextIsValid()
     return true
 end
 
-
+--[[
 function Blank:onClick( event )
     if self:canClick() then
         print('can click')
@@ -46,8 +46,8 @@ function Blank:onClick( event )
         return true
     end
 end
+]]--
 
---[[
 function Blank:onClick( event )
     if self:canClick() then
         print('can click')
@@ -68,7 +68,7 @@ function Blank:onClick( event )
         return true
     end
 end
-]]--
+
 function Blank:useWeapon()
     self.base_sprite:setSequence('seq'..self:whatIsNext().type)
     self.base_sprite.alpha = 1
