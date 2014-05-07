@@ -56,7 +56,6 @@ function Blank:onClick( event )
             self:useWeapon()
             theField:nextDay()
             self:useNext()
-
         else
             self:toPlant()
             self:useNext()

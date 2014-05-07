@@ -10,7 +10,7 @@ function FarmElement:initialize(args)
 
         local target  = event.target
         local phase = event.phase
-        
+
         if touchesAllowed and not layers.popup.visible and not gameOver then
 
             local pest = theField:pestAt(self.i, self.j)
@@ -160,11 +160,12 @@ function FarmElement:removeFromField()
 end
 --Done
 function FarmElement:useWeapon()
-    self.base_sprite:setSequence('seq'..self:whatIsNext().type)
-    self.base_sprite:play()
+    self.overlay:setSequence('seq'..self:whatIsNext().type)
+    self.overlay.alpha = 1
+    self.overlay:play()
     timer.performWithDelay(250, function()
-        self.base_sprite.alpha = 0 
-        self.base_sprite:setSequence('seqBlank')
+        self.overlay.alpha = 0 
+        self.overlay:setSequence('seqBlank')
         end, 1)
 end
 
