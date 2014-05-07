@@ -17,6 +17,10 @@ function AirPest:initialize(args)
     self.bird_sprite:setSequence('seqBird')
     self.bird_sprite:play()
 
+    self.bird_death = display.newSprite(myImageSheet, sequenceData)
+    self.bird_death.y = display.contentHeight/2
+    self.bird_death.x = display.contentWidth/2
+    self.bird_death.alpha = 0
 
     self.overlay.x = display.contentWidth / 2
     self.overlay.y = display.contentHeight / 2
@@ -30,6 +34,7 @@ end
 function AirPest:addSpritesToLayers()
     theField.birdLayer:insert(self.base_sprite)
     theField.birdLayer:insert(self.bird_sprite)
+    theField.birdLayer:insert(self.bird_death)
     theField.birdLayer:insert(self.overlay)
 end
 
@@ -141,8 +146,10 @@ function AirPest:attack()
 end
 
 function AirPest:useWeapon()
-    self.bird_sprite:setSequence('seqBirdDead')
-    self.bird_sprite:play()
+    self.bird_sprite.alpha = 0
+    self.bird_death:setSequence('seqBirdDead')
+    self.bird_death.alpha = 1
+    self.bird_death:play()
     self.dying = true
     timer.performWithDelay(700, function() self:die() end, 1)
 end
@@ -153,6 +160,8 @@ function AirPest:die()
         self.base_sprite = nil
         self.bird_sprite:removeSelf()
         self.bird_sprite = nil
+        self.bird_death:removeSelf()
+        self.bird_death = nil
         self.overlay:removeSelf()
         self.overlay = nil
     end

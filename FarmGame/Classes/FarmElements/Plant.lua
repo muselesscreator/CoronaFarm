@@ -91,6 +91,7 @@ function Plant:onClick()
         elseif self.myStage == self.rot then
             local tmp = Barren:new({i=self.i, j=self.j, turns_remaining = self.turns[#self.turns]})
             self:die()
+            theField:nextDay()
         elseif self:nextIsValid() then
             local pest = theField:pestAt(self.i, self.j)
             if pest ~= false then
@@ -167,17 +168,19 @@ function Plant:harvest(multiplier)
         self.myStage = self.mature - 1
         self.myProgress = 0 
         timer.performWithDelay(200, function()
-            self.base_sprite:setSequence('seq'..self.type)
-            self.base_sprite:setFrame(self.myStage)
-            self:clearDecorator()
-            timer.performWithDelay(350, function()
-                score:removeSelf()
-                score = nil
-                if multiplier then
-                    mult:removeSelf()
-                    mult = nil
-                end
-            end, 1)
+            if self.base_sprite ~= nil then
+                self.base_sprite:setSequence('seq'..self.type)
+                self.base_sprite:setFrame(self.myStage)
+                self:clearDecorator()
+                timer.performWithDelay(350, function()
+                    score:removeSelf()
+                    score = nil
+                    if multiplier then
+                        mult:removeSelf()
+                        mult = nil
+                    end
+                end, 1)
+            end
         end, 1)
     end
 end
