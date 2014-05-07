@@ -87,7 +87,9 @@ function Plant:onClick()
                 v:harvest(mult)
                 thePlayer:addScore(v.xp * mult)
             end
-            theField:nextDay()
+            timer.performWithDelay(250, function()
+                theField:nextDay()
+                end, 1)
         elseif self.myStage == self.rot then
             local tmp = Barren:new({i=self.i, j=self.j, turns_remaining = self.turns[#self.turns]})
             self:die()
@@ -110,14 +112,16 @@ end
 function Plant:useWeapon()
     if self:whatIsNext().type == 'Mallet' then
         FarmElement.useWeapon(self)
-        theField:nextDay()
         timer.performWithDelay(250, function()
             local tmp = Blank:new({i=self.i, j=self.j})
+            theField:nextDay()
             self:die()
             end, 1)
     else
         FarmElement.useWeapon(self)
-        theField:nextDay()
+        timer.performWithDelay(250, function()
+            theField:nextDay()
+            end, 1)
     end
 end
 
