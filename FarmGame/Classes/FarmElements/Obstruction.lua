@@ -19,6 +19,7 @@ function Obstruction:initialize(args)
     obs_sprite.x = self.x
     obs_sprite.y = self.y
     self.base_sprite.alpha = 0
+    self.base_sprite.isHitTestable = true
     self.obs_sprite = obs_sprite
 
     theField:addElement(self)
@@ -51,6 +52,13 @@ function Obstruction:removeFromField()
     end
 end
 
+function Obstruction:die()
+    if self.obs_sprite ~= nil then
+        self.obs_sprite:removeSelf()
+        self.obs_sprite = nil
+    end
+    FarmElement.die(self)
+end
 --==================================================================================
 --====   Turtle                     ================================================
 --==================================================================================
@@ -99,6 +107,7 @@ end
 
 --Done
 function Rock:nextIsValid()
+    print('Rock:nextIsValid')
     return self:whatIsNext().is_weapon
 end
 --Done?
