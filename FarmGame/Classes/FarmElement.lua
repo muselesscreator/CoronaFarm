@@ -7,12 +7,13 @@ function FarmElement:initialize(args)
     self:deriveXY()
     print(args.i)
     local function onClick(event)
-        print(event.x..', '..event.y..'            '..self.x..', '..self.y)
-        print(event.phase)
-        if touchesAllowed and event.phase == 'began' and not layers.popup.visible and not gameOver then
+
+        local target  = event.target
+        local phase = event.phase
+        
+        if touchesAllowed and not layers.popup.visible and not gameOver then
 
             local pest = theField:pestAt(self.i, self.j)
-            print(pest)
             if pest ~= false then
                 if pest:canClick() then
                     print('CLICK ON PEST')
@@ -35,8 +36,8 @@ function FarmElement:initialize(args)
     base_sprite:setSequence('seqBlank')
     base_sprite.x = self.x 
     base_sprite.y = self.y
-    base_sprite.touch = onClick
-    base_sprite:addEventListener('touch', onClick)
+    base_sprite.tap = onClick
+    base_sprite:addEventListener('tap', onClick)
 
 
     local overlay = display.newSprite(myImageSheet, sequenceData)
@@ -113,9 +114,7 @@ function FarmElement:die()
         self.base_sprite = nil
         self.overlay = nil
     end
-    print('?')
     self:removeFromField()
-    print('?')
     self = nil
 end
 
@@ -145,6 +144,7 @@ function FarmElement:canClick()
     print('--@FarmElement:canClick()')
     return self:nextIsValid()
 end
+
 --Done?
 function FarmElement:addToField()
     theField.elements[self.elem_type][#theField.elements[self.elem_type]+1] = self
