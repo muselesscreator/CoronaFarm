@@ -163,7 +163,10 @@ function Barren:nextIsValid()
     return self:whatIsNext().is_weapon
 end
 
-
+function Barren:die()
+    self.obs_sprite:removeSelf()
+    FarmElement.die(self)
+end
 
 --==================================================================================
 --====   Urn                        ================================================

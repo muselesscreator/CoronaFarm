@@ -169,6 +169,7 @@ function Crow:spawn()
     local numSpawn = self:doesSpawn()
     if numSpawn > 0 then
         for i=1, numSpawn do
+            playSoundEffect('Crow')
             local dest = self:whereDoesSpawn()
             local tmp = Crow:new({i=dest.i, j=dest.j}) 
         end
@@ -182,6 +183,7 @@ end
 
 function Cockatrice:spawn()
     if self:doesSpawn() then
+        playSoundEffect('Cockatrice')
         local dest = self:whereDoesSpawn()
         local tmp = Cockatrice:new({i=dest.i, j=dest.j}) 
     end
