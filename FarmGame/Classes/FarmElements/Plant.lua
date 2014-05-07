@@ -172,15 +172,15 @@ function Plant:harvest(multiplier)
                 self.base_sprite:setSequence('seq'..self.type)
                 self.base_sprite:setFrame(self.myStage)
                 self:clearDecorator()
-                timer.performWithDelay(350, function()
-                    score:removeSelf()
-                    score = nil
-                    if multiplier then
-                        mult:removeSelf()
-                        mult = nil
-                    end
-                end, 1)
             end
+            timer.performWithDelay(350, function()
+                score:removeSelf()
+                score = nil
+                if multiplier then
+                    mult:removeSelf()
+                    mult = nil
+                end
+            end, 1)
         end, 1)
     end
 end
