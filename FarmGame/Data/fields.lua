@@ -125,9 +125,9 @@ function fields.Tea.updateWeights()
 end
 
  function slingshot_weights()
-    if theQueue[#theQueue].square_type == 'Slingshot' then
+    if theQueue[#theQueue].contents.type == 'Slingshot' then
         theQueue.weights.Slingshot = 0
-    elseif theBasket.box.type == 'Slingshot' then
+    elseif theBasket.box.contents.type == 'Slingshot' then
         theQueue.weights.Slingshot = 5
     else
         theQueue.weights.Slingshot = 15
