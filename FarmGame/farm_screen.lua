@@ -1,4 +1,3 @@
-local storyboard = require( "storyboard" )
 local widget = require('widget')
 local scene = storyboard.newScene()
 
@@ -88,7 +87,7 @@ function scene:createScene( event)
     local function tapOverlay( event )
             return true
     end
-
+    
     layers.field = widget.newScrollView
     {
         left = 0,
@@ -107,6 +106,7 @@ function scene:createScene( event)
         verticalScrollDisabled = false,
         listener = scrollListener,
     }
+
 
     layers.frame = display.newGroup()
     layers.overlays = display.newGroup()
