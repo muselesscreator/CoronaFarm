@@ -164,8 +164,10 @@ function FarmElement:useWeapon()
     self.overlay.alpha = 1
     self.overlay:play()
     timer.performWithDelay(250, function()
-        self.overlay.alpha = 0 
-        self.overlay:setSequence('seqBlank')
+        if self.overlay ~= nil then
+            self.overlay.alpha = 0 
+            self.overlay:setSequence('seqBlank')
+        end
         end, 1)
 end
 
