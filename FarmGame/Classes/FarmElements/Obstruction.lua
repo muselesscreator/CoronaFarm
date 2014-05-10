@@ -190,6 +190,7 @@ function Urn:initialize(args)
     Obstruction.initialize(self, args)
     self.obs_sprite:setSequence('Urn')
     self.elem_type = 'Urn'
+    theField:updateDoomCounter()
 end
 
 function Urn:nextIsValid()
