@@ -1,9 +1,10 @@
 local storyboard = require 'storyboard'
 
 Basket = class(function(basket)
-
-        local box = display.newSprite(myImageSheet, sequenceData)
-        box:setSequence("seqBoxClosed")
+        print("????????")
+        print(uiSheet)
+        local box = display.newSprite(uiSheet, sequenceData)
+        box:setSequence("BoxClosed")
         box.alpha = 1
         box.x = theField.Basket.X
         box.y = theField.Basket.Y
@@ -12,10 +13,9 @@ Basket = class(function(basket)
         layers.frame:insert(box)
         basket.box = box
 
-        local decorator = display.newSprite(myImageSheet,
+        local decorator = display.newSprite(uiSheet,
             sequenceData)
-        decorator:setSequence("seqBlank")
-        decorator.alpha = .01
+        decorator.alpha = 0
         decorator.x = theField.Basket.X + 15
         decorator.y = theField.Basket.Y + 5
         decorator.height = 50
@@ -34,7 +34,7 @@ function Basket:fill()
     local sprite = self.decorator
     local contents = theQueue[1].contents
 
-    sprite:setSequence("seq"..contents.type)
+    sprite:setSequence('ui'..contents.type)
     sprite:setFrame(1)
     sprite.alpha = 1
 
@@ -51,18 +51,18 @@ function Basket:select()
     local sprite = self.decorator
     local box = self.box
     if box.selected then
-        box:setSequence('seqBoxClosed')
+        box:setSequence('BoxClosed')
         box.selected = false
     else
-        box:setSequence('seqBoxOpen')
+        box:setSequence('BoxOpen')
         box.selected = true
     end
 end
 
 function Basket:empty(square)
     print('empty')
-    self.box:setSequence('seqBoxClosed')
-    self.decorator:setSequence('seqBlank')
+    self.box:setSequence('BoxClosed')
+    self.decorator:setSequence('Blank')
     self.decorator.alpha = .2
     self.box.empty = true
     self.box.selected = false

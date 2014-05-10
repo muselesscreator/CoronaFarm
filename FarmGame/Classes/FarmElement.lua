@@ -5,7 +5,6 @@ function FarmElement:initialize(args)
     self.i = args.i
     self.j = args.j
     self:deriveXY()
-    print(args.i)
     local function onClick(event)
 
         local target  = event.target
@@ -13,8 +12,10 @@ function FarmElement:initialize(args)
 
         if touchesAllowed and not layers.popup.visible and not gameOver then
             local pest = theField:pestAt(self.i, self.j)
+            print('--@FarmElement:onClick')
+            print(pest)
             if pest ~= false then
-                if pest:canClick() then
+                if pest:canClick() ~= false then
                     print('CLICK ON PEST')
                     touchesAllowed = false
                     timer.performWithDelay(500, function() touchesAllowed = true end, 1)
@@ -32,7 +33,7 @@ function FarmElement:initialize(args)
         end
     end
 
-    local base_sprite = display.newSprite(myImageSheet, sequenceData)
+    local base_sprite = display.newSprite(plantSheet, sequenceData)
     base_sprite:setSequence('seqBlank')
     base_sprite.x = self.x 
     base_sprite.y = self.y
@@ -40,11 +41,17 @@ function FarmElement:initialize(args)
     base_sprite:addEventListener('tap', onClick)
 
 
-    local overlay = display.newSprite(myImageSheet, sequenceData)
+    local overlay = display.newSprite(overlaySheet, sequenceData)
     overlay:setSequence('seqBlank')
     overlay.x = self.x
     overlay.y = self.y
     overlay.alpha = 0
+
+    local weapon = display.newSprite(weaponSheet, sequenceData)
+    weapon.x = self.x
+    weapon.y = self.y
+    weapon.alpha = 0
+    self.weapon_sprite = weapon
 
     draw_priority = 0 --1 and up are drawn (1 first)
 
@@ -62,6 +69,7 @@ function FarmElement:addSpritesToLayers()
     local layer = theField.layers[self.j]
     layer:insert(self.base_sprite)
     layer:insert(self.overlay)
+    layer:insert(self.weapon_sprite)
 end
 
 function FarmElement:move()
@@ -142,6 +150,7 @@ end
 --Done
 function FarmElement:canClick()
     print('--@FarmElement:canClick()')
+    print(self:nextIsValid())
     return self:nextIsValid()
 end
 
@@ -160,13 +169,13 @@ function FarmElement:removeFromField()
 end
 --Done
 function FarmElement:useWeapon()
-    self.overlay:setSequence('seq'..self:whatIsNext().type)
-    self.overlay.alpha = 1
-    self.overlay:play()
+    self.weapon_sprite:setSequence(self:whatIsNext().type)
+    self.weapon_sprite.alpha = 1
+    self.weapon_sprite:play()
     timer.performWithDelay(250, function()
-        if self.overlay ~= nil then
-            self.overlay.alpha = 0 
-            self.overlay:setSequence('seqBlank')
+        if self.weapon_sprite ~= nil then
+            self.weapon_sprite.alpha = 0 
+            self.weapon_sprite:setSequence('seqBlank')
         end
         end, 1)
 end

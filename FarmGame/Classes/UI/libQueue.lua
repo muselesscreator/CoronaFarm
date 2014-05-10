@@ -24,12 +24,12 @@ function libQueue:nextEntry(weights) --push and pop, return the queue and the el
     end
     l = self.length
     local contents = self:pickNext()
-    local sprite = display.newSprite(myImageSheet, sequenceData)
+    local sprite = display.newSprite(uiSheet, sequenceData)
 
     sprite.x = theField.Queue.X
     sprite.y = 0
 
-    sprite:setSequence('seq'..contents.type)
+    sprite:setSequence('ui'..contents.type)
     layers.frame:insert(sprite)
 
     self[1].sprite.alpha = 0
@@ -98,8 +98,8 @@ function libQueue:fill()
     local i = 0
     for key, val in ipairs(self) do
         i = i+1
-        local sprite = display.newSprite(myImageSheet, sequenceData)
-        sprite:setSequence("seq"..val.contents.type)
+        local sprite = display.newSprite(uiSheet, sequenceData)
+        sprite:setSequence('ui'..val.contents.type)
         sprite.x = theField.Queue.X
         sprite.y = theField.Queue.Y - (i-1)*125
         val.sprite = sprite

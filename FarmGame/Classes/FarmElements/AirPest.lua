@@ -11,19 +11,18 @@ function AirPest:initialize(args)
     self.base_sprite.alpha = 0
     self.base_sprite.isHitTestable = true
 
-    self.bird_sprite = display.newSprite(myImageSheet, sequenceData)
-    self.bird_sprite.y = self.base_sprite.y - 275
-    self.bird_sprite.x = self.base_sprite.x
-    self.bird_sprite:setSequence('seqBird')
-    self.bird_sprite:play()
+    self.pest_sprite.y = self.y - 275
+    self.pest_sprite.x = self.x
+    self.pest_sprite:setSequence('Bird')
+    self.pest_sprite:play()
 
-    self.bird_death = display.newSprite(myImageSheet, sequenceData)
+    self.bird_death = display.newSprite(pestSheet, sequenceData)
     self.bird_death.y = display.contentHeight/2
     self.bird_death.x = display.contentWidth/2
     self.bird_death.alpha = 0
 
-    self.overlay.x = display.contentWidth / 2
-    self.overlay.y = display.contentHeight / 2
+    self.weapon_sprite.x = display.contentWidth / 2
+    self.weapon_sprite.y = display.contentHeight / 2
 
     self.turns = 0
     self.maxTurns = 2
@@ -33,15 +32,9 @@ end
 
 function AirPest:addSpritesToLayers()
     theField.birdLayer:insert(self.base_sprite)
-    theField.birdLayer:insert(self.bird_sprite)
+    theField.birdLayer:insert(self.pest_sprite)
     theField.birdLayer:insert(self.bird_death)
     theField.birdLayer:insert(self.overlay)
-end
-
-function AirPest:nextIsValid()
-    print('--AirPest:nextIsValid')
-    print(self:whatIsNext().is_weapon)
-    return self:whatIsNext().is_weapon
 end
 
 function AirPest:doesSpawn()
@@ -53,7 +46,7 @@ function AirPest:doesSpawn()
         chances[1] = 50
         chances[2] = i/2
     elseif i <= 50 then
-        chances[0] = 45-(1-10)/4
+        chances[0] = 45-(i-10)/4
         chances[1] = 50
         chances[2] = 5+(i-10)/4
         chances[3] = (i-10)/8
@@ -67,9 +60,9 @@ function AirPest:doesSpawn()
         chances[0] = 25
         chances[1] = 60-(3*i)/20
         chances[2] = 15
-        chances[3] = 5+(1/20)
+        chances[3] = 5+(i/20)
         chances[4] = i/20
-        chances[5] = 1/20-5
+        chances[5] = i/20-5
     else
         chances[0] = 25
         chances[1] = 30
@@ -92,9 +85,7 @@ function AirPest:whereDoesSpawn()
     local opts = {}
     for i, v in pairs(theField.elements) do
         for k, val in ipairs(v) do
-            print(val.elem_type)
             if theField:pestAt(val.i, val.j) == false and val.elem_type ~= 'Turtle' then
-                print("?")
                 opts[#opts+1] = val
             end
         end
@@ -124,8 +115,8 @@ function AirPest:nextDay()
 end
 
 function AirPest:swoop()
-    self.bird_sprite:setSequence('seqSwoop')
-    self.bird_sprite:play()
+    self.pest_sprite:setSequence('Swoop')
+    self.pest_sprite:play()
     playSoundEffect('Crow')
     timer.performWithDelay(400, function() self:attack() end, 1)
     timer.performWithDelay(800, function() self:die() end, 1)
@@ -146,8 +137,9 @@ function AirPest:attack()
 end
 
 function AirPest:useWeapon()
-    self.bird_sprite.alpha = 0
-    self.bird_death:setSequence('seqBirdDead')
+    print('--@AirPest:useWeapon()')
+    self.pest_sprite.alpha = 0
+    self.bird_death:setSequence('BirdDead')
     self.bird_death.alpha = 1
     self.bird_death:play()
     self.dying = true
@@ -158,8 +150,8 @@ function AirPest:die()
     if self.base_sprite ~= nil then
         self.base_sprite:removeSelf()
         self.base_sprite = nil
-        self.bird_sprite:removeSelf()
-        self.bird_sprite = nil
+        self.pest_sprite:removeSelf()
+        self.pest_sprite = nil
         self.bird_death:removeSelf()
         self.bird_death = nil
         self.overlay:removeSelf()
@@ -170,15 +162,15 @@ function AirPest:die()
 end
 
 function AirPest:nextIsValid()
+    print('--@AirPest:nextIsValid')
     local target = self:myTarget()
     if target.elem_type == 'Plant' then
-        print(target.myStage)
-        print(#target.turns)
-        if target.myStage == (target.turns[target.myStage] - 1) then
+        if target.myStage == target.Mature and target.myProgress == (target.turns[target.mature] - 1) then
             return false
         end
     end
-    Pest.nextIsValid(self)
+    print("?")
+    return Pest.nextIsValid(self)
 end
 
 Crow = Class(AirPest)

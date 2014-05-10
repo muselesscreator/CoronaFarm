@@ -215,7 +215,6 @@ function Field:addElement(elem)
     self.lastElementID = self.lastElementID + 1
     self.allElements[id] = elem
     local type = elem.elem_type
-    print(type)
     self.elements[elem.elem_type][#self.elements[elem.elem_type]+1] = elem
     elem.id = id
     elem.base_sprite.id = id
