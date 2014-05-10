@@ -152,6 +152,8 @@ function LandPest:useWeapon()
     local r = math.random(1, 5)
     fn = 'mallet_'..r
     playSoundEffect(fn)
+    self.rock = Rock:new({i=self.i, j=self.j})
+    self.rock.obs_sprite.alpha = 0
     self.pest_sprite.y = self.pest_sprite.y - 75
     self.pest_sprite:setSequence('GopherHammerDie')
     self.pest_sprite:play()
@@ -160,7 +162,7 @@ function LandPest:useWeapon()
 end
 
 function LandPest:die()
-    local tmp = Rock:new({i=self.i, j=self.j})
+    self.rock.obs_sprite.alpha = 1
     Pest.die(self)
 end
 
