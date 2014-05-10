@@ -12,7 +12,6 @@ function FarmElement:initialize(args)
         local phase = event.phase
 
         if touchesAllowed and not layers.popup.visible and not gameOver then
-
             local pest = theField:pestAt(self.i, self.j)
             if pest ~= false then
                 if pest:canClick() then
@@ -29,6 +28,7 @@ function FarmElement:initialize(args)
                 self:onClick(event)
                 return true
             end
+
         end
     end
 

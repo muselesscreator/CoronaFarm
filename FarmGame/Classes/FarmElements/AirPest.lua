@@ -169,6 +169,18 @@ function AirPest:die()
     self = nil
 end
 
+function AirPest:nextIsValid()
+    local target = self:myTarget()
+    if target.elem_type == 'Plant' then
+        print(target.myStage)
+        print(#target.turns)
+        if target.myStage == (target.turns[target.myStage] - 1) then
+            return false
+        end
+    end
+    Pest.nextIsValid(self)
+end
+
 Crow = Class(AirPest)
 function Crow:initialize(args)
     AirPest.initialize(self, args)
