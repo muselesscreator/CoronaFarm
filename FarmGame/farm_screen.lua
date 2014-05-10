@@ -152,6 +152,17 @@ function scene:createScene( event)
     ScoreCard.y = 85
     layers.overFrame:insert(ScoreCard)
 
+    doomHUD = display.newText(0,theField.maxDoomCounter,0,CustomFont, 30)
+    doomHUD.anchorX = 0
+    doomHUD.anchorY = 0
+    doomHUD.x = 60
+    doomHUD.y = 350
+    doomHUD:setFillColor(1,1,1)
+    doomHUD.text = theField.maxDoomCounter
+    layers.overFrame:insert(doomHUD)
+
+
+
 --> Set Label
     scoreHUD = display.newText(0, 0, 0, CustomFont, 30)
     scoreHUD.anchorX = 0

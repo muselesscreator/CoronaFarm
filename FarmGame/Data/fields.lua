@@ -23,6 +23,8 @@ fields.Salad = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {},
     minScore = 0,
+    maxDoomCounter = 10,
+    doomObjType = 'Rock',
 }
 function fields.Salad.updateWeights()
     mallet_weights()
@@ -53,6 +55,8 @@ fields.Stew = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, {5,6}},
     minScore = 120,
+    maxDoomCounter = 5,
+    doomObjType = 'Urn',
 }
 function fields.Stew.updateWeights(queue, field)
     slingshot_weights()    
@@ -85,6 +89,8 @@ fields.Salsa = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5,1}, {5, 2}, {5, 3}, {6, 3}, {3, 6}, {4, 6}, {4, 7}, {4, 8}},
     minScore = 500,
+    maxDoomCounter = 20,
+    doomObjType = 'Rock',
 }
 function fields.Salsa.updateWeights()
     mallet_weights()
@@ -115,6 +121,8 @@ fields.Tea = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {{3, 3}, {3, 4}, {4, 3}, {4, 4}, {6, 5}, {6, 6}, {7, 5}, {7, 6}},
     minScore = 1000,
+    maxDoomCounter = 30,
+    doomObjType = 'StonePlant',
 }
 function fields.Tea.updateWeights()
     slingshot_weights()
@@ -124,7 +132,7 @@ function fields.Tea.updateWeights()
     print('--fields.lua def:  updateWeights')
 end
 
- function slingshot_weights()
+function slingshot_weights()
     if theQueue[#theQueue].contents.type == 'Slingshot' then
         theQueue.weights.Slingshot = 0
     elseif theBasket.box.contents.type == 'Slingshot' then
