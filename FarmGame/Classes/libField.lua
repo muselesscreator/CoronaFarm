@@ -99,48 +99,43 @@ function Field:boringGameOver()
     timer.performWithDelay(1500, function() storyboard:gotoScene('title_screen') end, 1)
 end
 
+function Field:getDoomCounter()
+    local num_flags
+    for i, v in ipairs(theField.elements.Obstruction) do
+        if v.elem_type == self.DoomObjType then
+            num_flags = num_flags + 1
+        end
+    end
+    return self.maxDoomCounter - num_flags
+end
+
+function Field:updateDoomCounter()
+    local doomCounter = theField:getDoomCounter()
+    local maxDoomCounter = theField.maxDoomCounter
+    local fracDoomCount = (doomCounter/maxDoomCounter)
+    if fracDoomCount <= .25 then
+        doomHUD.setFillColor(1,1,1)
+    elseif (fracDoomCount > .25 and fracDoomCount <= .5) then
+        doomHUD.setFillColor(255,215,0)
+    elseif (fracDoomCount > .5 and fracDoomCount <= .75)
+        doomHUD.setFillColor(255,128,0)
+    else
+        doomHUD.setFillColor(220,20,60)
+    end
+    doomHUD.text = doomCounter
+end
+
 function Field:chkGameOver()
     print("--@Field:chkGameOver: checking for game over")
     local box = theBasket.box.contents
     local basket = theQueue[1].contents
-
-    if fieldType == 'Stew' then
-        local num_flags = 0
-        for i, v in ipairs(self.elements.Obstruction) do
-            if v.elem_type == 'Urn' then
-                num_flags = num_flags + 1
-            end
-        end
-        if num_flags > 5 then
-            gameOver = true
-            self:pestGameOver()
-            return true
-        end
-    elseif fieldType == 'Tea' then
-        local num_flags = 0
-        for i, v in ipairs(self.elements.Obstruction) do
-            if v.elem_type == 'StonePlant' then
-                num_flags = num_flags + 1
-            end
-        end
-        if num_flags > 30 then
-            gameOver = true
-            self:pestGameOver()
-            return true
-        end
-    else
-        local num_flags = 0
-        for i, v in ipairs(self.elements.Obstruction) do
-            if v.elem_type == 'Rock' then
-                num_flags = num_flags + 1
-            end
-        end
-        if ((num_flags >= 10) and fieldType=='Salad') or num_flags > 20 then
-            gameOver = true
-            self:pestGameOver()
-            return true
-        end
+ 
+    if self:getDoomCounter == 0 then
+        gameOver = true
+        self:pestGameOver()
+        return true
     end
+
     if box.is_weapon or box.empty or basket.is_weapon or #self.elements.Blank > 0 then
         return true
     end
@@ -171,6 +166,7 @@ function Field:nextDay()
     self.turns = self.turns + 1
     self:spawnPests()
     self:chkGameOver()
+    self:updateDoomCounter()
     self.touchesAllowed = true
 end
 
