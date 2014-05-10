@@ -1,8 +1,3 @@
-
---local obsSheetInfo = require("ImageSheets.Obstruction_sheet")
---local obsSequenceData = obsSheetInfo:getSequenceData()
---local obsImageSheet = graphics.newImageSheet("plant_sheet.png", obsSheetInfo:getSheet())
-
 local Super = FarmElement
 
 
@@ -15,9 +10,10 @@ function Obstruction:initialize(args)
 
     self.elem_type = 'Obstruction'
     
-    obs_sprite = display.newSprite(myImageSheet, sequenceData)
+    obs_sprite = display.newSprite(obsImageSheet, obsSequenceData)
     obs_sprite.x = self.x
     obs_sprite.y = self.y
+    obs_sprite.alpha = 0
     self.base_sprite.alpha = 0
     self.base_sprite.isHitTestable = true
     self.obs_sprite = obs_sprite

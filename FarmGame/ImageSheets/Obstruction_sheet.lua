@@ -977,23 +977,23 @@ SheetInfo.frameIndex =
 
 sequenceData =
 {
-    { name="Barren", frames={ 1 }},
-    { name="Rock", frames={ 2 }},
-    { name="StoneCarrot", frames={ 8, 4, 5, 6, 7 }},
-    { name="StoneCelery", frames={ 13, 9, 10, 11, 12 }},
-    { name="StoneChamomile", frames={ 18, 14, 15, 16, 17 }},
-    { name="StoneJalapenos", frames={ 24, 20, 21, 22, 23 }},
-    { name="StoneLettuce", frames={ 29, 25, 26, 27, 28, 29 }},
-    { name="StoneMint", frames={ 34, 30, 31, 32, 33 }},
-    { name="StonePotatoes", frames={ 39, 35, 36, 37, 38 }},
-    { name="StoneRadish", frames={ 44, 40, 41, 42, 43 }},
-    { name="StoneTomato", frames={ 49, 45, 46, 47, 48 }},
-    { name="TurtleN", frames={ 50, 51, 52, 53, 54, 55, 56 }},
-    { name="turtleNW", frames={ 57 }},
-    { name="turtleS", frames={ 58, 59, 60, 61, 62, 63, 64 }},
-    { name="turtleSW", frames={ 65 }},
-    { name="TurtleW", frames={ 66, 67, 68, 69, 70, 71, 72 }},
-    { name="Urn", frames={ 73 }}
+    { name="Barren", sheet=obsImageSheet, frames={ 1 }},
+    { name="Rock", sheet=obsImageSheet, frames={ 2 }},
+    { name="StoneCarrot", sheet=obsImageSheet, frames={ 8, 4, 5, 6, 7 }},
+    { name="StoneCelery", sheet=obsImageSheet, frames={ 13, 9, 10, 11, 12 }},
+    { name="StoneChamomile", sheet=obsImageSheet, frames={ 18, 14, 15, 16, 17 }},
+    { name="StoneJalapenos", sheet=obsImageSheet, frames={ 24, 20, 21, 22, 23 }},
+    { name="StoneLettuce", sheet=obsImageSheet, frames={ 29, 25, 26, 27, 28, 29 }},
+    { name="StoneMint", sheet=obsImageSheet, frames={ 34, 30, 31, 32, 33 }},
+    { name="StonePotatoes", sheet=obsImageSheet, frames={ 39, 35, 36, 37, 38 }},
+    { name="StoneRadish", sheet=obsImageSheet, frames={ 44, 40, 41, 42, 43 }},
+    { name="StoneTomato", sheet=obsImageSheet, frames={ 49, 45, 46, 47, 48 }},
+    { name="TurtleN", sheet=obsImageSheet, frames={ 50, 51, 52, 53, 54, 55, 56 }},
+    { name="turtleNW", sheet=obsImageSheet, frames={ 57 }},
+    { name="turtleS", sheet=obsImageSheet, frames={ 58, 59, 60, 61, 62, 63, 64 }},
+    { name="turtleSW", sheet=obsImageSheet, frames={ 65 }},
+    { name="TurtleW", sheet=obsImageSheet, frames={ 66, 67, 68, 69, 70, 71, 72 }},
+    { name="Urn", sheet=obsImageSheet, frames={ 73 }}
 }
 
 

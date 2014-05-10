@@ -108,6 +108,11 @@ sequenceData =
     { name='seqStoneRadish', frames={311, 312, 313, 314}},
     { name='seqStoneTomatos', frames={315, 316, 317, 318}}
 }
+
+obsSheetInfo = require("ImageSheets.Obstruction_sheet")
+obsSequenceData = obsSheetInfo:getSequenceData()
+obsImageSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
+
 --> Import Queue class
 require 'Classes.class'
 require 'Classes.newClass'

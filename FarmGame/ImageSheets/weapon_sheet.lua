@@ -116,6 +116,17 @@ SheetInfo.frameIndex =
     ["slingshot"] = 7,
 }
 
+
+sequenceData =
+{
+    { name="Mallet", sheet=weaponSheet, frames={ 1, 2, 3, 4, 5, 6}, time=250, loopCount=1},
+    { name="Slingshot", sheet=weaponSheet, frames={7}}
+}
+
+function SheetInfo:getSequenceData()
+    return self.sequenceData;
+end
+
 function SheetInfo:getSheet()
     return self.sheet;
 end
