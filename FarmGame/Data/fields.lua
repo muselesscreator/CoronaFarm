@@ -39,7 +39,7 @@ fields.Stew = {
     Pest = 'Crow',
     rows = 6,
     columns = 7,
-    initialWeights = {Potato = 29, Carrot = 28, Celery = 28},
+    initialWeights = {Potato = 40, Carrot = 40, Celery = 5},
     Weights = initialWeights,
     X = 380,
     Y = 126,
@@ -61,9 +61,9 @@ fields.Stew = {
 function fields.Stew.updateWeights(queue, field)
     slingshot_weights()    
     plants = 100-theQueue.weights.Slingshot
-    theQueue.weights.Potato = math.floor(plants/3)
-    theQueue.weights.Carrot = math.floor(plants/3)
-    theQueue.weights.Celery = 100-2*math.floor(plants/3)
+    theQueue.weights.Potato = 40
+    theQueue.weights.Carrot = 40
+    theQueue.weights.Celery = 5
     print('--fields.lua def:  updateWeights')
 end
 

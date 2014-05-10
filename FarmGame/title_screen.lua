@@ -125,7 +125,7 @@ function scene:createScene( event )
     layers.popup = display.newGroup()
     layers:insert(layers.popup)
 
-
+print("?")
     local scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
     scoreTxt:setFillColor(0, 0, 0)
     layers.frame:insert(scoreTxt)
@@ -134,7 +134,7 @@ function scene:createScene( event )
     scorecard.y = 730
     scorecard.yScale = .8
     layers.frame:insert(scorecard)
-    scoreTxt = display.newText( thePlayer.totalScore, 320, 730, nill, 40)
+    scoreTxt = display.newText( thePlayer.totalScore, 320, 730, nil, 40)
     scoreTxt.anchorX = 0
     scoreTxt:setFillColor(0, 0, 1)
     layers.frame:insert(scoreTxt)
