@@ -142,7 +142,7 @@ function scene:createScene( event )
 
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
-    popupMenu.x = 200
+    popupMenu.x = 250
     popupMenu.y = 200
     popupMenu.anchorX = 0
     popupMenu.anchorY = 0
@@ -155,20 +155,20 @@ function scene:createScene( event )
         emboss = true,
         onRelease = toggleOptions
     }
-    exitButton.x = 690
-    exitButton.y = 250
+    exitButton.x = 680
+    exitButton.y = 320
     exitButton.xScale = .7
     exitButton.yScale = .7
     layers.popup:insert(exitButton)
 
-    local txt = display.newText(layers.popup, 'Music Volume', 470, 320, native.systemFontBold, 25)
+    local txt = display.newText(layers.popup, 'Music Volume', 520, 390, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 300, y=340, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 350, y=400, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
-    txt = display.newText(layers.popup, 'Sound-Effects Volume', 470, 450, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 520, 500, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 300, y=480, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 350, y=510, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
     layers.popup.alpha = 0

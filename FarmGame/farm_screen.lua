@@ -152,12 +152,15 @@ function scene:createScene( event)
     ScoreCard.y = 85
     layers.overFrame:insert(ScoreCard)
 
-    doomHUD = display.newText(0,theField.maxDoomCounter,0,CustomFont, 30)
-    doomHUD.anchorX = 0
-    doomHUD.anchorY = 0
+    local doomBG = display.newImage('images/doomCounter.png')
+    doomBG.x = 60
+    doomBG.y = 345
+    layers.overFrame:insert(doomBG)
+
+    doomHUD = display.newText(0,theField.maxDoomCounter,0,native.systemFontBold, 35)
     doomHUD.x = 60
-    doomHUD.y = 350
-    doomHUD:setFillColor(1,1,1)
+    doomHUD.y = 370
+    doomHUD:setFillColor(0,.5,0)
     doomHUD.text = theField.maxDoomCounter
     layers.overFrame:insert(doomHUD)
 
@@ -176,11 +179,13 @@ function scene:createScene( event)
 
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
-    popupMenu.x = 200
-    popupMenu.y = 200
-    popupMenu.anchorX = 0
-    popupMenu.anchorY = 0
+    popupMenu.x = display.contentWidth/2
+    popupMenu.y = display.contentHeight/2
+
+    popupMenu.xScale = 1.2
+    popupMenu.yScale = 1.2
     layers.popup.visible = false
+
     local tmpButton = widget.newButton
     {
         defaultFile = "images/popOutMenuButton.png",
@@ -191,14 +196,15 @@ function scene:createScene( event)
     tmpButton.y = 200
     layers.frame:insert(tmpButton)
 
+
     local backButton = widget.newButton{
         defaultFile = "images/buttonResumeUp.png",
         overFile = "images/buttonResumeDown.png",
         emboss = true,
         onRelease = toggleOptions
     }
-    backButton.x = 350
-    backButton.y = 340
+    backButton.x = 380
+    backButton.y = 360
     layers.popup:insert(backButton)
 
     local exitButton = widget.newButton
@@ -208,19 +214,19 @@ function scene:createScene( event)
         emboss = true,
         onRelease = gotoTitle
     }
-    exitButton.x = 580
-    exitButton.y = 340
+    exitButton.x = 620
+    exitButton.y = 360
     layers.popup:insert(exitButton)
 
 
-    local txt = display.newText(layers.popup, 'Music Volume', 470, 420, native.systemFontBold, 25)
+    local txt = display.newText(layers.popup, 'Music Volume', 500, 440, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 300, y=440, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 340, y=460, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
-    txt = display.newText(layers.popup, 'Sound-Effects Volume', 470, 500, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 500, 520, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 300, y=510, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 340, y=530, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
     layers.popup.alpha = 0

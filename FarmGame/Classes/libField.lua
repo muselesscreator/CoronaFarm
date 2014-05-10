@@ -116,16 +116,19 @@ function Field:updateDoomCounter()
     local maxDoomCounter = self.maxDoomCounter
     local fracDoomCount = ((maxDoomCounter-doomCounter)/maxDoomCounter)
     print("@updateDoomCounter : doomCount -"..doomCounter.." maxDoomCounter - "..maxDoomCounter.." fraction - "..fracDoomCount)
-    if fracDoomCount <= .25 then
-        doomHUD:setFillColor(1,1,1)
-    elseif (fracDoomCount > .25 and fracDoomCount <= .5) then
-        doomHUD:setFillColor(255,215,0)
-    elseif (fracDoomCount > .5 and fracDoomCount <= .75) then
-        doomHUD:setFillColor(255,128,0)
+    if fracDoomCount < .25 then
+        doomHUD:setFillColor(0,.5,0)
+    elseif (fracDoomCount >= .25 and fracDoomCount < .5) then
+        doomHUD:setFillColor(1,1,0)
+    elseif (fracDoomCount >= .5 and fracDoomCount < .75) then
+        doomHUD:setFillColor(.9,.5,0)
     else
-        doomHUD:setFillColor(220,20,60)
+        doomHUD:setFillColor(.5,0,0)
     end
     doomHUD.text = doomCounter
+    if doomCounter == 0 then
+        self:pestGameOver()
+    end
 end
 
 function Field:chkGameOver()

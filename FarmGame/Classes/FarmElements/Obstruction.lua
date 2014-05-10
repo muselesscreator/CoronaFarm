@@ -47,11 +47,15 @@ function Obstruction:removeFromField()
 end
 
 function Obstruction:die()
+    print('--@Obs:die()')
     if self.obs_sprite ~= nil then
+        print('has obs_sprite')
+        self.obs_sprite.alpha = 0
         self.obs_sprite:removeSelf()
         self.obs_sprite = nil
     end
     FarmElement.die(self)
+    theField:updateDoomCounter()
 end
 --==================================================================================
 --====   Turtle                     ================================================
@@ -94,6 +98,12 @@ end
 
 Rock = Class(Obstruction)
 function Rock:initialize(args)
+    tmp = theField:whatIsAt(args.i, args.j)
+    for i, v in ipairs(tmp) do
+        if v.elem_type == 'Rock' then
+            return true
+        end
+    end
     Obstruction.initialize(self, args)
     self.obs_sprite:setSequence('Rock')
     self.elem_type = 'Rock'
