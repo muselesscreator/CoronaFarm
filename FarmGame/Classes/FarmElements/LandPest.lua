@@ -6,15 +6,13 @@ local Super = require('Classes.FarmElements.Pest')
 
 LandPest = Class(Super)
 function LandPest:initialize(args)
-    print('-- @LandPest before Super')
     Super.initialize(self, args)
-    print('-- @LandPest')
 
     self:addSpritesToLayers()
     theField:addElement(self)
 
-    self.base_sprite:setSequence('seqGopher')
-    self.base_sprite:play()
+    self.pest_sprite:setSequence('Gopher')
+    self.pest_sprite:play()
 
     self.numPlants = 0
     self.hunger = 0
@@ -116,11 +114,11 @@ function LandPest:move()
         self.i = dest.i
         self.j = dest.j
         self:deriveXY()
-        FarmElement.move(self)
+        Pest.move(self)
         if dest.elem_type == 'Plant' then
             self:eat()
         end
-        self.base_sprite:play()
+        self.pest_sprite:play()
         dest:die()
     end
 end
@@ -145,8 +143,8 @@ function LandPest:starve()
     fn = 'starve_'..r
     playSoundEffect(fn)
 
-    self.base_sprite:setSequence('seqGopherDie')
-    self.base_sprite:play()
+    self.pest_sprite:setSequence('GopherDie')
+    self.pest_sprite:play()
     timer.performWithDelay(800, function() self:die() end, 1)
 end
 
@@ -154,23 +152,16 @@ function LandPest:useWeapon()
     local r = math.random(1, 5)
     fn = 'mallet_'..r
     playSoundEffect(fn)
-    self.base_sprite.y = self.base_sprite.y - 75
-    self.base_sprite:setSequence('seqGopherHammerDie')
-    self.base_sprite:play()
+    self.pest_sprite.y = self.pest_sprite.y - 75
+    self.pest_sprite:setSequence('GopherHammerDie')
+    self.pest_sprite:play()
     self.dying = true
     timer.performWithDelay(800, function() self:die() end, 1)
 end
 
 function LandPest:die()
     local tmp = Rock:new({i=self.i, j=self.j})
-    if self.base_sprite ~= nil then
-        self.base_sprite:removeSelf()
-        self.overlay:removeSelf()
-        self.base_sprite = nil
-        self.overlay = nil
-    end
-    self:removeFromField()
-    self = nil
+    Pest.die(self)
 end
 
 
@@ -198,6 +189,9 @@ function LazyGopher:breed()
         dest:die()
     end
 end
+
+
+
 
 SmartGopher = Class(LandPest)
 function SmartGopher:initialize(args)

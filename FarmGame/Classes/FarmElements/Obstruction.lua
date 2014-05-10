@@ -10,10 +10,9 @@ function Obstruction:initialize(args)
 
     self.elem_type = 'Obstruction'
     
-    obs_sprite = display.newSprite(obsImageSheet, sequenceData)
+    obs_sprite = display.newSprite(obsSheet, sequenceData)
     obs_sprite.x = self.x
     obs_sprite.y = self.y
-    obs_sprite.alpha = 0
     self.base_sprite.alpha = 0
     self.base_sprite.isHitTestable = true
     self.obs_sprite = obs_sprite
@@ -97,7 +96,7 @@ end
 Rock = Class(Obstruction)
 function Rock:initialize(args)
     Obstruction.initialize(self, args)
-    self.obs_sprite:setSequence('seqRock')
+    self.obs_sprite:setSequence('Rock')
     self.elem_type = 'Rock'
 end
 
@@ -114,7 +113,7 @@ function Rock:useWeapon()
 
     if weapon == 'Mallet' then
         print('breakRock')
-        self.overlay:setSequence('seqMallet')
+        self.overlay:setSequence('Mallet')
         self.overlay.alpha = 1
         self.overlay:play()
         local tmp = Blank:new({i=self.i, j=self.j})
@@ -135,7 +134,7 @@ function StonePlant:initialize(args)
     self.type = args.type
     self.myStage = args.stage
     self.elem_type = 'StonePlant'
-    self.obs_sprite:setSequence('seqStone'..self.type)
+    self.obs_sprite:setSequence('Stone'..self.type)
     self.obs_sprite:setFrame(self.myStage)
 end
 --Done
@@ -151,7 +150,7 @@ Barren = Class(Obstruction)
 function Barren:initialize(args)
     Obstruction.initialize(self, args)
     self.elem_type = 'Barren'
-    self.obs_sprite:setSequence('seqBarren')
+    self.obs_sprite:setSequence('Barren')
     self.progress = 0
     self.turns_remaining = args.turns_remaining
 end
@@ -180,7 +179,7 @@ end
 Urn = Class(Obstruction)
 function Urn:initialize(args)
     Obstruction.initialize(self, args)
-    self.obs_sprite:setSequence('seqRock')
+    self.obs_sprite:setSequence('Urn')
     self.elem_type = 'Urn'
 end
 

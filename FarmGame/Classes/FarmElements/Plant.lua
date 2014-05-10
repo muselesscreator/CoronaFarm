@@ -5,10 +5,15 @@ function Plant:initialize(args)
     Super.initialize(self, args)
     self.type = args.type
 
+    self.plant_sprite = display.newSprite(plantSheet, sequenceData)
+    self.plant_sprite.x = self.x
+    self.plant_sprite.y = self.y
+
+
+    self.base_sprite.alpha = 0
+    self.base_sprite.isHitTestable = true
+
     print('-- @Plant:initialize()!!!!!!!!!!!!!!!!!!!!')
-    print(Plants)
-    print(self.type)
-    print(Plants[self.type])
     self.turns = Plants[self.type].turns
     self.xp = Plants[self.type].xp
     local tmp = Plants[self.type].maxHarvest
@@ -20,8 +25,8 @@ function Plant:initialize(args)
 
     self.draw_priority = 1
 
-    self.base_sprite:setSequence('seq'..self.type)
-    self.base_sprite:setFrame(1)
+    self.plant_sprite:setSequence(self.type)
+    self.plant_sprite:setFrame(1)
 
     self.myStage = 1
     self.myProgress = 0
@@ -44,15 +49,15 @@ end
 function Plant:grow()
     print('--@Plant:grow')
     self.myStage = self.myStage + 1
-    self.base_sprite:setSequence('seq'..self.type)
-    self.base_sprite:setFrame(self.myStage)
+    self.plant_sprite:setSequence(self.type)
+    self.plant_sprite:setFrame(self.myStage)
     print(self.myStage)
     self.myProgress = 0
     if self.myStage == self.mature then
-        self.overlay:setSequence('seqTag')
+        self.overlay:setSequence('Tag')
         self.overlay.alpha = 1
     elseif self.myStage == self.rot then
-        self.overlay:setSequence('seqSmell')
+        self.overlay:setSequence('Smell')
         self.overlay.alpha = 1
         self.overlay:play()
     end 
@@ -63,8 +68,8 @@ function Plant:nextDay()
     if self.myStage < self.rot and self.myProgress > self.turns[self.myStage] then
         self:grow()
     elseif self.myStage == self.mature and self.myProgress > self.turns[self.myStage]-3 then
-        self.base_sprite:setSequence('seq'..self.type..'Frame'..(3+self.myProgress-self.turns[self.myStage]))
-        self.base_sprite:play()
+        self.plant_sprite:setSequence(self.type..'Frame'..(3+self.myProgress-self.turns[self.myStage]))
+        self.plant_sprite:play()
     end
 end
 
@@ -145,10 +150,9 @@ function Plant:harvest(multiplier)
         mult:rotate(-45)
         layers.overlays:insert(mult)
     end
-    self.overlay:setSequence('seqBlank')
     self.overlay.alpha = 0
-    self.base_sprite:setSequence('seq'..self.type..'Harvest')
-    self.base_sprite:play()
+    self.plant_sprite:setSequence(self.type..'Harvest')
+    self.plant_sprite:play()
     self.timesHarvested = self.timesHarvested + 1
 
     if self.timesHarvested >= self.maxHarvest then
@@ -172,9 +176,9 @@ function Plant:harvest(multiplier)
         self.myStage = self.mature - 1
         self.myProgress = 0 
         timer.performWithDelay(200, function()
-            if self.base_sprite ~= nil then
-                self.base_sprite:setSequence('seq'..self.type)
-                self.base_sprite:setFrame(self.myStage)
+            if self.plant_sprite ~= nil then
+                self.plant_sprite:setSequence(self.type)
+                self.plant_sprite:setFrame(self.myStage)
                 self:clearDecorator()
             end
             timer.performWithDelay(350, function()
@@ -190,7 +194,6 @@ function Plant:harvest(multiplier)
 end
 
 function Plant:clearDecorator()
-    self.overlay:setSequence('seqBlank')
     self.overlay.alpha = 0
 end
 
@@ -234,4 +237,18 @@ end
 
 function Plant:cleanup()
     self.checked = false
+end
+
+function Plant:addSpritesToLayers()
+    local layer = theField.layers[self.j]
+    layer:insert(self.plant_sprite)
+    FarmElement.addSpritesToLayers(self)
+end
+
+function Plant:die()
+    if self.plant_sprite ~= nil then
+        self.plant_sprite:removeSelf()
+        self.plant_sprite = nil
+    end
+    FarmElement.die(self)
 end

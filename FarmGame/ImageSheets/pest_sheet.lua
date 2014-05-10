@@ -1,7 +1,7 @@
 --
 -- created with TexturePacker (http://www.codeandweb.com/texturepacker)
 --
--- $TexturePacker:SmartUpdate:9f847787272f19658b28592ed39294e5:a11451cd1aac78536b28c0e0c394570c:923e32802d8f49b1757c82c3ab8eb929$
+-- $TexturePacker:SmartUpdate:bd4218034c2792dfa69391cf6f7c0aff:0a7cd8390e78d060f488a5f0afa09ca9:923e32802d8f49b1757c82c3ab8eb929$
 --
 -- local sheetInfo = require("mysheet")
 -- local myImageSheet = graphics.newImageSheet( "mysheet.png", sheetInfo:getSheet() )
@@ -16,8 +16,8 @@ SheetInfo.sheet =
     
         {
             -- bird01
-            x=72,
-            y=392,
+            x=16,
+            y=716,
             width=6,
             height=4,
 
@@ -28,8 +28,8 @@ SheetInfo.sheet =
         },
         {
             -- bird02
-            x=260,
-            y=591,
+            x=164,
+            y=704,
             width=38,
             height=20,
 
@@ -52,8 +52,8 @@ SheetInfo.sheet =
         },
         {
             -- bird04
-            x=1456,
-            y=489,
+            x=204,
+            y=704,
             width=54,
             height=18,
 
@@ -76,8 +76,8 @@ SheetInfo.sheet =
         },
         {
             -- bird06
-            x=217,
-            y=358,
+            x=302,
+            y=696,
             width=38,
             height=22,
 
@@ -88,8 +88,8 @@ SheetInfo.sheet =
         },
         {
             -- bird07
-            x=58,
-            y=392,
+            x=2,
+            y=716,
             width=12,
             height=6,
 
@@ -100,8 +100,8 @@ SheetInfo.sheet =
         },
         {
             -- bird08
-            x=872,
-            y=537,
+            x=362,
+            y=711,
             width=22,
             height=12,
 
@@ -112,8 +112,8 @@ SheetInfo.sheet =
         },
         {
             -- bird09
-            x=175,
-            y=358,
+            x=260,
+            y=696,
             width=40,
             height=22,
 
@@ -124,8 +124,8 @@ SheetInfo.sheet =
         },
         {
             -- bird10
-            x=1373,
-            y=622,
+            x=342,
+            y=696,
             width=18,
             height=16,
 
@@ -136,8 +136,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead01
-            x=392,
-            y=578,
+            x=242,
+            y=292,
             width=150,
             height=60,
 
@@ -148,8 +148,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead02
-            x=1793,
-            y=98,
+            x=1559,
+            y=448,
             width=160,
             height=56,
 
@@ -160,8 +160,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead03
-            x=1793,
-            y=56,
+            x=1765,
+            y=146,
             width=162,
             height=40,
 
@@ -172,8 +172,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead04
-            x=1793,
-            y=2,
+            x=1765,
+            y=92,
             width=166,
             height=52,
 
@@ -184,8 +184,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead05
-            x=544,
-            y=567,
+            x=1450,
+            y=650,
             width=146,
             height=72,
 
@@ -196,8 +196,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead06
-            x=977,
-            y=537,
+            x=1765,
+            y=188,
             width=128,
             height=100,
 
@@ -208,8 +208,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead07
-            x=1456,
-            y=315,
+            x=954,
+            y=550,
             width=40,
             height=172,
 
@@ -220,7 +220,7 @@ SheetInfo.sheet =
         },
         {
             -- birdDead08
-            x=1016,
+            x=1166,
             y=2,
             width=40,
             height=204,
@@ -232,8 +232,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead09
-            x=260,
-            y=391,
+            x=1359,
+            y=317,
             width=42,
             height=198,
 
@@ -244,8 +244,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead10
-            x=242,
-            y=2,
+            x=175,
+            y=358,
             width=62,
             height=344,
 
@@ -256,8 +256,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead11
-            x=304,
-            y=348,
+            x=242,
+            y=2,
             width=86,
             height=288,
 
@@ -268,8 +268,8 @@ SheetInfo.sheet =
         },
         {
             -- birdDead12
-            x=242,
-            y=2,
+            x=175,
+            y=358,
             width=62,
             height=344,
 
@@ -316,8 +316,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher
-            x=777,
-            y=218,
+            x=784,
+            y=226,
             width=81,
             height=113,
 
@@ -328,7 +328,7 @@ SheetInfo.sheet =
         },
         {
             -- gopher01
-            x=1214,
+            x=1492,
             y=204,
             width=79,
             height=111,
@@ -340,8 +340,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher02
-            x=1686,
-            y=135,
+            x=1933,
+            y=92,
             width=79,
             height=107,
 
@@ -352,8 +352,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher03
-            x=1871,
-            y=514,
+            x=1844,
+            y=597,
             width=79,
             height=103,
 
@@ -364,8 +364,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher04
-            x=1638,
-            y=274,
+            x=1765,
+            y=602,
             width=77,
             height=107,
 
@@ -376,8 +376,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher05
-            x=1796,
-            y=478,
+            x=1829,
+            y=490,
             width=73,
             height=105,
 
@@ -388,8 +388,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher06
-            x=1638,
-            y=383,
+            x=1925,
+            y=462,
             width=69,
             height=97,
 
@@ -400,8 +400,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher07
-            x=1934,
-            y=331,
+            x=1925,
+            y=561,
             width=63,
             height=89,
 
@@ -412,8 +412,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher08
-            x=806,
-            y=551,
+            x=1701,
+            y=109,
             width=55,
             height=81,
 
@@ -424,8 +424,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher09
-            x=1934,
-            y=422,
+            x=1598,
+            y=648,
             width=55,
             height=67,
 
@@ -436,8 +436,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher10
-            x=1871,
-            y=457,
+            x=1646,
+            y=109,
             width=53,
             height=55,
 
@@ -448,8 +448,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher11
-            x=257,
-            y=348,
+            x=330,
+            y=248,
             width=45,
             height=41,
 
@@ -472,8 +472,8 @@ SheetInfo.sheet =
         },
         {
             -- gopher13
-            x=260,
-            y=613,
+            x=362,
+            y=696,
             width=35,
             height=13,
 
@@ -484,7 +484,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie01
-            x=496,
+            x=602,
             y=228,
             width=87,
             height=117,
@@ -496,8 +496,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie02
-            x=1482,
-            y=509,
+            x=1559,
+            y=317,
             width=91,
             height=129,
 
@@ -508,8 +508,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie03
-            x=1497,
-            y=180,
+            x=847,
+            y=561,
             width=105,
             height=133,
 
@@ -520,8 +520,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie04
-            x=1575,
-            y=483,
+            x=453,
+            y=589,
             width=109,
             height=135,
 
@@ -532,8 +532,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie05
-            x=1680,
-            y=2,
+            x=1531,
+            y=515,
             width=111,
             height=131,
 
@@ -544,8 +544,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie06
-            x=1374,
-            y=180,
+            x=724,
+            y=563,
             width=121,
             height=133,
 
@@ -556,8 +556,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie07
-            x=1604,
-            y=139,
+            x=1450,
+            y=515,
             width=79,
             height=133,
 
@@ -568,8 +568,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie08
-            x=1601,
-            y=2,
+            x=645,
+            y=587,
             width=77,
             height=135,
 
@@ -580,8 +580,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie09
-            x=1520,
-            y=2,
+            x=564,
+            y=589,
             width=79,
             height=135,
 
@@ -592,8 +592,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie10
-            x=1188,
-            y=519,
+            x=1644,
+            y=506,
             width=77,
             height=111,
 
@@ -604,7 +604,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie11
-            x=1133,
+            x=1411,
             y=204,
             width=79,
             height=111,
@@ -616,8 +616,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie12
-            x=1295,
-            y=202,
+            x=1573,
+            y=180,
             width=77,
             height=111,
 
@@ -628,8 +628,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie13
-            x=1052,
-            y=208,
+            x=1330,
+            y=204,
             width=79,
             height=111,
 
@@ -640,8 +640,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie14
-            x=1107,
-            y=527,
+            x=1249,
+            y=204,
             width=79,
             height=111,
 
@@ -652,7 +652,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie15
-            x=965,
+            x=1162,
             y=212,
             width=85,
             height=111,
@@ -664,8 +664,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie16
-            x=684,
-            y=222,
+            x=691,
+            y=228,
             width=91,
             height=113,
 
@@ -676,8 +676,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie17
-            x=585,
-            y=226,
+            x=503,
+            y=242,
             width=97,
             height=113,
 
@@ -688,8 +688,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie18
-            x=860,
-            y=218,
+            x=1057,
+            y=212,
             width=103,
             height=111,
 
@@ -700,8 +700,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie19
-            x=1373,
-            y=513,
+            x=394,
+            y=248,
             width=107,
             height=107,
 
@@ -712,8 +712,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie20
-            x=1717,
-            y=244,
+            x=1652,
+            y=2,
             width=111,
             height=105,
 
@@ -724,8 +724,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie21
-            x=1709,
-            y=383,
+            x=1652,
+            y=192,
             width=111,
             height=93,
 
@@ -736,8 +736,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie22
-            x=1767,
-            y=156,
+            x=1895,
+            y=201,
             width=113,
             height=79,
 
@@ -748,8 +748,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherDie23
-            x=1871,
-            y=250,
+            x=1652,
+            y=287,
             width=111,
             height=79,
 
@@ -760,8 +760,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie01
-            x=132,
-            y=391,
+            x=330,
+            y=2,
             width=126,
             height=244,
 
@@ -772,8 +772,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie02
-            x=2,
-            y=400,
+            x=458,
+            y=2,
             width=128,
             height=238,
 
@@ -784,8 +784,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie03
-            x=306,
-            y=2,
+            x=453,
+            y=357,
             width=130,
             height=230,
 
@@ -796,8 +796,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie04
-            x=502,
-            y=347,
+            x=695,
+            y=343,
             width=132,
             height=218,
 
@@ -808,8 +808,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie05
-            x=1166,
-            y=317,
+            x=1366,
+            y=2,
             width=132,
             height=200,
 
@@ -820,8 +820,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie06
-            x=1498,
-            y=315,
+            x=996,
+            y=550,
             width=138,
             height=166,
 
@@ -832,7 +832,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie07
-            x=1374,
+            x=1500,
             y=2,
             width=144,
             height=176,
@@ -844,7 +844,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie08
-            x=1058,
+            x=1208,
             y=2,
             width=156,
             height=200,
@@ -856,8 +856,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie09
-            x=1216,
-            y=2,
+            x=1292,
+            y=527,
             width=156,
             height=198,
 
@@ -868,8 +868,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie10
-            x=1300,
-            y=315,
+            x=1403,
+            y=317,
             width=154,
             height=196,
 
@@ -880,7 +880,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie11
-            x=1004,
+            x=1197,
             y=325,
             width=160,
             height=200,
@@ -892,8 +892,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie12
-            x=872,
-            y=331,
+            x=1065,
+            y=325,
             width=130,
             height=204,
 
@@ -904,7 +904,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie13
-            x=886,
+            x=1036,
             y=2,
             width=128,
             height=208,
@@ -916,8 +916,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie14
-            x=746,
-            y=337,
+            x=939,
+            y=336,
             width=124,
             height=212,
 
@@ -928,7 +928,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie15
-            x=766,
+            x=916,
             y=2,
             width=118,
             height=214,
@@ -940,7 +940,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie16
-            x=650,
+            x=800,
             y=2,
             width=114,
             height=218,
@@ -952,7 +952,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie17
-            x=636,
+            x=829,
             y=341,
             width=108,
             height=218,
@@ -964,7 +964,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie18
-            x=544,
+            x=694,
             y=2,
             width=104,
             height=222,
@@ -976,7 +976,7 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie19
-            x=438,
+            x=588,
             y=2,
             width=104,
             height=224,
@@ -988,8 +988,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie20
-            x=392,
-            y=348,
+            x=585,
+            y=357,
             width=108,
             height=228,
 
@@ -1000,8 +1000,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie21
-            x=404,
-            y=234,
+            x=965,
+            y=218,
             width=90,
             height=112,
 
@@ -1012,8 +1012,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie22
-            x=306,
-            y=234,
+            x=867,
+            y=222,
             width=96,
             height=112,
 
@@ -1024,8 +1024,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie23
-            x=1267,
-            y=519,
+            x=1723,
+            y=490,
             width=104,
             height=110,
 
@@ -1036,8 +1036,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie24
-            x=1686,
-            y=482,
+            x=1655,
+            y=619,
             width=108,
             height=106,
 
@@ -1048,8 +1048,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie25
-            x=1822,
-            y=351,
+            x=1766,
+            y=384,
             width=110,
             height=104,
 
@@ -1060,8 +1060,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie26
-            x=1882,
-            y=156,
+            x=1766,
+            y=290,
             width=112,
             height=92,
 
@@ -1072,8 +1072,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie27
-            x=863,
-            y=551,
+            x=1880,
+            y=380,
             width=112,
             height=80,
 
@@ -1084,8 +1084,8 @@ SheetInfo.sheet =
         },
         {
             -- gopherHammerDie28
-            x=692,
-            y=561,
+            x=1652,
+            y=368,
             width=112,
             height=78,
 
@@ -1094,10 +1094,82 @@ SheetInfo.sheet =
             sourceWidth = 200,
             sourceHeight = 350
         },
+        {
+            -- swoop01
+            x=239,
+            y=358,
+            width=212,
+            height=336,
+
+            sourceX = 21,
+            sourceY = 188,
+            sourceWidth = 440,
+            sourceHeight = 700
+        },
+        {
+            -- swoop02
+            x=1136,
+            y=531,
+            width=154,
+            height=188,
+
+            sourceX = 107,
+            sourceY = 379,
+            sourceWidth = 440,
+            sourceHeight = 700
+        },
+        {
+            -- swoop03
+            x=1895,
+            y=282,
+            width=112,
+            height=96,
+
+            sourceX = 153,
+            sourceY = 521,
+            sourceWidth = 440,
+            sourceHeight = 700
+        },
+        {
+            -- swoop04
+            x=1765,
+            y=2,
+            width=204,
+            height=88,
+
+            sourceX = 91,
+            sourceY = 520,
+            sourceWidth = 440,
+            sourceHeight = 700
+        },
+        {
+            -- swoop05
+            x=1895,
+            y=282,
+            width=112,
+            height=96,
+
+            sourceX = 153,
+            sourceY = 521,
+            sourceWidth = 440,
+            sourceHeight = 700
+        },
+        {
+            -- swoop06
+            x=2,
+            y=400,
+            width=160,
+            height=314,
+
+            sourceX = 279,
+            sourceY = 4,
+            sourceWidth = 440,
+            sourceHeight = 700
+        },
     },
     
-    sheetContentWidth = 2004,
-    sheetContentHeight = 641
+    sheetContentWidth = 2021,
+    sheetContentHeight = 727
 }
 
 SheetInfo.frameIndex =
@@ -1193,20 +1265,13 @@ SheetInfo.frameIndex =
     ["gopherHammerDie26"] = 88,
     ["gopherHammerDie27"] = 89,
     ["gopherHammerDie28"] = 90,
+    ["swoop01"] = 91,
+    ["swoop02"] = 92,
+    ["swoop03"] = 93,
+    ["swoop04"] = 94,
+    ["swoop05"] = 95,
+    ["swoop06"] = 96,
 }
-
-sequenceData = {
-    { name="Bird", sheet=pestSheet, start=1, count=10, time=800},
-    { name="BirdDead", sheet=pestSheet, start=11, count=15, time=1200, loopCount=1},
-    { name="Gopher", sheet=pestSheet, frames = {39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26}, time=200, loopCount=1},
-    { name="GopherOut", sheet=pestSheet, start=26, count=14, time=200, loopCount=1},
-    { name="GopherDie", sheet=pestSheet, start=40, count=22, time=800, loopCount=1},
-    { name="GopherHammerDie", sheet=pestSheet, start=63, count=27, time=800, loopCount=1}
-}
-
-function SheetInfo:getSequenceData()
-    return self.sequenceData;
-end
 
 function SheetInfo:getSheet()
     return self.sheet;
