@@ -126,6 +126,8 @@ function Plant:useWeapon()
 end
 
 function Plant:harvest(multiplier)
+    local fontScale = (1 + (multiplier/25))
+
     if multiplier == 1 then 
         multiplier = false
     else
@@ -141,7 +143,7 @@ function Plant:harvest(multiplier)
         mult = display.newText(multiplier, x+225, y-75, 250, 250, gameFont, 35)
         mult:setFillColor(.3, .3, .8)
         mult.alpha = 1
-        mult.size=45
+        mult.size=45 * fontScale
         mult:rotate(-45)
         layers.overlays:insert(mult)
     end
