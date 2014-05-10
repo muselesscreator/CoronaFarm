@@ -92,8 +92,8 @@ SheetInfo.frameIndex =
 
 sequenceData =
 {
-    { name="Smell", frames={ 1, 2, 3, 4 }, time=225},
-    { name="Tag", frames={ 5 }}
+    { name="Smell", sheet=overlaySheet, frames={ 1, 2, 3, 4 }, time=225},
+    { name="Tag", sheet=overlaySheet, frames={ 5 }}
 }
 
 function SheetInfo:getSheet()

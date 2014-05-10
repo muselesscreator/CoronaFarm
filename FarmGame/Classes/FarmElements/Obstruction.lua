@@ -10,7 +10,7 @@ function Obstruction:initialize(args)
 
     self.elem_type = 'Obstruction'
     
-    obs_sprite = display.newSprite(obsImageSheet, obsSequenceData)
+    obs_sprite = display.newSprite(obsImageSheet, sequenceData)
     obs_sprite.x = self.x
     obs_sprite.y = self.y
     obs_sprite.alpha = 0

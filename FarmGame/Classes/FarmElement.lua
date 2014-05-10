@@ -32,7 +32,7 @@ function FarmElement:initialize(args)
         end
     end
 
-    local base_sprite = display.newSprite(myImageSheet, sequenceData)
+    local base_sprite = display.newSprite(plantSheet, sequenceData)
     base_sprite:setSequence('seqBlank')
     base_sprite.x = self.x 
     base_sprite.y = self.y
@@ -40,7 +40,7 @@ function FarmElement:initialize(args)
     base_sprite:addEventListener('tap', onClick)
 
 
-    local overlay = display.newSprite(myImageSheet, sequenceData)
+    local overlay = display.newSprite(overlaySheet, sequenceData)
     overlay:setSequence('seqBlank')
     overlay.x = self.x
     overlay.y = self.y

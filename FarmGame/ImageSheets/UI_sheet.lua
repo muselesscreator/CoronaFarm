@@ -61,6 +61,10 @@ SheetInfo.frameIndex =
     ["tutorialHandBack"] = 4,
 }
 
+function SheetInfo:getSequenceData()
+    return self.sequenceData;
+end
+
 function SheetInfo:getSheet()
     return self.sheet;
 end
