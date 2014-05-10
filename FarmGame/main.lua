@@ -108,10 +108,16 @@ sequenceData =
     { name='seqStoneRadish', frames={311, 312, 313, 314}},
     { name='seqStoneTomatos', frames={315, 316, 317, 318}}
 }
-
+--[[
 obsSheetInfo = require("ImageSheets.Obstruction_sheet")
-obsSequenceData = obsSheetInfo:getSequenceData()
-obsImageSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
+obsSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
+plantSheetInfo = require("ImageSheets.Obstruction_sheet")
+plantSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
+weaponSheetInfo = require("ImageSheets.Obstruction_sheet")
+weaponSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
+uiSheetInfo = require("ImageSheets.Obstruction_sheet")
+uiSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
+]]--
 
 --> Import Queue class
 require 'Classes.class'
