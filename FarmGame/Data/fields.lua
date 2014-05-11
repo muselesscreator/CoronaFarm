@@ -134,7 +134,7 @@ function slingshot_weights()
     if theQueue[#theQueue].contents.type == 'Slingshot' then
         theQueue.weights.Slingshot = 0
     elseif theBasket.box.contents.type == 'Slingshot' then
-        theQueue.weights.Slingshot = 5
+        theQueue.weights.Slingshot = 8
     else
         theQueue.weights.Slingshot = 15
     end
@@ -143,8 +143,8 @@ function mallet_weights()
     if theQueue[#theQueue].contents.type == 'Mallet' then
         theQueue.weights.Mallet = 0
     elseif theBasket.box.contents.type=='Mallet' then
-        theQueue.weights.Mallet = 5+10*(#theField.elements.Pest)
+        theQueue.weights.Mallet = 5+2*(#theField.elements.Pest)
     else
-        theQueue.weights.Mallet = 15+15*(#theField.elements.Pest)
+        theQueue.weights.Mallet = 10+1*(#theField.elements.Pest)
     end
 end
