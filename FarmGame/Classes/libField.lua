@@ -88,7 +88,19 @@ function Field:cleanup()
     end
 end
 
+local function disallowClicks( event )
+    return true
+end
+
 function Field:pestGameOver()
+    noClicks = display.newRect(0,0,display.contentWidth,display.contentHeight)
+    noClicks.alpha = 0
+    noClicks.tap = disallowClicks
+    noClicks:addEventListener("tap", noClicks)
+    noClicks.anchorX = 0
+    noClicks.anchorY = 0
+    layers.gameOver:insert(noClicks)
+
     self.monster_layer.alpha = 1
     transition.to(self.monster_layer, {y=150, time=1500})
     timer.performWithDelay(2000, function() 
