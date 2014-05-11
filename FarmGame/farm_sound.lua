@@ -5,6 +5,7 @@ function playSoundEffect(fn)
     print(snd)
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     audio.setVolume(sfxVolume, {channel=snd})
+    audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
 end
 
 
