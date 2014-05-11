@@ -43,24 +43,24 @@ weaponSheet = graphics.newImageSheet("ImageSheets/weapon_sheet.png", weaponSheet
 sequenceData =
 {
     { name="Barren", sheet=obsSheet, frames={ 1 }},
-    { name="Rock", sheet=obsSheet, frames={ 2 }},
-    { name="StoneCarrot", sheet=obsSheet, frames={ 7, 3, 4, 5, 6 }},
-    { name="StoneCelery", sheet=obsSheet, frames={ 12, 8, 9, 10, 11 }},
-    { name="StoneChamomile", sheet=obsSheet, frames={ 17, 13, 14, 15, 16 }},
-    { name="StoneJalapenos", sheet=obsSheet, frames={ 22, 18, 19, 20, 21 }},
-    { name="StoneLettuce", sheet=obsSheet, frames={ 27, 23, 24, 25, 26 }},
-    { name="StoneMint", sheet=obsSheet, frames={ 32, 28, 29, 30, 31 }},
-    { name="StonePotatoes", sheet=obsSheet, frames={ 37, 33, 34, 35, 36  }},
-    { name="StoneRadish", sheet=obsSheet, frames={ 42, 38, 39, 40, 41 }},
-    { name="StoneTomato", sheet=obsSheet, frames={ 47, 43, 44, 45, 46 }},
-    { name="TurtleN", sheet=obsSheet, start=49, count=8, time=333},
-    { name="TurtleNtoE", sheet=obsSheet, frames={ 58, 59, 60 }, time=125},
-    { name="TurtleEtoN", sheet=obsSheet, frames={ 60, 59, 58 }, time=125},
-    { name="TurtleS", sheet=obsSheet, start=61, count=8, time=333},
-    { name="TurtleStoE", sheet=obsSheet, frames={ 72, 71, 70 }, time=125},
-    { name="TurtleEtoS", sheet=obsSheet, frames={ 70, 71, 72 }, time=125},
-    { name="TurtleE", sheet=obsSheet, start=73, count=8, time=333},
-    { name="Urn", sheet=obsSheet, frames={ 82 }},
+    { name="Rock", sheet=obsSheet, frames={ 2, 3 }},
+    { name="StoneCarrot", sheet=obsSheet, frames={ 8, 4, 5, 6, 7 }},
+    { name="StoneCelery", sheet=obsSheet, frames={ 13, 9, 10, 11, 12 }},
+    { name="StoneChamomile", sheet=obsSheet, frames={ 18, 14, 15, 16, 17 }},
+    { name="StoneJalapenos", sheet=obsSheet, frames={ 23, 19, 20, 21, 22 }},
+    { name="StoneLettuce", sheet=obsSheet, frames={ 28, 24, 25, 26, 27 }},
+    { name="StoneMint", sheet=obsSheet, frames={ 33, 29, 30, 31, 32 }},
+    { name="StonePotatoes", sheet=obsSheet, frames={ 38, 34, 35, 36, 37 }},
+    { name="StoneRadish", sheet=obsSheet, frames={ 43, 39, 40, 41, 42 }},
+    { name="StoneTomato", sheet=obsSheet, frames={ 48, 44, 45, 46, 47 }},
+    { name="TurtleN", sheet=obsSheet, start=50, count=8, time=333},
+    { name="TurtleNtoE", sheet=obsSheet, frames={ 59, 60, 61 }, time=125},
+    { name="TurtleEtoN", sheet=obsSheet, frames={ 61, 60, 59 }, time=125},
+    { name="TurtleS", sheet=obsSheet, start=62, count=8, time=333},
+    { name="TurtleStoE", sheet=obsSheet, frames={ 73, 72, 71 }, time=125},
+    { name="TurtleEtoS", sheet=obsSheet, frames={ 71, 72, 73 }, time=125},
+    { name="TurtleE", sheet=obsSheet, start=74, count=8, time=333},
+    { name="Urn", sheet=obsSheet, frames={ 83 }},
 
     { name="Reticle", sheet=weaponSheet, frames={ 1 }},
     { name="SlingAnim", sheet=weaponSheet, start=2, count=16, time=1000},
@@ -251,7 +251,7 @@ toggleOptions = function ( event )
         print('hi')
         if(layers.popup.visible) then
             layers.popup.alpha = 0
-            layers.popup.visible = false
+            timer.performWithDelay(10, function() layers.popup.visible = false end, 1)
         else
             layers.popup.alpha = 1
             layers.popup.visible = true

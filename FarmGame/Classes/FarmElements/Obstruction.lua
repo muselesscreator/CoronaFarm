@@ -108,6 +108,7 @@ function Rock:initialize(args)
     Obstruction.initialize(self, args)
     self.obs_sprite:setSequence('Rock')
     self.elem_type = 'Rock'
+    self.cracked = false
 end
 
 --Done
@@ -122,12 +123,21 @@ function Rock:useWeapon()
     print(weapon)
 
     if weapon == 'Mallet' then
-        print('breakRock')
+
+        print('mallet on rock')
         self.overlay:setSequence('Mallet')
         self.overlay.alpha = 1
         self.overlay:play()
-        local tmp = Blank:new({i=self.i, j=self.j})
-        timer.performWithDelay(250, function() self:die() end, 1)
+        if self.cracked then
+            local tmp = Blank:new({i=self.i, j=self.j})
+            timer.performWithDelay(250, function() self:die() end, 1)
+        else
+            self.cracked = true
+            timer.performWithDelay(250, function() 
+                self.obs_sprite:setFrame(2) 
+                self.overlay.alpha = 0 
+                end, 1)
+        end
     else
         FarmElement.useWeapon(self)
     end

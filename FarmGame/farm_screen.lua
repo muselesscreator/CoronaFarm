@@ -22,9 +22,9 @@ storyboard.purgeOnSceneChange = true
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 
-local function gotoLevel()
-    print('what the fuck?')
+local function gotoLevel( event )
     storyboard.gotoScene('level_screen')
+    return true
 end
 
 local function gotoTitle ( event )

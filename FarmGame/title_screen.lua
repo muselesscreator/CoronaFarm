@@ -18,21 +18,25 @@ storyboard.purgeOnSceneChange = true
 local function gotoFarm()
     if not layers.popup.visible then
         storyboard.gotoScene('farm_screen')
+        return true
     end
 end
 
 local function gotoLevel()
     if not layers.popup.visible then
         storyboard.gotoScene('level_screen')
+        return true
     end
 end
 
 local function gotoSite()
     system.openURL('www.nerdpilegames.com')
+    return true
 end
 
 local function gotoTutorial()
     storyboard.gotoScene('tutorial_screen')
+    return true
 end
 
 ---------------------------------------------------------------------------------
