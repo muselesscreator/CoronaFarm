@@ -80,7 +80,7 @@ sequenceData =
     { name="uiTomato", sheet=uiSheet, frames={13}},
 
     { name="Reticle", sheet=overlaySheet, frames={ 1 }},
-    { name="Smell", sheet=overlaySheet, frames={ 2, 3, 4, 6 }, time=225},
+    { name="Smell", sheet=overlaySheet, frames={ 2, 3, 4, 5 }, time=225},
     { name="Tag", sheet=overlaySheet, frames={ 6 }},
 
     { name="Bird", sheet=pestSheet, start=1, count=10, time=800},

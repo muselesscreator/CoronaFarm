@@ -34,12 +34,14 @@ function scene:createScene( event )
     layers.scroll = display.newGroup()
     layers.overFrame = display.newGroup()
     layers.interface = display.newGroup()
+    layers.popup = display.newGroup()
 
     layers:insert(layers.bg)
     layers:insert(layers.frame)
     layers:insert(layers.scroll)
     layers:insert(layers.overFrame)
     layers:insert(layers.interface)
+    layers:insert(layers.popup)
 
     bg = display.newImage('images/fieldBackground.png')
     bg.anchorX = 0
@@ -109,52 +111,58 @@ function scene:createScene( event )
 
 
     function onLevelTouch(self, event)
-        local target  = event.target
-        local phase   = event.phase
-        local touchID = event.id
-        local parent  = self.parent
+        if not info_up then
+            local target  = event.target
+            local phase   = event.phase
+            local touchID = event.id
+            local parent  = self.parent
 
-        if( not touchesAllowed ) then return true end
-        if( target.isBase ) then return true end
+            if( not touchesAllowed ) then return true end
+            if( target.isBase ) then return true end
 
 
-        print('my field')
-        print(self.field)
-        fieldType = self.field
-        gotoFarm()
+            print('my field')
+            print(self.field)
+            fieldType = self.field
+            gotoFarm()
 
-        return true
+            return true
+        end
     end
 
     function LevelSlide( self, event )
-        if event.phase == "began" and not self.sliding then
-            self.slide_event.start_time = event.time
-            self.slide_event.start_x = event.x
-        elseif event.phase == "moved" then
-            if event.time > (self.slide_event.start_time+100) and not self.sliding then
-                if event.x < self.slide_event.start_x - 200 and self.target.index < self.target.levels then
-                    self.sliding = true
-                    self.target.index = self.target.index + 1
-                    self.target:scrollToPosition
-                    {
-                        x = (1-self.target.index) * 500,
-                        time = 800,
-                    }
-                    timer.performWithDelay(800, function() self.sliding = false end, 1)
-                elseif event.x > self.slide_event.start_x + 200 and self.target.index > 1 then
-                    self.sliding = true
-                    self.target.index = self.target.index - 1
-                    self.target:scrollToPosition
-                    {
-                        x = (1-self.target.index) * 500,
-                        time = 800,
-                    }
-                    timer.performWithDelay(800, function() self.sliding = false end, 1)
+        if not info_up then
+            if event.phase == "began" and not self.sliding then
+                self.slide_event.start_time = event.time
+                self.slide_event.start_x = event.x
+            elseif event.phase == "moved" then
+                if event.time > (self.slide_event.start_time+100) and not self.sliding then
+                    if event.x < self.slide_event.start_x - 200 and self.target.index < self.target.levels then
+                        self.sliding = true
+                        self.target.index = self.target.index + 1
+                        self.target:scrollToPosition
+                        {
+                            x = (1-self.target.index) * 500,
+                            time = 800,
+                        }
+                        timer.performWithDelay(800, function() self.sliding = false end, 1)
+                    elseif event.x > self.slide_event.start_x + 200 and self.target.index > 1 then
+                        self.sliding = true
+                        self.target.index = self.target.index - 1
+                        self.target:scrollToPosition
+                        {
+                            x = (1-self.target.index) * 500,
+                            time = 800,
+                        }
+                        timer.performWithDelay(800, function() self.sliding = false end, 1)
+                    end
                 end
             end
+            return true
+        else
+            return true
         end
-        return true
-   end
+    end
 
     touch_interface = display.newRect(0, 0, w, h)
     touch_interface.alpha = 0
@@ -174,12 +182,52 @@ function scene:createScene( event )
     numFields = 0
     scrollView.fields = {}
 
+    function infoTouch(self, event)
+        if not info_up then
+            print(self.type)
+            info_boxes[self.type].alpha = 1
+            return_buttons[self.type].alpha = 1
+            info_up = true
+            return true
+        end
+    end
+
+    function hideInfo(self, event)
+        self.alpha = 0
+        info_boxes[self.type].alpha = 0
+        info_up = false
+        return true
+    end
+
+    info_boxes = {}
+    return_buttons = {}
+    info_buttons = {}
+    info_up = false
     for i, myType in pairs(fields.order) do
 
         val = fields[myType]
         numFields = numFields + 1
         local thumb = {}
         newX = (numFields-1 )* 500 + 550
+
+        fn = 'images/info'..myType..'Field.png'
+        print(fn)
+        info_boxes[myType] = display.newImage(fn)
+        info_boxes[myType].x = display.contentWidth/2
+        info_boxes[myType].y = display.contentHeight/2
+        info_boxes[myType].alpha = 0
+
+        return_buttons[myType] = display.newImage('images/returnMenuButton.png')
+        return_buttons[myType].x = 720
+        return_buttons[myType].y = 275
+        return_buttons[myType].xScale = .7
+        return_buttons[myType].yScale = .7
+        return_buttons[myType].alpha = 0
+        return_buttons[myType].tap = hideInfo
+        return_buttons[myType]:addEventListener('tap', return_buttons[myType])
+        return_buttons[myType].type = myType
+        layers.popup:insert(info_boxes[myType])
+
 
         if thePlayer.totalScore >= val.minScore then
 
@@ -215,7 +263,13 @@ function scene:createScene( event )
             scrollView:insert(txt)
 
         end
-
+        info_buttons[myType] = display.newImage('images/questionMenuButton.png')
+        info_buttons[myType].x = newX
+        info_buttons[myType].y = 680
+        info_buttons[myType].type = myType
+        info_buttons[myType].tap = infoTouch
+        info_buttons[myType]:addEventListener('tap', info_buttons[myType])
+        scrollView:insert(info_buttons[myType])
 
 
 

@@ -227,22 +227,9 @@ function Turtle:move()
     if #opts > 0 then
         r = math.random(1,#opts)
         self.dest = opts[r]
-        self:getNewOrientation()
         self:go()
     end
 
-end
-
-function Turtle:getNewOrientation()
-    if self.dest.i > self.i then
-        self.new_orientation = 'Right'
-    elseif self.dest.i < self.i then
-        self.new_orientation = 'Left'
-    elseif self.dest.j > self.j then
-        self.new_orientation = 'Down'
-    else
-        self.new_orientation = 'Up'
-    end
 end
 
 function Turtle:canMoveTo(dest)

@@ -55,14 +55,14 @@ function scene:createScene( event )
 
     local logo = display.newImage('images/farmLogo.png')
     logo.x = display.contentWidth/2
-    logo.y = 230
-    logo.xScale = 1.8
-    logo.yScale = 2.2
+    logo.y = 280
+    logo.xScale = 1.7
+    logo.yScale = 1.7
     layers.bg:insert(logo)
 
     local gopher = display.newImage('images/gopherBig.png')
     gopher.x = display.contentWidth/2 - 12
-    gopher.y = 450
+    gopher.y = 470
     layers.bg:insert(gopher)
 
 
@@ -125,7 +125,6 @@ function scene:createScene( event )
     layers.popup = display.newGroup()
     layers:insert(layers.popup)
 
-print("?")
     local scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
     scoreTxt:setFillColor(0, 0, 0)
     layers.frame:insert(scoreTxt)
