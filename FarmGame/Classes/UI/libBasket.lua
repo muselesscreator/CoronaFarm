@@ -63,7 +63,7 @@ function Basket:empty(square)
     print('empty')
     self.box:setSequence('BoxClosed')
     self.decorator:setSequence('Blank')
-    self.decorator.alpha = .2
+    self.decorator.alpha = 0
     self.box.empty = true
     self.box.selected = false
     self.box.contents = {}
