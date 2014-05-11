@@ -36,6 +36,7 @@ function Obstruction:addSpritesToLayers()
     layer:insert(self.base_sprite)
     layer:insert(self.obs_sprite)
     layer:insert(self.overlay)
+    layer:insert(self.weapon_sprite)
 end
 
 function Obstruction:removeFromField()
@@ -303,8 +304,6 @@ function Turtle:walk()
     self.dest:die()
     self:deriveXY()
     local new_seq = nil
-    print('TURTLE!!!!!!!!!!!!')
-    print(self.new_orientation)
     if self.new_orientation == 'Up' then
         new_seq = 'TurtleN'
     elseif self.new_orientation == 'Down' then
@@ -312,7 +311,6 @@ function Turtle:walk()
     else
         new_seq = 'TurtleE'
     end
-    print(new_seq)
     self.obs_sprite:setSequence(new_seq)
     self.obs_sprite:play()
     self.orientation = self.new_orientation

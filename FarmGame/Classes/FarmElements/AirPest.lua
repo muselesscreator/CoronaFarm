@@ -21,9 +21,6 @@ function AirPest:initialize(args)
     self.bird_death.x = display.contentWidth/2
     self.bird_death.alpha = 0
 
-    self.weapon_sprite.x = display.contentWidth / 2
-    self.weapon_sprite.y = display.contentHeight / 2
-
     self.turns = 0
     self.maxTurns = 2
     theField:addElement(self)
@@ -31,8 +28,10 @@ function AirPest:initialize(args)
 end
 
 function AirPest:addSpritesToLayers()
+    local layer = theField.layers[self.j]
     theField.birdLayer:insert(self.base_sprite)
     theField.birdLayer:insert(self.pest_sprite)
+    layer:insert(self.weapon_sprite)
     theField.birdLayer:insert(self.bird_death)
     theField.birdLayer:insert(self.overlay)
 end
@@ -99,7 +98,7 @@ function AirPest:myTarget()
     local items = theField:whatIsAt(self.i, self.j)
     for i, v in ipairs(items) do
         if v ~= self then
-            print(v)
+            print(v.i..', '..v.j)
             return v
         end
     end
@@ -126,7 +125,6 @@ function AirPest:attack()
     local target = self:myTarget()
     local i = target.i
     local j = target.j
-    print(target.elem_type)
     if target.elem_type == 'Barren' then
         target:die()
         local tmp = Urn:new({i=i, j=j}) 
@@ -138,6 +136,10 @@ end
 
 function AirPest:useWeapon()
     print('--@AirPest:useWeapon()')
+    print()
+    print(self.i..', '..self.j..'    '..self.x..', '..self.y)
+    print(self.weapon_sprite.x..', '..self.weapon_sprite.y)
+    FarmElement.useWeapon(self)
     self.pest_sprite.alpha = 0
     self.bird_death:setSequence('BirdDead')
     self.bird_death.alpha = 1

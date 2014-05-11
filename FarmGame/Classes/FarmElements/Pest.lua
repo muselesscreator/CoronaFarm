@@ -18,8 +18,8 @@ function Pest:addSpritesToLayers()
     local layer = theField.layers[self.j]
     layer:insert(self.base_sprite)
     layer:insert(self.pest_sprite)
-    layer:insert(self.overlay)
     layer:insert(self.weapon_sprite)
+    layer:insert(self.overlay)
 end
 
 function Pest:move()

@@ -62,8 +62,10 @@ sequenceData =
     { name="TurtleE", sheet=obsSheet, start=73, count=8, time=333},
     { name="Urn", sheet=obsSheet, frames={ 82 }},
 
-    { name="Mallet", sheet=weaponSheet, frames={ 1, 2, 3, 4, 5, 6}, time=250, loopCount=1},
-    { name="Slingshot", sheet=weaponSheet, frames={7}},
+    { name="Reticle", sheet=weaponSheet, frames={ 1 }},
+    { name="SlingAnim", sheet=weaponSheet, start=2, count=16, time=1000},
+    { name="Mallet", sheet=weaponSheet, start=18, count=6, time=250, loopCount=1},
+    { name="Slingshot", sheet=weaponSheet, frames={24}},
 
     { name="BoxClosed", sheet=uiSheet, frames={1}},
     { name="BoxOpen", sheet=uiSheet, frames={2}},

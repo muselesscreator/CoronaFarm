@@ -13,7 +13,6 @@ function Plant:initialize(args)
     self.base_sprite.alpha = 0
     self.base_sprite.isHitTestable = true
 
-    print('-- @Plant:initialize()!!!!!!!!!!!!!!!!!!!!')
     self.turns = Plants[self.type].turns
     self.xp = Plants[self.type].xp
     local tmp = Plants[self.type].maxHarvest
@@ -115,6 +114,7 @@ function Plant:onClick()
 end
 
 function Plant:useWeapon()
+    print('PLANT:USEWEAPON')
     if self:whatIsNext().type == 'Mallet' then
         FarmElement.useWeapon(self)
         timer.performWithDelay(250, function()

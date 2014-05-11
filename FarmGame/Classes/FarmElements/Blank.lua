@@ -16,7 +16,6 @@ end
 
 
 function Blank:removeFromField()
-    print('Remove Blank')
     for i, v in ipairs(theField.elements.Blank) do
         if v == self then
             table.remove(theField.elements.Blank, i)
@@ -31,7 +30,7 @@ end
 
 --Done
 function Blank:nextIsValid()
-    print('--@Blank: nextIsValid')
+    --print('--@Blank: nextIsValid')
     return true
 end
 
@@ -58,9 +57,7 @@ function Blank:onClick( event )
         else
             self:toPlant()
             self:useNext()
-            print('--@Blank:onClick Die()')
             self:die()
-            print('nextDay?')
             theField:nextDay()            
         end
         return true

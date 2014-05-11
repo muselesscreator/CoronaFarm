@@ -51,6 +51,14 @@ Field = class(function(tmpField, type)
         tmpField.overlay = overlay
         layers.gameOver:insert(overlay)
 
+        local slingAnim = display.newSprite(weaponSheet, sequenceData)
+        slingAnim:setSequence('SlingAnim')
+        slingAnim.x = display.contentWidth/2
+        slingAnim.y = display.contentHeight/2
+        slingAnim.alpha = 0
+        layers.weaponLayer:insert(slingAnim)
+        tmpField.slingAnim = slingAnim
+
         return tmpField
     end)
 
@@ -104,10 +112,10 @@ function Field:boringGameOver()
 end
 
 function Field:getDoomCounter()
-    print("@getDoomCounter")
+    --print("@getDoomCounter")
     local num_flags = 0
     for i, v in ipairs(self.elements.Obstruction) do
-        print("@getDoomCounter:  Obstruction - "..v.elem_type.." doomObj - "..self.doomObjType)
+        --print("@getDoomCounter:  Obstruction - "..v.elem_type.." doomObj - "..self.doomObjType)
         if v.elem_type == self.doomObjType then
             num_flags = num_flags + 1
         end
@@ -119,7 +127,7 @@ function Field:updateDoomCounter()
     local doomCounter = self:getDoomCounter()
     local maxDoomCounter = self.maxDoomCounter
     local fracDoomCount = ((maxDoomCounter-doomCounter)/maxDoomCounter)
-    print("@updateDoomCounter : doomCount -"..doomCounter.." maxDoomCounter - "..maxDoomCounter.." fraction - "..fracDoomCount)
+    --print("@updateDoomCounter : doomCount -"..doomCounter.." maxDoomCounter - "..maxDoomCounter.." fraction - "..fracDoomCount)
     if fracDoomCount < .25 then
         doomHUD:setFillColor(0,.5,0)
     elseif (fracDoomCount >= .25 and fracDoomCount < .5) then

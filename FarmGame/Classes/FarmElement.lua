@@ -11,6 +11,58 @@ function FarmElement:initialize(args)
         local phase = event.phase
 
         if touchesAllowed and not layers.popup.visible and not gameOver then
+            print('CLIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICK!!!!!!!!!!!!!!!!!!!!!!!!')
+            if self:whatIsNext().type == 'Slingshot' then
+                print('USE DA SLIIIINGSHOOOOOOOT!!!!!!!!!!!!!!!!!!')
+                local stuff = theField:whatIsAt(self.i, self.j)
+                can_shoot = true
+                for i, v in ipairs(stuff) do
+                    if v.elem_type == 'Plant' then
+                        if v.myStage == v.mature and v.myProgress == (v.turns[v.mature]-1) then
+                            can_shoot = false
+                        end
+                    end
+                end
+                if can_shoot == true then
+                    neighbors = {}
+                    neighbors['self'] = self
+                    neighbors['N'] = {i=self.i, j=self.j-1}
+                    neighbors['NE'] = {i=self.i+1, j=self.j-1}
+                    neighbors['E'] = {i=self.i+1, j=self.j}
+                    neighbors['SE'] = {i=self.i+1, j=self.j+1}
+                    neighbors['S'] = {i=self.i, j=self.j+1}
+                    neighbors['SW'] = {i=self.i-1, j=self.j+1}
+                    neighbors['W'] = {i=self.i-1, j=self.j}
+                    neighbors['NW'] = {i=self.i-1, j=self.j-1}
+                    theField.slingAnim:setSequence('SlingAnim')
+                    theField.slingAnim.alpha = 1
+                    theField.slingAnim:play()
+                    timer.performWithDelay(1000, function()
+                        theField.slingAnim.alpha = 0 
+                        theField.slingAnim:setSequence('SlingAnim')
+                        end, 1)
+                    for i, v in pairs(neighbors) do
+                        print('SLING NEIGHBORS!!!!!!!!!!!!!!!!!!')
+                        print(i..' '..v.i..', '..v.j)
+                        local pest = theField:pestAt(v.i, v.j)
+                        if pest ~= false then
+                            print('Kill thie Pest!')
+                            pest:useWeapon()
+                        else
+                            local other_stuff = theField:whatIsAt(v.i, v.j)
+                            if #other_stuff > 0 then
+                                print('waste the slingshot')
+                                FarmElement.useWeapon(other_stuff[1])
+                            end
+                        end
+                    end
+                    timer.performWithDelay(1000, function()
+                        self:useNext()
+                        theField:nextDay()
+                        end, 1)
+                    return true
+                end
+            end
             local pest = theField:pestAt(self.i, self.j)
             print('--@FarmElement:onClick')
             print(pest)
@@ -173,17 +225,29 @@ function FarmElement:removeFromField()
 end
 --Done
 function FarmElement:useWeapon()
-    self.weapon_sprite:setSequence(self:whatIsNext().type)
-    self.weapon_sprite.alpha = 1
-    self.weapon_sprite:play()
-    timer.performWithDelay(250, function()
-        if self.weapon_sprite ~= nil then
-            self.weapon_sprite.alpha = 0 
-            self.weapon_sprite:setSequence('seqBlank')
-        end
-        end, 1)
+    if self:whatIsNext().type == 'Mallet' then
+        self.weapon_sprite:setSequence(self:whatIsNext().type)
+        self.weapon_sprite.alpha = 1
+        self.weapon_sprite:play()
+        timer.performWithDelay(250, function()
+            self:hideWeapon()
+            end, 1)
+    else
+        print(self.weapon_sprite.x..', '..self.weapon_sprite.y)
+        self.weapon_sprite:setSequence('Reticle')
+        self.weapon_sprite.alpha = 1
+        timer.performWithDelay(1000, function()
+            self:hideWeapon()
+            end, 1)
+    end
 end
 
+function FarmElement:hideWeapon()
+    if self.weapon_sprite ~= nil then
+        self.weapon_sprite.alpha = 0 
+        self.weapon_sprite:setSequence('seqBlank')
+    end
+end
 
 function FarmElement:hide()
     self.base_sprite.alpha = 0
