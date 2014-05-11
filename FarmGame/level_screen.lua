@@ -227,6 +227,7 @@ function scene:createScene( event )
         return_buttons[myType]:addEventListener('tap', return_buttons[myType])
         return_buttons[myType].type = myType
         layers.popup:insert(info_boxes[myType])
+        layers.popup:insert(return_buttons[myType])
 
 
         if thePlayer.totalScore >= val.minScore then

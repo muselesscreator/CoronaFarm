@@ -71,7 +71,7 @@ function Field:fill()
                 end
             end
             if not blocked then
-                if fieldType == 'Tea' and (c==2 and r==2) or (c==8 and r==7) then
+                if fieldType == 'Tea' and ((c==2 and r==2) or (c==8 and r==7)) then
                     local tmp = Turtle:new({i=c, j=r})
                 else
                     local tmp = Blank:new({i=c, j=r})
