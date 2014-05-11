@@ -49,7 +49,7 @@ sequenceData =
     { name="StoneChamomile", sheet=obsSheet, frames={ 17, 13, 14, 15, 16 }},
     { name="StoneJalapenos", sheet=obsSheet, frames={ 22, 18, 19, 20, 21 }},
     { name="StoneLettuce", sheet=obsSheet, frames={ 27, 23, 24, 25, 26 }},
-    { name="StoneMint", sheet=obsSheet, frames={ 32, 28, 29, 30, 31 }},
+    { name="StoneMint", sheet=obsSheet, frames={ 33, 29, 30, 31, 32 }},
     { name="StonePotatoes", sheet=obsSheet, frames={ 37, 33, 34, 35, 36  }},
     { name="StoneRadish", sheet=obsSheet, frames={ 42, 38, 39, 40, 41 }},
     { name="StoneTomato", sheet=obsSheet, frames={ 47, 43, 44, 45, 46 }},
