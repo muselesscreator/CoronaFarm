@@ -44,21 +44,23 @@ sequenceData =
 {
     { name="Barren", sheet=obsSheet, frames={ 1 }},
     { name="Rock", sheet=obsSheet, frames={ 2 }},
-    { name="StoneCarrot", sheet=obsSheet, frames={ 8, 4, 5, 6, 7 }},
-    { name="StoneCelery", sheet=obsSheet, frames={ 13, 9, 10, 11, 12 }},
-    { name="StoneChamomile", sheet=obsSheet, frames={ 18, 14, 15, 16, 17 }},
-    { name="StoneJalapenos", sheet=obsSheet, frames={ 24, 20, 21, 22, 23 }},
-    { name="StoneLettuce", sheet=obsSheet, frames={ 29, 25, 26, 27, 28, 29 }},
-    { name="StoneMint", sheet=obsSheet, frames={ 34, 30, 31, 32, 33 }},
-    { name="StonePotatoes", sheet=obsSheet, frames={ 39, 35, 36, 37, 38 }},
-    { name="StoneRadish", sheet=obsSheet, frames={ 44, 40, 41, 42, 43 }},
-    { name="StoneTomato", sheet=obsSheet, frames={ 49, 45, 46, 47, 48 }},
-    { name="TurtleN", sheet=obsSheet, frames={ 50, 51, 52, 53, 54, 55, 56 }},
-    { name="turtleNW", sheet=obsSheet, frames={ 57 }},
-    { name="turtleS", sheet=obsSheet, frames={ 58, 59, 60, 61, 62, 63, 64 }},
-    { name="turtleSW", sheet=obsSheet, frames={ 65 }},
-    { name="TurtleW", sheet=obsSheet, frames={ 66, 67, 68, 69, 70, 71, 72 }},
-    { name="Urn", sheet=obsSheet, frames={ 73 }},
+    { name="StoneCarrot", sheet=obsSheet, frames={ 7, 3, 4, 5, 6 }},
+    { name="StoneCelery", sheet=obsSheet, frames={ 12, 8, 9, 10, 11 }},
+    { name="StoneChamomile", sheet=obsSheet, frames={ 17, 13, 14, 15, 16 }},
+    { name="StoneJalapenos", sheet=obsSheet, frames={ 22, 18, 19, 20, 21 }},
+    { name="StoneLettuce", sheet=obsSheet, frames={ 27, 23, 24, 25, 26 }},
+    { name="StoneMint", sheet=obsSheet, frames={ 32, 28, 29, 30, 31 }},
+    { name="StonePotatoes", sheet=obsSheet, frames={ 37, 33, 34, 35, 36  }},
+    { name="StoneRadish", sheet=obsSheet, frames={ 42, 38, 39, 40, 41 }},
+    { name="StoneTomato", sheet=obsSheet, frames={ 47, 43, 44, 45, 46 }},
+    { name="TurtleN", sheet=obsSheet, start=49, count=8, time=333},
+    { name="TurtleNtoE", sheet=obsSheet, frames={ 58, 59, 60 }, time=125},
+    { name="TurtleEtoN", sheet=obsSheet, frames={ 60, 59, 58 }, time=125},
+    { name="TurtleS", sheet=obsSheet, start=61, count=8, time=333},
+    { name="TurtleStoE", sheet=obsSheet, frames={ 72, 71, 70 }, time=125},
+    { name="TurtleEtoS", sheet=obsSheet, frames={ 70, 71, 72 }, time=125},
+    { name="TurtleE", sheet=obsSheet, start=73, count=8, time=333},
+    { name="Urn", sheet=obsSheet, frames={ 82 }},
 
     { name="Mallet", sheet=weaponSheet, frames={ 1, 2, 3, 4, 5, 6}, time=250, loopCount=1},
     { name="Slingshot", sheet=weaponSheet, frames={7}},
@@ -77,8 +79,9 @@ sequenceData =
     { name="uiSlingshot", sheet=uiSheet, frames={12}},
     { name="uiTomato", sheet=uiSheet, frames={13}},
 
-    { name="Smell", sheet=overlaySheet, frames={ 1, 2, 3, 4 }, time=225},
-    { name="Tag", sheet=overlaySheet, frames={ 5 }},
+    { name="Reticle", sheet=overlaySheet, frames={ 1 }},
+    { name="Smell", sheet=overlaySheet, frames={ 2, 3, 4, 6 }, time=225},
+    { name="Tag", sheet=overlaySheet, frames={ 6 }},
 
     { name="Bird", sheet=pestSheet, start=1, count=10, time=800},
     { name="BirdDead", sheet=pestSheet, start=11, count=15, time=1200, loopCount=1},
@@ -138,8 +141,9 @@ sequenceData =
     { name="TomatoFrame1", sheet=plantSheet, frames={193, 190}, time=350},
     { name="TomatoFrame2", sheet=plantSheet, frames={191, 190}, time=350},
     { name="TomatoFrame3", sheet=plantSheet, frames={192, 190}, time=350},
-    { name="TomatoHarvest", sheet=plantSheet, frames={196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207}, time=500, loopCount=1},
+    { name="TomatoHarvest", sheet=plantSheet, frames={196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207}, time=500, loopCount=1}
 }
+
 require 'Classes.class'
 require 'Classes.newClass'
 require 'Classes.libField'

@@ -14,18 +14,22 @@ function FarmElement:initialize(args)
             local pest = theField:pestAt(self.i, self.j)
             print('--@FarmElement:onClick')
             print(pest)
+            local delay = 500
+            if fieldType == 'Tea' then
+                delay = 750
+            end
             if pest ~= false then
                 if pest:canClick() ~= false then
                     print('CLICK ON PEST')
                     touchesAllowed = false
-                    timer.performWithDelay(500, function() touchesAllowed = true end, 1)
+                    timer.performWithDelay(delay, function() touchesAllowed = true end, 1)
                     pest:onClick(event)
                     return true
                 end
             end           
             if self:canClick() then
                 touchesAllowed = false
-                timer.performWithDelay(500, function() touchesAllowed = true end, 1)
+                timer.performWithDelay(delay, function() touchesAllowed = true end, 1)
                 self:onClick(event)
                 return true
             end

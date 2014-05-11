@@ -200,3 +200,139 @@ end
 function Urn:nextIsValid()
     return self:whatIsNext().is_weapon
 end
+
+--==================================================================================
+--====   Turtle                     ================================================
+--==================================================================================
+Turtle = Class(Obstruction)
+function Turtle:initialize(args)
+    Obstruction.initialize(self, args)
+    self.obs_sprite:setSequence('TurtleS')
+    self.elem_type = 'Turtle'
+    self.orientation = 'Down'
+    self.new_orientation = nil
+end
+
+function Turtle:move()
+    local opts = {}
+    for i, val in pairs(self:getNeighbors()) do
+        for j, v in ipairs(val) do
+            if v ~= nil then
+                if v.elem_type == 'Blank' and self:canMoveTo(v) then
+                    opts[#opts+1] = v
+                end
+            end
+        end
+    end
+    if #opts > 0 then
+        r = math.random(1,#opts)
+        self.dest = opts[r]
+        self:getNewOrientation()
+        self:go()
+    end
+
+end
+
+function Turtle:getNewOrientation()
+    if self.dest.i > self.i then
+        self.new_orientation = 'Right'
+    elseif self.dest.i < self.i then
+        self.new_orientation = 'Left'
+    elseif self.dest.j > self.j then
+        self.new_orientation = 'Down'
+    else
+        self.new_orientation = 'Up'
+    end
+end
+
+function Turtle:canMoveTo(dest)
+    if (dest.i > self.i and self.orientation == 'Left') or
+        (dest.i < self.i and self.orientation == 'Right') or
+        (dest.j < self.j and self.orientation == 'Down') or
+        (dest.j > self.j and self.orientation == 'Up') then
+        return false
+    else
+        return true
+    end 
+end
+
+function Turtle:nextIsValid()
+    return false
+end
+
+function Turtle:go()
+    if self.dest.i > self.i then
+        self.new_orientation = 'Right'
+    elseif self.dest.i < self.i then
+        self.new_orientation = 'Left'
+    elseif self.dest.j < self.j then
+        self.new_orientation = 'Up'
+    else
+        self.new_orientation = 'Down'
+    end
+    if self.new_orientation ~= self.orientation then
+        self:turn()
+        timer.performWithDelay(125, function() self:walk() end, 1)
+    else
+        self:walk()
+    end
+end
+
+function Turtle:flip(doFlip)
+    print('FLIP DA TURTLE!')
+    if doFlip == true then
+        self.obs_sprite.xScale = -1
+    else
+        self.obs_sprite.xScale = 1
+    end
+end
+
+function Turtle:turn()
+    if self.orientation == 'Down' or self.orientation == 'Up' then
+        if self.new_orientation == 'Right' then
+            self:flip(false)
+        else
+            self:flip(true)
+        end
+        if self.orientation == 'Down' then
+            self.obs_sprite:setSequence('TurtleStoE')
+        else
+            self.obs_sprite:setSequence('TurtleNtoE')
+        end
+    elseif self.orientation == 'Right' or self.orientation == 'Left' then
+        if self.new_orientation == 'Up' then
+            self.obs_sprite:setSequence('TurtleEtoN')
+        else
+            self.obs_sprite:setSequence('TurtleEtoS')
+        end
+    end
+    self.obs_sprite:play()
+end
+
+function Turtle:walk()
+    local tmp = Blank:new({i=self.i, j=self.j})
+    self.i = self.dest.i
+    self.j = self.dest.j
+    self.dest:die()
+    self:deriveXY()
+    local new_seq = nil
+    print('TURTLE!!!!!!!!!!!!')
+    print(self.new_orientation)
+    if self.new_orientation == 'Up' then
+        new_seq = 'TurtleN'
+    elseif self.new_orientation == 'Down' then
+        new_seq = 'TurtleS'
+    else
+        new_seq = 'TurtleE'
+    end
+    print(new_seq)
+    self.obs_sprite:setSequence(new_seq)
+    self.obs_sprite:play()
+    self.orientation = self.new_orientation
+    transition.to(self.obs_sprite, {x=self.x, y=self.y, time=500, onComplete=function() self.obs_sprite:setSequence(new_seq) end})
+    FarmElement.move(self)
+end
+
+function Turtle:nextDay()
+    self:move()
+end
