@@ -4,7 +4,6 @@ fields.order = {'Salad', 'Stew', 'Salsa', 'Tea'}
 fields.Salad = {
     allowedPlants = {'Lettuce', 'Radish'},
     Pest = 'LazyGopher',
-    maxPests = 2,
     rows = 5,
     columns = 5,
     initialWeights = {Lettuce=42, Radish=43, Mallet=5},
@@ -70,7 +69,6 @@ end
 fields.Salsa = {
     allowedPlants = {'Tomato', 'Jalapeno'},
     Pest = 'SmartGopher',
-    maxPests = 4,
     rows = 8,
     columns = 8,
     initialWeights = {Tomato=42, Jalapeno=43, Mallet=5},

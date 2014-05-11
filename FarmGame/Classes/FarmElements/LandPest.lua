@@ -154,7 +154,10 @@ function LandPest:useWeapon()
     playSoundEffect(fn)
     self.dying = true
     self.rock = Rock:new({i=self.i, j=self.j})
-    self.rock.obs_sprite.alpha = 0
+    if self.rock.obs_sprite ~= nil then
+        print("@@@@!!!!!!!!!Rock sprite did not die!")
+        self.rock.obs_sprite.alpha = 0
+    end
     self.pest_sprite.y = self.pest_sprite.y - 75
     self.pest_sprite:setSequence('GopherHammerDie')
     self.pest_sprite:play()
