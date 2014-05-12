@@ -56,7 +56,7 @@ Field = class(function(tmpField, type)
         slingAnim.x = display.contentWidth/2
         slingAnim.y = display.contentHeight/2
         slingAnim.alpha = 0
-        layers.weaponLayer:insert(slingAnim)
+        layers.overFrame:insert(slingAnim)
         tmpField.slingAnim = slingAnim
 
         return tmpField
