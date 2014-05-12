@@ -248,7 +248,6 @@ end
 
 toggleOptions = function ( event )
     if not gameOver then
-        print('hi')
         if(layers.popup.visible) then
             layers.popup.alpha = 0
             timer.performWithDelay(10, function() layers.popup.visible = false end, 1)
