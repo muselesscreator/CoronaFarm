@@ -186,6 +186,8 @@ local score = 0
 local clickAction = ""
 local plantsHarvested = {}
 
+math.randomseed(os.time())
+
 musicVolume = .5
 sfxVolume = .5
 
