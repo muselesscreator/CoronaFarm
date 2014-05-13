@@ -19,7 +19,7 @@ Field = class(function(tmpField, type)
         tmpField.allElements = {}
         tmpField.lastElementID = 0
 
-        bg = display.newImage(tmpField.bg)
+        bg = display.newImageRect(tmpField.bg, tmpField.bg_w, tmpField.bg_h)
         bg.anchorX = 0
         bg.anchorY = 0
         bg.x = 0
