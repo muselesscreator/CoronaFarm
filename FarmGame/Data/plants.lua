@@ -19,13 +19,13 @@ Plants.Carrot ={
     dim = {1,1},
     turns = {2, 2, 3, 7, 10},
     maxHarvest = {1},
-    xp = 20,
+    xp = 25,
     }
 Plants.Potato ={
     dim = {1,1},
     turns = {2, 3, 3, 8, 10},
     maxHarvest = {1},
-    xp = 45,
+    xp = 50,
     }
 Plants.Celery ={
     dim = {1,1},
@@ -49,7 +49,7 @@ Plants.Tomato ={
     dim = {1,1},
     turns = {1, 1, 4, 6, 10},
     maxHarvest = {2, 2, 3},
-    xp = 30,
+    xp = 25,
 }
 Plants.Jalapeno ={
     dim = {1,1},

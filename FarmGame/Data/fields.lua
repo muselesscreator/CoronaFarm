@@ -6,7 +6,7 @@ fields.Salad = {
     Pest = 'LazyGopher',
     rows = 5,
     columns = 5,
-    initialWeights = {Lettuce=42, Radish=43, Mallet=5},
+    initialWeights = {Lettuce=42, Radish=43, Mallet=8},
     Weights = initialWeights,
     X = 380,
     Y = 126,
@@ -22,7 +22,7 @@ fields.Salad = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {},
     minScore = 0,
-    maxDoomCounter = 10,
+    maxDoomCounter = 8,
     doomObjType = 'Rock',
 }
 function fields.Salad.updateWeights()
@@ -53,7 +53,7 @@ fields.Stew = {
     Queue = {X = 175, Y=425, W=100},
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, {5,6}},
-    minScore = 120,
+    minScore = 7500,
     maxDoomCounter = 5,
     doomObjType = 'Urn',
 }
@@ -71,7 +71,7 @@ fields.Salsa = {
     Pest = 'SmartGopher',
     rows = 8,
     columns = 8,
-    initialWeights = {Tomato=42, Jalapeno=43, Mallet=5},
+    initialWeights = {Tomato=42, Jalapeno=43, Mallet=15},
     Weights = initialWeights,
     X = 380,
     Y = 126,
@@ -86,7 +86,7 @@ fields.Salsa = {
     Queue = {X = 175, Y=425, W=100},
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5,1}, {5, 2}, {5, 3}, {6, 3}, {3, 6}, {4, 6}, {4, 7}, {4, 8}},
-    minScore = 500,
+    minScore = 15000,
     maxDoomCounter = 20,
     doomObjType = 'Rock',
 }
@@ -118,8 +118,8 @@ fields.Tea = {
     Queue = {X = 175, Y=425, W=100},
     Basket = {X = 175, Y=626, W=100},
     blocked = {{3, 3}, {3, 4}, {4, 3}, {4, 4}, {6, 5}, {6, 6}, {7, 5}, {7, 6}},
-    minScore = 1000,
-    maxDoomCounter = 30,
+    minScore = 35000,
+    maxDoomCounter = 25,
     doomObjType = 'StonePlant',
 }
 function fields.Tea.updateWeights()
@@ -136,15 +136,15 @@ function slingshot_weights()
     elseif theBasket.box.contents.type == 'Slingshot' then
         theQueue.weights.Slingshot = 8
     else
-        theQueue.weights.Slingshot = 15
+        theQueue.weights.Slingshot = 18
     end
 end
 function mallet_weights()
     if theQueue[#theQueue].contents.type == 'Mallet' then
         theQueue.weights.Mallet = 0
     elseif theBasket.box.contents.type=='Mallet' then
-        theQueue.weights.Mallet = 5+2*(#theField.elements.Pest)
+        theQueue.weights.Mallet = 6+3*(#theField.elements.Pest)
     else
-        theQueue.weights.Mallet = 10+1*(#theField.elements.Pest)
+        theQueue.weights.Mallet = 10+5*(#theField.elements.Pest)
     end
 end
