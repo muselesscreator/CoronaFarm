@@ -13,6 +13,7 @@ function FarmElement:initialize(args)
         if touchesAllowed and not layers.popup.visible and not gameOver then
             print('CLIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICK!!!!!!!!!!!!!!!!!!!!!!!!')
             if self:whatIsNext().type == 'Slingshot' then
+                touchesAllowed = false
                 print('USE DA SLIIIINGSHOOOOOOOT!!!!!!!!!!!!!!!!!!')
                 local stuff = theField:whatIsAt(self.i, self.j)
                 can_shoot = true
@@ -57,6 +58,7 @@ function FarmElement:initialize(args)
                         end
                     end
                     timer.performWithDelay(1000, function()
+                        touchesAllowed = true
                         self:useNext()
                         theField:nextDay()
                         end, 1)

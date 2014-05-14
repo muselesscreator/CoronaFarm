@@ -53,19 +53,20 @@ sequenceData =
     { name="StonePotatoes", sheet=obsSheet, frames={ 38, 34, 35, 36, 37 }},
     { name="StoneRadish", sheet=obsSheet, frames={ 43, 39, 40, 41, 42 }},
     { name="StoneTomato", sheet=obsSheet, frames={ 48, 44, 45, 46, 47 }},
-    { name="TurtleN", sheet=obsSheet, start=50, count=8, time=333},
-    { name="TurtleNtoE", sheet=obsSheet, frames={ 59, 60, 61 }, time=125},
-    { name="TurtleEtoN", sheet=obsSheet, frames={ 61, 60, 59 }, time=125},
-    { name="TurtleS", sheet=obsSheet, start=62, count=8, time=333},
-    { name="TurtleStoE", sheet=obsSheet, frames={ 73, 72, 71 }, time=125},
-    { name="TurtleEtoS", sheet=obsSheet, frames={ 71, 72, 73 }, time=125},
-    { name="TurtleE", sheet=obsSheet, start=74, count=8, time=333},
-    { name="Urn", sheet=obsSheet, frames={ 83 }},
+    { name="TurtleN", sheet=obsSheet, start=49, count=8, time=333},
+    { name="TurtleNtoE", sheet=obsSheet, frames={ 58, 59, 60, }, time=125},
+    { name="TurtleEtoN", sheet=obsSheet, frames={ 60, 59, 58 }, time=125},
+    { name="TurtleS", sheet=obsSheet, start=61, count=8, time=333},
+    { name="TurtleStoE", sheet=obsSheet, frames={ 72, 71, 70 }, time=125},
+    { name="TurtleEtoS", sheet=obsSheet, frames={ 70, 71, 72 }, time=125},
+    { name="TurtleE", sheet=obsSheet, start=73, count=8, time=333},
+    { name="Urn", sheet=obsSheet, frames={ 82 }},
 
     { name="Reticle", sheet=weaponSheet, frames={ 1 }},
-    { name="SlingAnim", sheet=weaponSheet, start=2, count=16, time=1000},
-    { name="Mallet", sheet=weaponSheet, start=18, count=6, time=250, loopCount=1},
-    { name="Slingshot", sheet=weaponSheet, frames={24}},
+    { name="SlingAnim", sheet=weaponSheet, start=2, count=19, time=1000},
+    { name="BirdDeath", sheet=weaponSheet, start=20, count=7},
+    { name="Mallet", sheet=weaponSheet, start=27, count=6, time=250, loopCount=1},
+    { name="Slingshot", sheet=weaponSheet, frames={33}},
 
     { name="BoxClosed", sheet=uiSheet, frames={1}},
     { name="BoxOpen", sheet=uiSheet, frames={2}},
@@ -249,7 +250,7 @@ function log(message, level)
 end
 
 toggleOptions = function ( event )
-    if not gameOver then
+    if gameOver ~= true then
         if(layers.popup.visible) then
             layers.popup.alpha = 0
             timer.performWithDelay(10, function() layers.popup.visible = false end, 1)

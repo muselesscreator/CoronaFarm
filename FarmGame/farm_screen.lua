@@ -49,9 +49,10 @@ function scene:createScene( event)
         fn = 'sound/FarmSong.mp3'
     end
     local backgroundMusic = audio.loadStream(fn)
+    print("MUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSIC VOLUME")
     print(musicVolume)
-    audio.setVolume(musicVolume, backgroundMusic)
     backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
+    audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
     print('farm_screen')
     local group = self.view
 
@@ -113,6 +114,7 @@ function scene:createScene( event)
     layers.overFrame = display.newGroup()
     layers.birdLayer = display.newGroup()
     layers.weaponLayer = display.newGroup()
+    layers.doom = display.newGroup()
     layers.popup = display.newGroup()
     layers.gameOver = display.newGroup()
     theField = Field(fieldType)
@@ -122,6 +124,7 @@ function scene:createScene( event)
     layers.field:insert(layers.overlays)
     layers.field:insert(layers.birdLayer)
     layers.field:insert(layers.weaponLayer)
+    layers.field:insert(layers.doom)
 
     clickBlock = display.newRect(0, 45, 269, 680)
     clickBlock.tap = tapOverlay

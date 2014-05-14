@@ -28,6 +28,15 @@ Field = class(function(tmpField, type)
         bg.w = tmpField.bg_w
         layers.field:insert(bg)
 
+        doomOverlay = display.newImageRect('images/doom'..fieldType..'.png', tmpField.bg_w, tmpField.bg_h)
+        doomOverlay.anchorX = 0
+        doomOverlay.anchorY = 0
+        doomOverlay.x = 0
+        doomOverlay.y = 0
+        doomOverlay.alpha = 0
+        tmpField.doomOverlay = doomOverlay
+        layers.doom:insert(doomOverlay)
+
         local monster = display.newImage(tmpField.monster)
         monster.anchorX = 0
         monster.anchorY = 0
@@ -149,8 +158,10 @@ function Field:updateDoomCounter()
     else
         doomHUD:setFillColor(.5,0,0)
     end
+    self.doomOverlay.alpha = fracDoomCount
     doomHUD.text = doomCounter
     if doomCounter == 0 then
+        gameOver = true
         self:pestGameOver()
     end
 end

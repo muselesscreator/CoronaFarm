@@ -82,15 +82,20 @@ function Plant:canClick()
     end
 end
 
+function Plant:harvestNext(bunch, i)
+    if #bunch >= i then
+        bunch[i]:harvest(mult)
+        thePlayer:addScore(bunch[i].xp * mult)
+        timer.performWithDelay(75, function() self:harvestNext(bunch,i+1) end, 1)
+    end
+end
+
 function Plant:onClick()
     if self:canClick() then
         if self.myStage == self.mature then
             local bunch = self:checkNeighbors({})
             mult = #bunch
-            for i, v in ipairs(bunch) do
-                v:harvest(mult)
-                thePlayer:addScore(v.xp * mult)
-            end
+            self:harvestNext(bunch, 1)
             timer.performWithDelay(250, function()
                 theField:nextDay()
                 end, 1)
