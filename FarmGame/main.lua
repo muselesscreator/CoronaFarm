@@ -64,7 +64,7 @@ sequenceData =
 
     { name="Reticle", sheet=weaponSheet, frames={ 1 }},
     { name="SlingAnim", sheet=weaponSheet, start=2, count=19, time=1000},
-    { name="BirdDeath", sheet=weaponSheet, start=20, count=7},
+    { name="BirdDeath", sheet=weaponSheet, start=20, count=7, time=800},
     { name="Mallet", sheet=weaponSheet, start=27, count=6, time=250, loopCount=1},
     { name="Slingshot", sheet=weaponSheet, frames={33}},
 

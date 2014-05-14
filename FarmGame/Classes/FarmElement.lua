@@ -38,6 +38,7 @@ function FarmElement:initialize(args)
                     theField.slingAnim:setSequence('SlingAnim')
                     theField.slingAnim.alpha = 1
                     theField.slingAnim:play()
+                    local killed_pest = false
                     timer.performWithDelay(1000, function()
                         theField.slingAnim.alpha = 0 
                         theField.slingAnim:setSequence('SlingAnim')
@@ -48,6 +49,7 @@ function FarmElement:initialize(args)
                         local pest = theField:pestAt(v.i, v.j)
                         if pest ~= false then
                             print('Kill thie Pest!')
+                            killed_pest = true
                             pest:useWeapon()
                         else
                             local other_stuff = theField:whatIsAt(v.i, v.j)
@@ -58,9 +60,22 @@ function FarmElement:initialize(args)
                         end
                     end
                     timer.performWithDelay(1000, function()
-                        touchesAllowed = true
-                        self:useNext()
-                        theField:nextDay()
+                        if killed_pest == true then
+                            theField.slingAnim:setSequence('BirdDeath')
+                            theField.slingAnim.alpha = 1
+                            theField.slingAnim:play()
+                            timer.performWithDelay(800, function()
+                                theField.slingAnim.alpha = 0
+                                theField.slingAnim:setSequence('SlingAnim')
+                                touchesAllowed = true
+                                self:useNext()
+                                theField:nextDay()
+                                end, 1)
+                        else
+                            touchesAllowed = true
+                            self:useNext()
+                            theField:nextDay()
+                        end
                         end, 1)
                     return true
                 end
