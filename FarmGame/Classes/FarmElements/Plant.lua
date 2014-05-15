@@ -87,6 +87,8 @@ function Plant:harvestNext(bunch, i)
         bunch[i]:harvest(mult)
         thePlayer:addScore(bunch[i].xp * mult)
         timer.performWithDelay(75, function() self:harvestNext(bunch,i+1) end, 1)
+    else
+        theField:nextDay()
     end
 end
 
@@ -96,9 +98,6 @@ function Plant:onClick()
             local bunch = self:checkNeighbors({})
             mult = #bunch
             self:harvestNext(bunch, 1)
-            timer.performWithDelay(250, function()
-                theField:nextDay()
-                end, 1)
         elseif self.myStage == self.rot then
             local tmp = Barren:new({i=self.i, j=self.j, turns_remaining = self.turns[#self.turns]})
             self:die()
