@@ -217,7 +217,7 @@ end
 function promote_player(self, event)
     thePlayer.id = 0
     thePlayer.levelScore = 0
-    thePlayer.totalScore = 25000
+    thePlayer.totalScore = 36000
     thePlayer.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
     thePlayer.has_played_level = {false, false, false, false}
     saveTable(thePlayer, 'player.json')
