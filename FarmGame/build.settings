@@ -30,7 +30,7 @@ settings = {
 		}
 	},
 	
-	--[[
+	
 	-- Android permissions
 
 	androidPermissions = {
@@ -38,5 +38,5 @@ settings = {
         "android.permission.VIBRATE"
   	},
 
-	]]--
+	
 }

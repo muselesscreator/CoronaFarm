@@ -128,6 +128,7 @@ function Rock:useWeapon()
         self.overlay:setSequence('Mallet')
         self.overlay.alpha = 1
         self.overlay:play()
+        vibrate()
         if self.cracked then
             local tmp = Blank:new({i=self.i, j=self.j})
             timer.performWithDelay(250, function() self:die() end, 1)

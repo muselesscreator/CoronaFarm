@@ -186,6 +186,7 @@ local clickedID
 local score = 0
 local clickAction = ""
 local plantsHarvested = {}
+isVibrateEnabled = true
 
 math.randomseed(os.time())
 
@@ -204,6 +205,25 @@ log_level = 'Debug'
 ------------------------------------------------------
 -- 3. Global Functions
 ------------------------------------------------------
+function vibrate()
+    if isVibrateEnabled then
+        print("I'm Vibratin, I'm Vibratin, false alarm$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        system.vibrate()
+    end
+end
+function slingshotVibrate()
+    --[[function keepVibrating(iter)
+        if iter < 10 then
+            timer.performWithDelay(200-(iter*10), function() keepVibrating(iter + 1) end, 1)
+            vibrate()
+        end
+    end
+    timer.performWithDelay(200, function()
+        keepVibrating(4)
+        end,1) ]]--
+    timer.performWithDelay(850, vibrate, 1)
+end
+
 function getXY(id)
     sep = string.find(id, ',')
     x = tonumber(string.sub(id, 0, sep-1))

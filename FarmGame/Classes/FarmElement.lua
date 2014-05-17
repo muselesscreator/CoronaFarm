@@ -37,6 +37,7 @@ function FarmElement:initialize(args)
                     neighbors['NW'] = {i=self.i-1, j=self.j-1}
                     theField.slingAnim:setSequence('SlingAnim')
                     theField.slingAnim.alpha = 1
+                    slingshotVibrate()
                     theField.slingAnim:play()
                     local killed_pest = false
                     timer.performWithDelay(1000, function()
@@ -245,6 +246,7 @@ function FarmElement:useWeapon()
     if self:whatIsNext().type == 'Mallet' then
         self.weapon_sprite:setSequence(self:whatIsNext().type)
         self.weapon_sprite.alpha = 1
+        vibrate()
         self.weapon_sprite:play()
         timer.performWithDelay(250, function()
             self:hideWeapon()
