@@ -160,6 +160,7 @@ function LandPest:useWeapon()
     end
     self.pest_sprite.y = self.pest_sprite.y - 75
     self.pest_sprite:setSequence('GopherHammerDie')
+    vibrate()
     self.pest_sprite:play()
     timer.performWithDelay(800, function() self:die() end, 1)
 end
