@@ -262,6 +262,10 @@ function Field:nextDay()
     self.touchesAllowed = true
 end
 
+function Field:waitADay()
+    timer.performWithDelay(self.turnLength, function() touchesAllowed = true end, 1)
+end
+
 function Field:spawnPests()
     Pest:spawn(self.Pest)
 end

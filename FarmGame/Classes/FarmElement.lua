@@ -10,96 +10,46 @@ function FarmElement:initialize(args)
         local target  = event.target
         local phase = event.phase
 
-        if touchesAllowed and not layers.popup.visible and not gameOver then
-            print('CLIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICK!!!!!!!!!!!!!!!!!!!!!!!!')
+        if touchesAllowed and not layers.popup.visible and not gameOver then       
+             
             if self:whatIsNext().type == 'Slingshot' then
                 touchesAllowed = false
-                print('USE DA SLIIIINGSHOOOOOOOT!!!!!!!!!!!!!!!!!!')
                 local stuff = theField:whatIsAt(self.i, self.j)
                 can_shoot = true
+                local myPlant = nil
                 for i, v in ipairs(stuff) do
                     if v.elem_type == 'Plant' then
+                        myPlant = v
                         if v.myStage == v.mature and v.myProgress == (v.turns[v.mature]-1) then
-                            can_shoot = false
+                            myPlant = v
                         end
                     end
                 end
-                if can_shoot == true then
-                    neighbors = {}
-                    neighbors['self'] = self
-                    neighbors['N'] = {i=self.i, j=self.j-1}
-                    neighbors['NE'] = {i=self.i+1, j=self.j-1}
-                    neighbors['E'] = {i=self.i+1, j=self.j}
-                    neighbors['SE'] = {i=self.i+1, j=self.j+1}
-                    neighbors['S'] = {i=self.i, j=self.j+1}
-                    neighbors['SW'] = {i=self.i-1, j=self.j+1}
-                    neighbors['W'] = {i=self.i-1, j=self.j}
-                    neighbors['NW'] = {i=self.i-1, j=self.j-1}
-                    theField.slingAnim:setSequence('SlingAnim')
-                    theField.slingAnim.alpha = 1
-                    slingshotVibrate()
-                    theField.slingAnim:play()
-                    local killed_pest = false
-                    timer.performWithDelay(1000, function()
-                        theField.slingAnim.alpha = 0 
-                        theField.slingAnim:setSequence('SlingAnim')
-                        end, 1)
-                    for i, v in pairs(neighbors) do
-                        print('SLING NEIGHBORS!!!!!!!!!!!!!!!!!!')
-                        print(i..' '..v.i..', '..v.j)
-                        local pest = theField:pestAt(v.i, v.j)
-                        if pest ~= false then
-                            print('Kill thie Pest!')
-                            killed_pest = true
-                            pest:useWeapon()
-                        else
-                            local other_stuff = theField:whatIsAt(v.i, v.j)
-                            if #other_stuff > 0 then
-                                print('waste the slingshot')
-                                FarmElement.useWeapon(other_stuff[1])
-                            end
-                        end
-                    end
-                    timer.performWithDelay(1000, function()
-                        if killed_pest == true then
-                            theField.slingAnim:setSequence('BirdDeath')
-                            theField.slingAnim.alpha = 1
-                            theField.slingAnim:play()
-                            timer.performWithDelay(800, function()
-                                theField.slingAnim.alpha = 0
-                                theField.slingAnim:setSequence('SlingAnim')
-                                touchesAllowed = true
-                                self:useNext()
-                                theField:nextDay()
-                                end, 1)
-                        else
-                            touchesAllowed = true
-                            self:useNext()
-                            theField:nextDay()
-                        end
-                        end, 1)
-                    return true
+                if myPlant == nil or not myPlant.myStage == myPlant.mature then
+                --if myPlant == nil then
+                    self:useSlingshot()
+                else
+                    self:confSlingshot(myPlant)
                 end
+                return true
             end
+
+
             local pest = theField:pestAt(self.i, self.j)
             print('--@FarmElement:onClick')
             print(pest)
-            local delay = 500
-            if fieldType == 'Tea' then
-                delay = 750
-            end
             if pest ~= false then
                 if pest:canClick() ~= false then
                     print('CLICK ON PEST')
                     touchesAllowed = false
-                    timer.performWithDelay(delay, function() touchesAllowed = true end, 1)
+                    theField:waitADay()
                     pest:onClick(event)
                     return true
                 end
             end           
             if self:canClick() then
                 touchesAllowed = false
-                timer.performWithDelay(delay, function() touchesAllowed = true end, 1)
+                theField:waitADay()
                 self:onClick(event)
                 return true
             end
@@ -132,7 +82,6 @@ function FarmElement:initialize(args)
     self.base_sprite = base_sprite
     self.overlay = overlay
 end
-
 
 function FarmElement:deriveXY()
     self.x = theField.X + (self.i-1)*((theField.W/theField.columns))
@@ -241,6 +190,7 @@ function FarmElement:removeFromField()
         end
     end
 end
+
 --Done
 function FarmElement:useWeapon()
     if self:whatIsNext().type == 'Mallet' then
@@ -259,6 +209,104 @@ function FarmElement:useWeapon()
             self:hideWeapon()
             end, 1)
     end
+end
+
+function FarmElement:confSlingshot(myPlant)
+    self.menu = display.newImage('images/uiConfirmDialog.png')
+    self.menu.x = self.x
+    self.menu.y = self.y - 100
+    theField.layers[self.j]:insert(self.menu)
+
+    local function hideUI()
+        self.menu:removeSelf()
+        self.menu = nil
+        self.doShoot:removeSelf()
+        self.doShoot = nil
+        self.doHarvest:removeSelf()
+        self.doHarvest = nil
+        theField:waitADay()
+    end
+
+    local function harvest()
+        myPlant:onClick()
+        hideUI()
+    end
+
+    local function shoot()
+        self:useSlingshot()
+        hideUI()
+    end
+
+    self.doShoot = display.newImage('images/uiButtonShoot.png')
+    self.doShoot.x = self.x-50
+    self.doShoot.y = self.y-120
+    theField.layers[self.j]:insert(self.doShoot)
+    self.doShoot.touch = shoot
+    self.doShoot:addEventListener('touch', self.doShoot)
+
+    self.doHarvest = display.newImage('images/uiButtonHarvest.png')
+    self.doHarvest.x = self.x+50
+    self.doHarvest.y = self.y-120
+    theField.layers[self.j]:insert(self.doHarvest)
+    self.doHarvest.touch = harvest
+    self.doHarvest:addEventListener('touch', self.doHarvest)
+
+end
+
+function FarmElement:useSlingshot()
+    neighbors = {}
+    neighbors['self'] = self
+    neighbors['N'] = {i=self.i, j=self.j-1}
+    neighbors['NE'] = {i=self.i+1, j=self.j-1}
+    neighbors['E'] = {i=self.i+1, j=self.j}
+    neighbors['SE'] = {i=self.i+1, j=self.j+1}
+    neighbors['S'] = {i=self.i, j=self.j+1}
+    neighbors['SW'] = {i=self.i-1, j=self.j+1}
+    neighbors['W'] = {i=self.i-1, j=self.j}
+    neighbors['NW'] = {i=self.i-1, j=self.j-1}
+    theField.slingAnim:setSequence('SlingAnim')
+    theField.slingAnim.alpha = 1
+    slingshotVibrate()
+    theField.slingAnim:play()
+    local killed_pest = false
+    timer.performWithDelay(1000, function()
+        theField.slingAnim.alpha = 0 
+        theField.slingAnim:setSequence('SlingAnim')
+        end, 1)
+    for i, v in pairs(neighbors) do
+        print('SLING NEIGHBORS!!!!!!!!!!!!!!!!!!')
+        print(i..' '..v.i..', '..v.j)
+        local pest = theField:pestAt(v.i, v.j)
+        if pest ~= false then
+            print('Kill thie Pest!')
+            killed_pest = true
+            pest:useWeapon()
+        else
+            local other_stuff = theField:whatIsAt(v.i, v.j)
+            if #other_stuff > 0 then
+                print('waste the slingshot')
+                FarmElement.useWeapon(other_stuff[1])
+            end
+        end
+    end
+    timer.performWithDelay(1000, function()
+        if killed_pest == true then
+            theField.slingAnim:setSequence('BirdDeath')
+            theField.slingAnim.alpha = 1
+            theField.slingAnim:play()
+            timer.performWithDelay(800, function()
+                theField.slingAnim.alpha = 0
+                theField.slingAnim:setSequence('SlingAnim')
+                touchesAllowed = true
+                self:useNext()
+                theField:nextDay()
+                end, 1)
+        else
+            touchesAllowed = true
+            self:useNext()
+            theField:nextDay()
+        end
+        end, 1)
 end
 
 function FarmElement:hideWeapon()
