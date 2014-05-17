@@ -37,13 +37,13 @@ Plants.Mint ={
     dim = {1,1},
     turns = {1, 1, 2, 4, 8},
     maxHarvest = {4},
-    xp = 20,
+    xp = 60,
 }
 Plants.Chamomile ={
     dim = {1,1},
     turns = {2, 2, 3, 7, 8},
     maxHarvest = {3},
-    xp = 40,
+    xp = 80,
 }
 Plants.Tomato ={
     dim = {1,1},
