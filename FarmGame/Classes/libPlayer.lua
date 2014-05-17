@@ -54,6 +54,8 @@ Player = class(function(player)
 function Player:addScore(inc)
     self.levelScore = self.levelScore + inc
     self.totalScore = self.totalScore + inc
+    local maskX = ((self.levelScore / theField.goalScore) * 240) - 120
+    progressBar.maskX = maskX
     scoreHUD.text = self.levelScore
     print("score = "..self.levelScore)
     print("totalScore = "..self.totalScore)
@@ -61,6 +63,10 @@ function Player:addScore(inc)
         self.highScores[fieldType] = self.levelScore
     end
     saveTable(self, 'player.json')
+
+    if self.levelScore >= theField.goalScore and not gameOver then
+        theField:goodGameOver()
+    end
 end
 
 function Player:newLevel()

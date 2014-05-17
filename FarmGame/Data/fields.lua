@@ -22,6 +22,7 @@ fields.Salad = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {},
     minScore = 0,
+    goalScore = 8000,
     maxDoomCounter = 8,
     doomObjType = 'Rock',
 }
@@ -54,6 +55,7 @@ fields.Stew = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, {5,6}},
     minScore = 7500,
+    goalScore = 20000,
     maxDoomCounter = 5,
     doomObjType = 'Urn',
 }
@@ -87,6 +89,7 @@ fields.Salsa = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5,1}, {5, 2}, {5, 3}, {6, 3}, {3, 6}, {4, 6}, {4, 7}, {4, 8}},
     minScore = 15000,
+    goalScore = 50000,
     maxDoomCounter = 20,
     doomObjType = 'Rock',
 }
@@ -119,6 +122,7 @@ fields.Tea = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {{3, 3}, {3, 4}, {4, 3}, {4, 4}, {6, 5}, {6, 6}, {7, 5}, {7, 6}},
     minScore = 35000,
+    goalScore = 60000,
     maxDoomCounter = 25,
     doomObjType = 'StonePlant',
 }

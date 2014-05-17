@@ -109,63 +109,10 @@ local function disallowClicks( event )
     return true
 end
 
-function Field:pestGameOver()
-    noClicks = display.newRect(0,0,display.contentWidth,display.contentHeight)
-    noClicks.alpha = 0
-    noClicks.tap = disallowClicks
-    noClicks:addEventListener("tap", noClicks)
-    noClicks.anchorX = 0
-    noClicks.anchorY = 0
-    layers.gameOver:insert(noClicks)
 
-    self.monster_layer.alpha = 1
-    transition.to(self.monster_layer, {y=150, time=1500})
-    timer.performWithDelay(2000, function() 
-        transition.to(self.overlay, {alpha=1, time=500}) 
-        timer.performWithDelay(1500, function() storyboard:gotoScene('title_screen') end, 1)
-        end, 1)
-end
-
-
-function Field:boringGameOver()
-    transition.to(self.overlay, {alpha=1, time=1000})
-    timer.performWithDelay(1500, function() storyboard:gotoScene('title_screen') end, 1)
-end
-
-function Field:getDoomCounter()
-    --print("@getDoomCounter")
-    local num_flags = 0
-    for i, v in ipairs(self.elements.Obstruction) do
-        --print("@getDoomCounter:  Obstruction - "..v.elem_type.." doomObj - "..self.doomObjType)
-        if v.elem_type == self.doomObjType then
-            num_flags = num_flags + 1
-        end
-    end
-    return self.maxDoomCounter - num_flags
-end
-
-function Field:updateDoomCounter()
-    local doomCounter = self:getDoomCounter()
-    local maxDoomCounter = self.maxDoomCounter
-    local fracDoomCount = ((maxDoomCounter-doomCounter)/maxDoomCounter)
-    --print("@updateDoomCounter : doomCount -"..doomCounter.." maxDoomCounter - "..maxDoomCounter.." fraction - "..fracDoomCount)
-    if fracDoomCount < .25 then
-        doomHUD:setFillColor(0,.5,0)
-    elseif (fracDoomCount >= .25 and fracDoomCount < .5) then
-        doomHUD:setFillColor(1,1,0)
-    elseif (fracDoomCount >= .5 and fracDoomCount < .75) then
-        doomHUD:setFillColor(.9,.5,0)
-    else
-        doomHUD:setFillColor(.5,0,0)
-    end
-    self.doomOverlay.alpha = fracDoomCount
-    doomHUD.text = doomCounter
-    if doomCounter == 0 then
-        gameOver = true
-        self:pestGameOver()
-    end
-end
-
+------------------------
+--Game Over Functions --
+------------------------
 function Field:chkGameOver()
     print("--@Field:chkGameOver: checking for game over")
     local box = theBasket.box.contents
@@ -191,6 +138,109 @@ function Field:chkGameOver()
     self:boringGameOver()
     return true
 end
+
+function Field:pestGameOver()
+    gameOver = true
+
+    self.monster_layer.alpha = 1
+    transition.to(self.monster_layer, {y=150, time=1500})
+    timer.performWithDelay(2000, function() 
+        transition.to(self.overlay, {alpha=1, time=500}) 
+        timer.performWithDelay(1200, function() self:gameOver() end, 1)
+        end, 1)
+end
+
+
+function Field:boringGameOver()
+    gameOver = true
+    transition.to(self.overlay, {alpha=1, time=1000})
+    timer.performWithDelay(1200, function() self:gameOver() end, 1)
+end
+
+function Field:goodGameOver()
+    gameOver = true
+    local overlay = display.newImage('images/goodGameOverlay.png')
+    overlay.x = display.contentWidth / 2
+    overlay.y = display.contentHeight / 2
+    overlay.alpha = 0
+    layers.overFrame:insert(overlay)
+    transition.to(overlay, {alpha = 1, time=500})
+    timer.performWithDelay( 500, function()
+    local truck = display.newImage('images/truck.png')
+        truck.x = -400
+        truck.y = 500
+        layers.overFrame:insert(truck)
+        transition.to(truck, {x=2000, time=7000})
+
+        timer.performWithDelay(1200, function() self:gameOver() end, 1)
+    end, 1)
+end
+
+function Field:gameOver()
+    local playBtn = display.newImage('images/buttonPlayAgain.png')
+    playBtn.x = 290
+    playBtn.y = 450
+    layers.gameOver:insert(playBtn)
+
+    local exitBtn = display.newImage('images/buttonExitUp.png')
+    exitBtn.x = 690
+    exitBtn.y = 450
+    layers.gameOver:insert(exitBtn)
+
+    local function play()
+        storyboard:gotoScene('farm_screen')
+    end
+
+    local function exit()
+        storyboard:gotoScene('title_screen')
+    end
+
+    playBtn.touch = play
+    playBtn:addEventListener('touch', playBtn)
+
+    exitBtn.touch = exit
+    exitBtn:addEventListener('touch', exitBtn)
+end
+
+
+
+function Field:updateDoomCounter()
+    local doomCounter = self:getDoomCounter()
+    local maxDoomCounter = self.maxDoomCounter
+    local fracDoomCount = ((maxDoomCounter-doomCounter)/maxDoomCounter)
+    --print("@updateDoomCounter : doomCount -"..doomCounter.." maxDoomCounter - "..maxDoomCounter.." fraction - "..fracDoomCount)
+    if fracDoomCount < .25 then
+        doomHUD:setFillColor(0,.5,0)
+    elseif (fracDoomCount >= .25 and fracDoomCount < .5) then
+        doomHUD:setFillColor(1,1,0)
+    elseif (fracDoomCount >= .5 and fracDoomCount < .75) then
+        doomHUD:setFillColor(.9,.5,0)
+    else
+        doomHUD:setFillColor(.5,0,0)
+    end
+    self.doomOverlay.alpha = fracDoomCount
+    doomHUD.text = doomCounter
+    if doomCounter == 0 then
+        gameOver = true
+        self:pestGameOver()
+    end
+end
+
+function Field:getDoomCounter()
+    --print("@getDoomCounter")
+    local num_flags = 0
+    for i, v in ipairs(self.elements.Obstruction) do
+        --print("@getDoomCounter:  Obstruction - "..v.elem_type.." doomObj - "..self.doomObjType)
+        if v.elem_type == self.doomObjType then
+            num_flags = num_flags + 1
+        end
+    end
+    return self.maxDoomCounter - num_flags
+end
+
+
+
+
 
 function Field:nextDay()
     print('--@Field:nextDay')

@@ -150,9 +150,30 @@ function scene:createScene( event)
     basketImg.y = 500
     layers.frame:insert(basketImg)
 
+
+
+    local progressBarBG = display.newImage('images/uiProgressBar.png')
+    progressBarBG.anchorX = 0
+    progressBarBG.anchorY = 0
+    progressBarBG.y = 60
+    layers.overFrame:insert(progressBarBG)
+
+    progressBar = display.newImage('images/uiProgressBarFull.png')
+    progressBar.x = 0
+    progressBar.y = 60
+    progressBar.anchorX = 0
+    progressBar.anchorY = 0
+    layers.overFrame:insert(progressBar)
+
+    progressMask = graphics.newMask('images/uiProgressBarMask.png')
+    
+    progressBar:setMask(progressMask)
+    progressBar.maskX = -120
+
+
     local ScoreCard = display.newImage('images/scorecard.png')
-    ScoreCard.x = 125
-    ScoreCard.y = 85
+    ScoreCard.x = 120
+    ScoreCard.y = 80
     layers.overFrame:insert(ScoreCard)
 
     local doomBG = display.newImage('images/doomCounter.png')
@@ -161,12 +182,11 @@ function scene:createScene( event)
     layers.overFrame:insert(doomBG)
 
     doomHUD = display.newText(0,theField.maxDoomCounter,0,native.systemFontBold, 35)
-    doomHUD.x = 60
-    doomHUD.y = 370
+    doomHUD.x = 62
+    doomHUD.y = 362
     doomHUD:setFillColor(0,.5,0)
     doomHUD.text = theField.maxDoomCounter
     layers.overFrame:insert(doomHUD)
-
 
 
 --> Set Label
