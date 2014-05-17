@@ -182,7 +182,7 @@ function Field:gameOver()
     playBtn.y = 450
     layers.gameOver:insert(playBtn)
 
-    local exitBtn = display.newImage('images/buttonExitUp.png')
+    local exitBtn = display.newImage('images/uiButtonExitUp.png')
     exitBtn.x = 690
     exitBtn.y = 450
     layers.gameOver:insert(exitBtn)
@@ -200,7 +200,21 @@ function Field:gameOver()
 
     exitBtn.touch = exit
     exitBtn:addEventListener('touch', exitBtn)
+
+    local txt = display.newText(layers.gameOver, 'Score:', 355, 530, native.systemFontBold, 40)
+    txt:setFillColor(1, 1, 0)
+
+    txt = display.newText(layers.gameOver, thePlayer.levelScore, 600, 530, native.systemFontBold, 40)
+    txt:setFillColor(1, 1, 0)
+
+    txt = display.newText(layers.gameOver, 'High Score:', 400, 590, native.systemFontBold, 40)
+    txt:setFillColor(1, 1, 0)
+
+    txt = display.newText(layers.gameOver, thePlayer.highScores[fieldType], 600, 590, native.systemFontBold, 40)
+    txt:setFillColor(1, 1, 0)
 end
+
+
 
 
 

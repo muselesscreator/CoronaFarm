@@ -164,15 +164,47 @@ function scene:createScene( event )
     exitButton.yScale = .7
     layers.popup:insert(exitButton)
 
-    local txt = display.newText(layers.popup, 'Music Volume', 520, 390, native.systemFontBold, 25)
+    local txt = display.newText(layers.popup, 'Music Volume', 500, 360, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 350, y=400, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 330, y=370, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
-    txt = display.newText(layers.popup, 'Sound-Effects Volume', 520, 500, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 500, 440, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 350, y=510, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 330, y=450, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
+
+    txt = display.newText(layers.popup, 'Vibration Enabled', 440, 540, native.systemFontBold, 25)
+    txt:setFillColor(0, 0, 0)
+    local vibrateToggleBG = display.newImage('images/uiToggleBG.png')
+    vibrateToggleBG.x = 610
+    vibrateToggleBG.y = 540
+    layers.popup:insert(vibrateToggleBG)
+
+    local vibrateToggle = display.newImage('images/uiToggleThing.png')
+    local function toggleVibrate(self, event)
+        if event.phase == 'began' then
+            if isVibrateEnabled then
+                print('no')
+                isVibrateEnabled = false
+                transition.to(vibrateToggle, {x=635, time=400})
+            else
+                print('yes')
+                isVibrateEnabled = true
+                transition.to(vibrateToggle, {x=585, time=400})
+            end
+        end
+    end
+
+    if isVibrateEnabled then
+        vibrateToggle.x = 585
+    else
+        vibrateToggle.x = 635
+    end
+    vibrateToggle.y = 540
+    layers.popup:insert(vibrateToggle)
+    vibrateToggleBG.touch = toggleVibrate
+    vibrateToggleBG:addEventListener('touch', toggleVibrateBG)
 
     layers.popup.alpha = 0
 
