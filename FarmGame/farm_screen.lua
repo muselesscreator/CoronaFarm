@@ -116,6 +116,7 @@ function scene:createScene( event)
     layers.weaponLayer = display.newGroup()
     layers.doom = display.newGroup()
     layers.popup = display.newGroup()
+    layers.tutorial = display.newGroup()
     layers.gameOver = display.newGroup()
     theField = Field(fieldType)
 
@@ -151,6 +152,9 @@ function scene:createScene( event)
     layers.frame:insert(basketImg)
 
 
+    ------------------------------------------------
+    -- Score HUD
+    -------------------------------------------------
 
     local progressBarBG = display.newImage('images/uiProgressBar.png')
     progressBarBG.anchorX = 0
@@ -176,19 +180,6 @@ function scene:createScene( event)
     ScoreCard.y = 80
     layers.overFrame:insert(ScoreCard)
 
-    local doomBG = display.newImage('images/doomCounter.png')
-    doomBG.x = 60
-    doomBG.y = 345
-    layers.overFrame:insert(doomBG)
-
-    doomHUD = display.newText(0,theField.maxDoomCounter,0,native.systemFontBold, 35)
-    doomHUD.x = 62
-    doomHUD.y = 362
-    doomHUD:setFillColor(0,.5,0)
-    doomHUD.text = theField.maxDoomCounter
-    layers.overFrame:insert(doomHUD)
-
-
 --> Set Label
     scoreHUD = display.newText(0, 0, 0, CustomFont, 30)
     scoreHUD.anchorX = 0
@@ -197,9 +188,28 @@ function scene:createScene( event)
     scoreHUD.y = 67
     scoreHUD:setFillColor(0, 0, 0)
     layers.overFrame:insert(scoreHUD)
-    --> Define Square and Queue Tables
-    print('--@create: Create Field')
 
+
+    -----------------------------------------
+    -- Doom HUD
+    -----------------------------------------
+
+    local doomBG = display.newImage('images/doomCounter.png')
+    doomBG.x = 55
+    doomBG.y = 475
+    layers.overFrame:insert(doomBG)
+
+    doomHUD = display.newText(0,theField.maxDoomCounter,0,native.systemFontBold, 35)
+    doomHUD.x = 57
+    doomHUD.y = 492
+    doomHUD:setFillColor(0,.5,0)
+    doomHUD.text = theField.maxDoomCounter
+    layers.overFrame:insert(doomHUD)
+
+
+    ----------------------------------------------------------
+    -- Popup Menu
+    ---------------------------------------------------------
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
     popupMenu.x = display.contentWidth/2
@@ -216,7 +226,7 @@ function scene:createScene( event)
         onRelease = toggleOptions
     }
     tmpButton.x = 60
-    tmpButton.y = 200
+    tmpButton.y = 190
     layers.frame:insert(tmpButton)
 
 
@@ -283,9 +293,61 @@ function scene:createScene( event)
     vibrateToggleBG.touch = toggleVibrate
     vibrateToggleBG:addEventListener('touch', toggleVibrateBG)
 
-
-
     layers.popup.alpha = 0
+
+
+    ---------------------------------------------------------------------------
+    -- Tutorial
+    ---------------------------------------------------------------------------
+
+    layers.tutorial.visible = false
+    layers.tutorial.alpha = 0
+    layers.tutorial.frame = 1
+
+    helpBtn = display.newImage('images/questionMenuButton.png')
+    helpBtn.x = 60
+    helpBtn.y = 290
+    helpBtn.touch = clickHelp
+    helpBtn:addEventListener('touch', helpBtn)
+    layers.frame:insert(helpBtn)
+
+    tutorialPanel = display.newSprite(uiSheet, sequenceData)
+    tutorialPanel:setSequence('help')
+    tutorialPanel:setFrame(1)
+    tutorialPanel.x = display.contentWidth/2
+    tutorialPanel.y = display.contentHeight/2
+    layers.tutorial:insert(tutorialPanel)
+
+    tutorialBackBtn = display.newImage('images/uiArrow.png')
+    tutorialBackBtn.xScale = -1
+    tutorialBackBtn.yScale = .9
+    tutorialBackBtn.x = 380
+    tutorialBackBtn.y = 512
+    tutorialBackBtn.alpha = 0
+    tutorialBackBtn.touch = tutorialBack
+    tutorialBackBtn:addEventListener('touch', tutorialBackBtn)
+    layers.tutorial:insert(tutorialBackBtn)
+
+    tutorialNextBtn = display.newImage('images/uiArrow.png')
+    tutorialNextBtn.yScale = .9
+    tutorialNextBtn.x = 650
+    tutorialNextBtn.y = 512
+    tutorialNextBtn.touch = tutorialNext
+    tutorialNextBtn:addEventListener('touch', tutorialNextBtn)
+    layers.tutorial:insert(tutorialNextBtn)
+
+    tutorialClose = widget.newButton{
+        defaultFile = "images/uiButtonX.png",
+        overFile = "images/uiButtonX.png",
+        emboss = true,
+        onRelease = toggleTutorial
+    }
+    tutorialClose.x = 680
+    tutorialClose.y = 235
+    tutorialClose.xScale = .4
+    tutorialClose.yScale = .4
+    layers.tutorial:insert(tutorialClose)
+
 
     theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
@@ -295,6 +357,7 @@ function scene:createScene( event)
     group:insert(layers.frame)
     group:insert(layers.overFrame)
     group:insert(layers.popup)
+    group:insert(layers.tutorial)
     group:insert(layers.gameOver)
 
     touchesAllowed = true

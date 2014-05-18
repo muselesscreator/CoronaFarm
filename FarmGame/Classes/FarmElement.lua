@@ -10,7 +10,7 @@ function FarmElement:initialize(args)
         local target  = event.target
         local phase = event.phase
 
-        if touchesAllowed and not layers.popup.visible and not gameOver then       
+        if touchesAllowed and not layers.popup.visible and not gameOver and not layers.tutorial.visible then       
              
             if self:whatIsNext().type == 'Slingshot' then
                 touchesAllowed = false
@@ -20,12 +20,9 @@ function FarmElement:initialize(args)
                 for i, v in ipairs(stuff) do
                     if v.elem_type == 'Plant' then
                         myPlant = v
-                        if v.myStage == v.mature and v.myProgress == (v.turns[v.mature]-1) then
-                            myPlant = v
-                        end
                     end
                 end
-                if myPlant == nil or not myPlant.myStage == myPlant.mature then
+                if myPlant == nil or myPlant.myStage ~= myPlant.mature then
                 --if myPlant == nil then
                     self:useSlingshot()
                 else

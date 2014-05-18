@@ -16,14 +16,14 @@ storyboard.purgeOnSceneChange = true
 -- local forward references should go here --
 
 local function gotoFarm()
-    if not layers.popup.visible then
+    if not layers.popup.visible and not layers.tutorial.visible then
         storyboard.gotoScene('farm_screen')
         return true
     end
 end
 
 local function gotoLevel()
-    if not layers.popup.visible then
+    if not layers.popup.visible and not layers.tutorial.visible then
         storyboard.gotoScene('level_screen')
         return true
     end
@@ -52,6 +52,10 @@ function scene:createScene( event )
     layers = display.newGroup()
 
     layers.bg = display.newGroup()
+    layers.frame = display.newGroup()
+    layers.popup = display.newGroup()
+    layers.tutorial = display.newGroup()
+
     bg = display.newImage('images/fieldBackground.png')
     bg.anchorX = 0
     bg.anchorY = 0
@@ -71,7 +75,6 @@ function scene:createScene( event )
 
 
 
-    layers.frame = display.newGroup()
     local FarmButton = widget.newButton
     {
         defaultFile = "images/playNow.png",
@@ -115,19 +118,7 @@ function scene:createScene( event )
     LevelButton.yScale = 1.1
     layers.frame:insert(LevelButton)
 
-    
-    local tmpButton = widget.newButton
-    {
-        defaultFile = "images/popOutMenuButton.png",
-        emboss = true,
-        onRelease = toggleOptions
-    }
-    tmpButton.x = 930
-    tmpButton.y = 710
-    layers.frame:insert(tmpButton)
 
-    layers.popup = display.newGroup()
-    layers:insert(layers.popup)
 
     local scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
     scoreTxt:setFillColor(0, 0, 0)
@@ -143,6 +134,19 @@ function scene:createScene( event )
     layers.frame:insert(scoreTxt)
 
 
+    ----------------------------------------------------------------------
+    -- Popup menu
+    ----------------------------------------------------------------------
+    
+    local optButton = widget.newButton
+    {
+        defaultFile = "images/popOutMenuButton.png",
+        emboss = true,
+        onRelease = toggleOptions
+    }
+    optButton.x = 930
+    optButton.y = 710
+    layers.frame:insert(optButton)
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
     popupMenu.x = 250
@@ -209,11 +213,71 @@ function scene:createScene( event )
     layers.popup.alpha = 0
 
 
+    ---------------------------------------------------------------------------
+    -- Tutorial
+    ---------------------------------------------------------------------------
+
+    layers.tutorial.visible = false
+    layers.tutorial.alpha = 0
+    layers.tutorial.frame = 1
+
+    helpBtn = display.newImage('images/questionMenuButton.png')
+    helpBtn.x = 830
+    helpBtn.y = 710
+    helpBtn.touch = clickHelp
+    helpBtn:addEventListener('touch', helpBtn)
+    layers.frame:insert(helpBtn)
+
+    tutorialPanel = display.newSprite(uiSheet, sequenceData)
+    tutorialPanel:setSequence('help')
+    tutorialPanel:setFrame(1)
+    tutorialPanel.x = display.contentWidth/2
+    tutorialPanel.y = display.contentHeight/2
+    layers.tutorial:insert(tutorialPanel)
+
+    tutorialBackBtn = display.newImage('images/uiArrow.png')
+    tutorialBackBtn.xScale = -1
+    tutorialBackBtn.yScale = .9
+    tutorialBackBtn.x = 380
+    tutorialBackBtn.y = 512
+    tutorialBackBtn.alpha = 0
+    tutorialBackBtn.touch = tutorialBack
+    tutorialBackBtn:addEventListener('touch', tutorialBackBtn)
+    layers.tutorial:insert(tutorialBackBtn)
+
+    tutorialNextBtn = display.newImage('images/uiArrow.png')
+    tutorialNextBtn.yScale = .9
+    tutorialNextBtn.x = 650
+    tutorialNextBtn.y = 512
+    tutorialNextBtn.touch = tutorialNext
+    tutorialNextBtn:addEventListener('touch', tutorialNextBtn)
+    layers.tutorial:insert(tutorialNextBtn)
+
+    tutorialClose = widget.newButton{
+        defaultFile = "images/uiButtonX.png",
+        overFile = "images/uiButtonX.png",
+        emboss = true,
+        onRelease = toggleTutorial
+    }
+    tutorialClose.x = 680
+    tutorialClose.y = 235
+    tutorialClose.xScale = .4
+    tutorialClose.yScale = .4
+    tutorialClose.touch = toggleTutorial
+    tutorialClose:addEventListener('touch', tutorialClose)
+    layers.tutorial:insert(tutorialClose)
+
 
     group:insert(layers.bg)
     group:insert(layers.frame)
     group:insert(layers.popup)
+    group:insert(layers.tutorial)
     timer.performWithDelay(10, function() touchesAllowed = true end)
+
+
+    ------------------------------------------------------------------
+    -- Debug images
+    ------------------------------------------------------------------
 
     tmpImage = display.newImage('images/plus.png')
     tmpImage.x = 100

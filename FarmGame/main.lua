@@ -73,14 +73,15 @@ sequenceData =
     { name="uiCarrot", sheet=uiSheet, frames={3}},
     { name="uiCelery", sheet=uiSheet, frames={4}},
     { name="uiChamomile", sheet=uiSheet, frames={5}},
-    { name="uiJalapeno", sheet=uiSheet, frames={6}},
-    { name="uiLettuce", sheet=uiSheet, frames={7}},
-    { name="uiMallet", sheet=uiSheet, frames={8}},
-    { name="uiMint", sheet=uiSheet, frames={9}},
-    { name="uiPotato", sheet=uiSheet, frames={10}},
-    { name="uiRadish", sheet=uiSheet, frames={11}},
-    { name="uiSlingshot", sheet=uiSheet, frames={12}},
-    { name="uiTomato", sheet=uiSheet, frames={13}},
+    { name="help", sheet=uiSheet, start=6, count=5},
+    { name="uiJalapeno", sheet=uiSheet, frames={11}},
+    { name="uiLettuce", sheet=uiSheet, frames={12}},
+    { name="uiMallet", sheet=uiSheet, frames={13}},
+    { name="uiMint", sheet=uiSheet, frames={14}},
+    { name="uiPotato", sheet=uiSheet, frames={15}},
+    { name="uiRadish", sheet=uiSheet, frames={16}},
+    { name="uiSlingshot", sheet=uiSheet, frames={17}},
+    { name="uiTomato", sheet=uiSheet, frames={18}},
 
     { name="Reticle", sheet=overlaySheet, frames={ 1 }},
     { name="Smell", sheet=overlaySheet, frames={ 2, 3, 4, 5 }, time=225},
@@ -205,63 +206,16 @@ log_level = 'Debug'
 ------------------------------------------------------
 -- 3. Global Functions
 ------------------------------------------------------
+
 function vibrate()
     if isVibrateEnabled then
-        print("I'm Vibratin, I'm Vibratin, false alarm$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         system.vibrate()
     end
 end
 function slingshotVibrate()
-    --[[function keepVibrating(iter)
-        if iter < 10 then
-            timer.performWithDelay(200-(iter*10), function() keepVibrating(iter + 1) end, 1)
-            vibrate()
-        end
-    end
-    timer.performWithDelay(200, function()
-        keepVibrating(4)
-        end,1) ]]--
     timer.performWithDelay(850, vibrate, 1)
 end
 
-function getXY(id)
-    sep = string.find(id, ',')
-    x = tonumber(string.sub(id, 0, sep-1))
-    y = tonumber(string.sub(id, -sep+1))
-    return x, y
-end
-
-function getSquare(id)
-    x, y = getXY(id)
-    return theField.grid[x][y]
-end
-
-function AddPlantsHarvested(plant)
-    print("Adding plants harvested")
-    table.insert(plantsHarvested, plant)
-end
-
-function getPlantsHarvested()
-    return plantsHarvested
-end
-
-function clearPlantsHarvested()
-    plantsHarvested = {}
-end
-
-
-function newSprite(sequence, x, y)
-    sprite = display.newSprite(myImageSheet, sequenceData)
-    sprite:setSequence(sequence)
-    sprite.x = x
-    sprite.y = y
-    return sprite
-end
-
-function sleep(sec)
-    socket.select(nil, nil, sec)
-    return true
-end
 
 function log(message, level)
     if log_levels[level] <= log_levels[log_level] then
@@ -269,8 +223,71 @@ function log(message, level)
     end
 end
 
+
+
+function allowTouches(event)
+    touchesAllowed=true
+    print('You may now touch this!')
+end
+
+--------------------------------------------------------------
+-- Tutorial Functions
+--------------------------------------------------------------
+clickHelp = function (self, event)
+    if event.phase == 'began' then
+        return toggleTutorial()
+    end
+end
+
+toggleTutorial = function ( self, event )
+    if gameOver ~= true and not layers.popup.visible then
+        if layers.tutorial.visible then
+            layers.tutorial.alpha = 0
+            timer.performWithDelay(10, function() layers.tutorial.visible = false end, 1)
+        else
+            layers.tutorial.alpha = 1
+            layers.tutorial.visible = true
+            layers.tutorial.frame = 1
+            tutorialPanel:setFrame(1)
+            tutorialBackBtn.alpha = 0
+            tutorialNextBtn.alpha = 1
+        end
+    end
+end
+
+tutorialNext = function ( self, event )
+    print(event.phase)
+    if event.phase == 'began' then
+        layers.tutorial.frame = layers.tutorial.frame + 1
+        if layers.tutorial.frame == 2 then
+            tutorialBackBtn.alpha = 1
+        elseif layers.tutorial.frame == 5 then
+            tutorialNextBtn.alpha = 0
+        end
+        tutorialPanel:setFrame(layers.tutorial.frame)
+    end
+    return true
+end
+
+tutorialBack = function ( self, event )
+    print(event.phase)
+    if event.phase == 'began' then
+        layers.tutorial.frame = layers.tutorial.frame - 1
+        if layers.tutorial.frame == 1 then
+            tutorialBackBtn.alpha = 0
+        elseif layers.tutorial.frame == 4 then
+            tutorialNextBtn.alpha = 1
+        end
+        tutorialPanel:setFrame(layers.tutorial.frame)
+    end
+    return true
+end
+
+------------------------------------------------------------------
+-- Popup Functions
+------------------------------------------------------------------
 toggleOptions = function ( event )
-    if gameOver ~= true then
+    if gameOver ~= true and not layers.tutorial.visible then
         if(layers.popup.visible) then
             layers.popup.alpha = 0
             timer.performWithDelay(10, function() layers.popup.visible = false end, 1)
@@ -278,16 +295,12 @@ toggleOptions = function ( event )
             layers.popup.alpha = 1
             layers.popup.visible = true
         end
+        return true
     end
 end
 
-function allowTouches(event)
-    touchesAllowed=true
-    print('You may now touch this!')
-end
-
 -----------------------------------------------------
---Main Create Function
+-- Device Buttons
 -----------------------------------------------------
 local function onKeyEvent( event )
 
@@ -334,6 +347,7 @@ end
 --add the key callback
 Runtime:addEventListener( "key", onKeyEvent )
 
+---------------------------------------------------------
 
 storyboard.gotoScene( "title_screen", "fade", 400 )
 
