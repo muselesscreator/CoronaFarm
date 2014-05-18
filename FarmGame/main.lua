@@ -269,6 +269,18 @@ function log(message, level)
     end
 end
 
+toggleHelp = function ( event )
+    if gameOver ~= true then
+        if(layers.tutorial.visible) then
+            layers.tutorial.alpha = 0
+            timer.performWithDelay(10, function() layers.tutorial.visible = false end, 1)
+        else
+            layers.tutorial.alpha = 1
+            layers.tutorial.visible = true
+        end
+    end
+end
+
 toggleOptions = function ( event )
     if gameOver ~= true then
         if(layers.popup.visible) then

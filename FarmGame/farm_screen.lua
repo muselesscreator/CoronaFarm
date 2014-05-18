@@ -116,6 +116,7 @@ function scene:createScene( event)
     layers.weaponLayer = display.newGroup()
     layers.doom = display.newGroup()
     layers.popup = display.newGroup()
+    layers.tutorial = display.newGroup()
     layers.gameOver = display.newGroup()
     theField = Field(fieldType)
 
@@ -200,6 +201,62 @@ function scene:createScene( event)
     --> Define Square and Queue Tables
     print('--@create: Create Field')
 
+    local tutorialMenu = display.newImageRect( layers.tutorial, "images/tutorialBox.png", 518, 393)
+    tutorialMenu.x = display.contentWidth/2
+    tutorialMenu.y = display.contentHeight/2
+
+    tutorialMenu.xScale = 1.2
+    tutorialMenu.yScale = 1.2
+    layers.tutorial.visible = false
+
+    local exitTutorialButton = widget.newButton
+    {
+        defaultFile = "images/uiButtonX.png",
+        emboss = true,
+        onRelease = toggleHelp
+    }
+    exitTutorialButton.x = 775
+    exitTutorialButton.y = 195
+    exitTutorialButton.xScale = .75
+    exitTutorialButton.yScale = .75
+    layers.tutorial:insert(exitTutorialButton)
+    
+
+    local nextTutorialButton = widget.newButton
+    {
+        defaultFile = "images/uiArrow.png",
+        emboss = true,
+        onRelease = nextTutorial
+    }
+    nextTutorialButton.x = 775
+    nextTutorialButton.y = 575
+    nextTutorialButton.xScale = .75
+    nextTutorialButton.yScale = .75
+    layers.tutorial:insert(nextTutorialButton)
+
+    local lastTutorialButton = widget.newButton
+    {
+        defaultFile = "images/uiArrow.png",
+        emboss = true,
+        onRelease = nextTutorial
+    }
+    lastTutorialButton.x = 250
+    lastTutorialButton.y = 575
+    lastTutorialButton.xScale = -.75
+    lastTutorialButton.yScale = .75
+    layers.tutorial:insert(lastTutorialButton)
+
+    local openTutorialButton = widget.newButton
+    {
+        defaultFile = "images/questionMenuButton.png",
+        emboss = true,
+        onRelease = toggleHelp
+    }
+    openTutorialButton.x = 60
+    openTutorialButton.y = 675
+    openTutorialButton.xScale = .9
+    openTutorialButton.yScale = .9
+    layers.frame:insert(openTutorialButton)
 
     local popupMenu = display.newImageRect( layers.popup, "images/popOutMenuBase.png", 534, 382)
     popupMenu.x = display.contentWidth/2
@@ -284,7 +341,7 @@ function scene:createScene( event)
     vibrateToggleBG:addEventListener('touch', toggleVibrateBG)
 
 
-
+    layers.tutorial.alpha = 0
     layers.popup.alpha = 0
 
     theBasket = Basket()
@@ -295,6 +352,7 @@ function scene:createScene( event)
     group:insert(layers.frame)
     group:insert(layers.overFrame)
     group:insert(layers.popup)
+    group:insert(layers.tutorial)
     group:insert(layers.gameOver)
 
     touchesAllowed = true
