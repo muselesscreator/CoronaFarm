@@ -34,8 +34,10 @@ end
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
     gameOver = false
+    goodGameOverHappened = false
     touchesAllowed = false
     thePlayer:newLevel()
+
     local r = math.random(1, 100)
     if r < 5 then
         fn = 'sound/gopherSong.mp3'
@@ -53,6 +55,8 @@ function scene:createScene( event)
     print(musicVolume)
     backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
     audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
+    
+
     print('farm_screen')
     local group = self.view
 

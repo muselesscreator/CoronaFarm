@@ -159,6 +159,8 @@ end
 
 function Field:goodGameOver()
     gameOver = true
+    goodGameOverHappened = true
+    
     local overlay = display.newImage('images/goodGameOverlay.png')
     overlay.x = display.contentWidth / 2
     overlay.y = display.contentHeight / 2
@@ -172,8 +174,41 @@ function Field:goodGameOver()
         layers.overFrame:insert(truck)
         transition.to(truck, {x=2000, time=7000})
 
-        timer.performWithDelay(1200, function() self:gameOver() end, 1)
+        timer.performWithDelay(1200, function() 
+
+            local continueBtn = display.newImage('images/buttonContinueUp.png')
+            continueBtn.x = 290
+            continueBtn.y = 450
+            layers.gameOver:insert(continueBtn)
+
+            local exitBtn = display.newImage('images/uiButtonExitUp.png')
+            exitBtn.x = 690
+            exitBtn.y = 450
+            layers.gameOver:insert(exitBtn)
+
+            local function continue()
+                gameOver = false
+                exitBtn:removeSelf()
+                exitBtn = nil
+                continueBtn:removeSelf()
+                continueBtn = nil
+                overlay:removeSelf()
+                overlay = nil
+            end
+
+            local function exit()
+                storyboard:gotoScene('title_screen')
+            end
+
+            continueBtn.touch = continue
+            continueBtn:addEventListener('touch', continueBtn)
+
+            exitBtn.touch = exit
+            exitBtn:addEventListener('touch', exitBtn)
+        end, 1)
     end, 1)
+
+
 end
 
 function Field:gameOver()

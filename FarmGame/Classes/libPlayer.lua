@@ -64,7 +64,7 @@ function Player:addScore(inc)
     end
     saveTable(self, 'player.json')
 
-    if self.levelScore >= theField.goalScore and not gameOver then
+    if self.levelScore >= theField.goalScore and not gameOver and not goodGameOverHappened then
         theField:goodGameOver()
     end
 end

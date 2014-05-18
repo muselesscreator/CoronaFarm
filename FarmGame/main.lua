@@ -195,6 +195,7 @@ musicVolume = .5
 sfxVolume = .5
 
 gameOver = false
+goodGameOverHappened = false
 tutorial = false
 no_pests = false
 log_levels = {  Info = 3,
