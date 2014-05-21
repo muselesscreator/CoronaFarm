@@ -26,7 +26,11 @@ function FarmElement:initialize(args)
                 --if myPlant == nil then
                     self:useSlingshot()
                 else
-                    self:confSlingshot(myPlant)
+                    if theBasket.box.selected then
+                        self:useSlingshot()
+                    else
+                        self:confSlingshot(myPlant)
+                    end
                 end
                 return true
             end
