@@ -209,11 +209,6 @@ function FarmElement:useWeapon()
 end
 
 function FarmElement:confSlingshot(myPlant)
-    self.menu = display.newImage('images/uiConfirmDialog.png')
-    self.menu.x = self.x
-    self.menu.y = self.y - 100
-    theField.layers[self.j]:insert(self.menu)
-
     local function hideUI()
         self.menu:removeSelf()
         self.menu = nil
@@ -234,20 +229,35 @@ function FarmElement:confSlingshot(myPlant)
         hideUI()
     end
 
+    self.menu = display.newImage('images/uiConfirmDialog.png')
     self.doShoot = display.newImage('images/uiButtonShoot.png')
+    self.doHarvest = display.newImage('images/uiButtonHarvest.png')
+    if self.j == 1 then
+        self.menu.yScale = -1
+        self.menu.y = self.y + 100
+        self.doShoot.y = self.y + 120
+        self.doHarvest.y = self.y + 120
+        theField.layers[self.j + 1]:insert(self.menu)
+        theField.layers[self.j + 1]:insert(self.doHarvest)
+        theField.layers[self.j + 1]:insert(self.doShoot)
+    else
+        self.menu.y = self.y - 100
+        self.doShoot.y = self.y-120
+        self.doHarvest.y = self.y-120
+        theField.layers[self.j]:insert(self.menu)
+        theField.layers[self.j]:insert(self.doHarvest)
+        theField.layers[self.j]:insert(self.doShoot)
+    end
+    self.menu.x = self.x
     self.doShoot.x = self.x-50
-    self.doShoot.y = self.y-120
-    theField.layers[self.j]:insert(self.doShoot)
+    self.doHarvest.x = self.x+50
+    
     self.doShoot.touch = shoot
     self.doShoot:addEventListener('touch', self.doShoot)
-
-    self.doHarvest = display.newImage('images/uiButtonHarvest.png')
-    self.doHarvest.x = self.x+50
-    self.doHarvest.y = self.y-120
-    theField.layers[self.j]:insert(self.doHarvest)
     self.doHarvest.touch = harvest
     self.doHarvest:addEventListener('touch', self.doHarvest)
 
+    
 end
 
 function FarmElement:useSlingshot()
