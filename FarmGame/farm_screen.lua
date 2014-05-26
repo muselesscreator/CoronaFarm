@@ -37,7 +37,6 @@ function scene:createScene( event)
     goodGameOverHappened = false
     touchesAllowed = false
     thePlayer:newLevel()
-
     local r = math.random(1, 100)
     if r < 5 then
         fn = 'sound/gopherSong.mp3'
@@ -50,10 +49,10 @@ function scene:createScene( event)
     else
         fn = 'sound/FarmSong.mp3'
     end
-    local backgroundMusic = audio.loadStream(fn)
+    fieldMusic = audio.loadStream(fn)
     print("MUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSIC VOLUME")
     print(musicVolume)
-    backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
+    backgroundMusicChannel = audio.play( fieldMusic, { channel=1, loops=-1, fadein=100 } )
     audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
     
 
@@ -187,9 +186,8 @@ function scene:createScene( event)
 --> Set Label
     scoreHUD = display.newText(0, 0, 0, CustomFont, 30)
     scoreHUD.anchorX = 0
-    scoreHUD.anchorY = 0
     scoreHUD.x = 110
-    scoreHUD.y = 67
+    scoreHUD.y = 86
     scoreHUD:setFillColor(0, 0, 0)
     layers.overFrame:insert(scoreHUD)
 

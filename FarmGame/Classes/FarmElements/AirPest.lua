@@ -140,6 +140,10 @@ function AirPest:useWeapon()
     print(self.i..', '..self.j..'    '..self.x..', '..self.y)
     print(self.weapon_sprite.x..', '..self.weapon_sprite.y)
     FarmElement.useWeapon(self)
+
+    r = math.random(1, 2)
+    playSoundEffect('birdDie'..r)
+
     self.pest_sprite.alpha = 0
     self.bird_death:setSequence('BirdDead')
     self.bird_death.alpha = 1

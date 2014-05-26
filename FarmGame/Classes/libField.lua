@@ -141,7 +141,9 @@ end
 
 function Field:pestGameOver()
     gameOver = true
-
+    local badMusic = audio.loadStream('sound/BadEnding.mp3')
+    audio.stop(backgroundMusicChannel)
+    backgroundMusicChannel = audio.play(badMusic, {channel=1, loops=0, fadein=100})
     self.monster_layer.alpha = 1
     transition.to(self.monster_layer, {y=150, time=1500})
     timer.performWithDelay(2000, function() 
@@ -160,7 +162,9 @@ end
 function Field:goodGameOver()
     gameOver = true
     goodGameOverHappened = true
-    
+    local goodMusic = audio.loadStream('sound/GoodEnding.mp3')
+    audio.stop(backgroundMusicChannel)
+    backgroundMusicChannel = audio.play(goodMusic, {channel=1, loops=0, fadein=100})
     local overlay = display.newImage('images/goodGameOverlay.png')
     overlay.x = display.contentWidth / 2
     overlay.y = display.contentHeight / 2
@@ -194,6 +198,9 @@ function Field:goodGameOver()
                 continueBtn = nil
                 overlay:removeSelf()
                 overlay = nil
+                audio.stop(backgroundMusicChannel)
+                backgroundMusicChannel = audio.play( fieldMusic, { channel=1, loops=-1, fadein=100 } )
+
             end
 
             local function exit()
