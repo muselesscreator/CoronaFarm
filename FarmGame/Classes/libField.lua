@@ -40,7 +40,7 @@ Field = class(function(tmpField, type)
         local monster = display.newImage(tmpField.monster)
         monster.anchorX = 0
         monster.anchorY = 0
-        monster.x = 75
+        monster.x = 0
         monster.y = -1000
         monster.h = tmpField.monster_h
         monster.w = tmpField.monster_w        
@@ -148,7 +148,7 @@ function Field:pestGameOver()
         end, 1)
 
     self.monster_layer.alpha = 1
-    transition.to(self.monster_layer, {y=150, time=1500})
+    transition.to(self.monster_layer, {y=0, time=1500})
     timer.performWithDelay(2000, function() 
         transition.to(self.overlay, {alpha=1, time=500}) 
         timer.performWithDelay(2500, function() self:gameOver() end, 1)

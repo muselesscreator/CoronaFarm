@@ -215,4 +215,5 @@ function Cockatrice:attack()
         target:die()
         local tmp = StonePlant:new({i=i, j=j, type=seq, stage=frame})
     end
+    theField:updateDoomCounter()
 end
