@@ -79,7 +79,7 @@ function scene:createScene( event )
 
     local tmpButton = widget.newButton
     {
-        defaultFile = "images/sprites/tutorialHand.png",
+        defaultFile = "images/tutorialHand.png",
         emboss = true,
         onRelease = gotoTitle
     }
@@ -219,7 +219,7 @@ function scene:createScene( event )
 
         return_buttons[myType] = display.newImage('images/returnMenuButton.png')
         return_buttons[myType].x = 720
-        return_buttons[myType].y = 275
+        return_buttons[myType].y = 240
         return_buttons[myType].xScale = .7
         return_buttons[myType].yScale = .7
         return_buttons[myType].alpha = 0

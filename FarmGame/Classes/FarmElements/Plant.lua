@@ -112,6 +112,7 @@ function Plant:onClick()
             end
             self:useNext()
         else -- At this point, we can assume it is rotten
+            playSoundEffect('prune')
             self:prune()
             theField:nextDay()
         end
