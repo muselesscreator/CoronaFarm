@@ -22,7 +22,7 @@ fields.Salad = {
     Basket = {X = 175, Y=626, W=100},
     blocked = {},
     minScore = 0,
-    goalScore = 7500,
+    goalScore = 7000,
     turnLength = 500,
     maxDoomCounter = 8,
     doomObjType = 'Rock',
@@ -55,8 +55,8 @@ fields.Stew = {
     Queue = {X = 175, Y=425, W=100},
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, {5,6}},
-    minScore = 7500,
-    goalScore = 20000,
+    minScore = 7000,
+    goalScore = 17500,
     turnLength = 500,
     maxDoomCounter = 5,
     doomObjType = 'Urn',
@@ -90,8 +90,8 @@ fields.Salsa = {
     Queue = {X = 175, Y=425, W=100},
     Basket = {X = 175, Y=626, W=100},
     blocked = {{5,1}, {5, 2}, {5, 3}, {6, 3}, {3, 6}, {4, 6}, {4, 7}, {4, 8}},
-    minScore = 15000,
-    goalScore = 40000,
+    minScore = 17500,
+    goalScore = 55000,
     turnLength = 500,
     maxDoomCounter = 20,
     doomObjType = 'Rock',
@@ -124,9 +124,9 @@ fields.Tea = {
     Queue = {X = 175, Y=425, W=100},
     Basket = {X = 175, Y=626, W=100},
     blocked = {{3, 3}, {3, 4}, {4, 3}, {4, 4}, {6, 5}, {6, 6}, {7, 5}, {7, 6}},
-    minScore = 35000,
+    minScore = 55000,
     turnLength = 750,
-    goalScore = 55000,
+    goalScore = 60000,
     maxDoomCounter = 25,
     doomObjType = 'StonePlant',
 }
@@ -151,7 +151,7 @@ function mallet_weights()
     if theQueue[#theQueue].contents.type == 'Mallet' then
         theQueue.weights.Mallet = 0
     elseif theBasket.box.contents.type=='Mallet' then
-        theQueue.weights.Mallet = 6+3*(#theField.elements.Pest)
+        theQueue.weights.Mallet = 7+3*(#theField.elements.Pest)
     else
         theQueue.weights.Mallet = 10+5*(#theField.elements.Pest)
     end
