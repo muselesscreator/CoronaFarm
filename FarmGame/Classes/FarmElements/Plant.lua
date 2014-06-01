@@ -111,6 +111,7 @@ function Plant:onClick()
             end
             self:useNext()
         else -- At this point, we can assume it is rotten
+            playSoundEffect('prune')
             self:prune()
             theField:nextDay()
         end
@@ -136,7 +137,7 @@ end
 
 function Plant:harvest(multiplier)
     local fontScale = (1 + (multiplier/25))
-
+    playSoundEffect('harvest')
     if multiplier == 1 then 
         multiplier = false
     else

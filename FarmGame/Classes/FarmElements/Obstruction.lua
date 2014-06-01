@@ -130,10 +130,12 @@ function Rock:useWeapon()
         self.overlay:play()
         vibrate()
         if self.cracked then
+            playSoundEffect('break')
             local tmp = Blank:new({i=self.i, j=self.j})
             timer.performWithDelay(250, function() self:die() end, 1)
         else
             self.cracked = true
+            playSoundEffect('crack')
             timer.performWithDelay(250, function() 
                 self.obs_sprite:setFrame(2) 
                 self.overlay.alpha = 0 

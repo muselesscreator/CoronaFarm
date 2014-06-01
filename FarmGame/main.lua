@@ -63,37 +63,36 @@ sequenceData =
     { name="Urn", sheet=obsSheet, frames={ 82 }},
 
     { name="Reticle", sheet=weaponSheet, frames={ 1 }},
-    { name="SlingAnim", sheet=weaponSheet, start=2, count=19, time=1000},
-    { name="BirdDeath", sheet=weaponSheet, start=20, count=7, time=800},
-    { name="Mallet", sheet=weaponSheet, start=27, count=6, time=250, loopCount=1},
-    { name="Slingshot", sheet=weaponSheet, frames={33}},
+    { name="SlingAnim", sheet=weaponSheet, start=2, count=21, time=1000},
+    { name="BirdDeath", sheet=weaponSheet, start=23, count=16, time=800},
+    { name="Mallet", sheet=weaponSheet, start=39, count=6, time=250, loopCount=1},
+    { name="Slingshot", sheet=weaponSheet, frames={45}},
 
     { name="BoxClosed", sheet=uiSheet, frames={1}},
     { name="BoxOpen", sheet=uiSheet, frames={2}},
     { name="uiCarrot", sheet=uiSheet, frames={3}},
     { name="uiCelery", sheet=uiSheet, frames={4}},
     { name="uiChamomile", sheet=uiSheet, frames={5}},
-    { name="help", sheet=uiSheet, start=6, count=5},
-    { name="uiJalapeno", sheet=uiSheet, frames={11}},
-    { name="uiLettuce", sheet=uiSheet, frames={12}},
-    { name="uiMallet", sheet=uiSheet, frames={13}},
-    { name="uiMint", sheet=uiSheet, frames={14}},
-    { name="uiPotato", sheet=uiSheet, frames={15}},
-    { name="uiRadish", sheet=uiSheet, frames={16}},
-    { name="uiSlingshot", sheet=uiSheet, frames={17}},
-    { name="uiTomato", sheet=uiSheet, frames={18}},
+    { name="help", sheet=uiSheet, start=6, count=6},
+    { name="uiJalapeno", sheet=uiSheet, frames={12}},
+    { name="uiLettuce", sheet=uiSheet, frames={13}},
+    { name="uiMallet", sheet=uiSheet, frames={14}},
+    { name="uiMint", sheet=uiSheet, frames={15}},
+    { name="uiPotato", sheet=uiSheet, frames={16}},
+    { name="uiRadish", sheet=uiSheet, frames={17}},
+    { name="uiSlingshot", sheet=uiSheet, frames={18}},
+    { name="uiTomato", sheet=uiSheet, frames={19}},
 
     { name="Reticle", sheet=overlaySheet, frames={ 1 }},
     { name="Smell", sheet=overlaySheet, frames={ 2, 3, 4, 5 }, time=225},
     { name="Tag", sheet=overlaySheet, frames={ 6 }},
 
     { name="Bird", sheet=pestSheet, start=1, count=10, time=800},
-    { name="BirdDead", sheet=pestSheet, start=11, count=15, time=1200, loopCount=1},
-    { name="Gopher", sheet=pestSheet, frames = {39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26}, time=200, loopCount=1},
-    { name="GopherOut", sheet=pestSheet, start=26, count=14, time=200, loopCount=1},
-    { name="GopherDie", sheet=pestSheet, start=40, count=22, time=800, loopCount=1},
-    { name="GopherHammerDie", sheet=pestSheet, start=63, count=27, time=800, loopCount=1},
-    { name="Swoop", sheet=pestSheet, start=91, count=6, time=800, loopCount=1},
+    { name="Gopher", sheet=pestSheet, frames={24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11}, time=200, loopCount=1},
+    { name="GopherOut", sheet=pestSheet, start=12, count=14, time=200, loopCount=1},
+    { name="GopherDie", sheet=pestSheet, start=25, count=22, time=800, loopCount=1},
+    { name="GopherHammerDie", sheet=pestSheet, start=48, count=27, time=800, loopCount=1},
+    { name="Swoop", sheet=pestSheet, start=76, count=6, time=800, loopCount=1},
 
     { name="Blank", sheet=plantSheet, frames = { 1 }},
     { name="Carrot", sheet=plantSheet, frames = {9, 2, 3, 4, 8}},
@@ -236,6 +235,7 @@ end
 --------------------------------------------------------------
 clickHelp = function (self, event)
     if event.phase == 'began' then
+        print("?")
         return toggleTutorial()
     end
 end

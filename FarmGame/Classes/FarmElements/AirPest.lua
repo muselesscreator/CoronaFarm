@@ -16,7 +16,7 @@ function AirPest:initialize(args)
     self.pest_sprite:setSequence('Bird')
     self.pest_sprite:play()
 
-    self.bird_death = display.newSprite(pestSheet, sequenceData)
+    self.bird_death = display.newSprite(weaponSheet, sequenceData)
     self.bird_death.y = display.contentHeight/2
     self.bird_death.x = display.contentWidth/2
     self.bird_death.alpha = 0
@@ -140,10 +140,11 @@ function AirPest:useWeapon()
     print(self.i..', '..self.j..'    '..self.x..', '..self.y)
     print(self.weapon_sprite.x..', '..self.weapon_sprite.y)
     FarmElement.useWeapon(self)
+
+    r = math.random(1, 2)
+    playSoundEffect('birdDie'..r)
+
     self.pest_sprite.alpha = 0
-    self.bird_death:setSequence('BirdDead')
-    self.bird_death.alpha = 1
-    self.bird_death:play()
     self.dying = true
     timer.performWithDelay(700, function() self:die() end, 1)
 end
@@ -214,4 +215,5 @@ function Cockatrice:attack()
         target:die()
         local tmp = StonePlant:new({i=i, j=j, type=seq, stage=frame})
     end
+    theField:updateDoomCounter()
 end

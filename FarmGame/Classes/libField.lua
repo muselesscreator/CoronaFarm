@@ -40,7 +40,7 @@ Field = class(function(tmpField, type)
         local monster = display.newImage(tmpField.monster)
         monster.anchorX = 0
         monster.anchorY = 0
-        monster.x = 75
+        monster.x = 0
         monster.y = -1000
         monster.h = tmpField.monster_h
         monster.w = tmpField.monster_w        
@@ -141,12 +141,17 @@ end
 
 function Field:pestGameOver()
     gameOver = true
+    local badMusic = audio.loadStream('sound/BadEnding.mp3')
+    audio.stop(backgroundMusicChannel)
+    timer.performWithDelay(10, function()
+        backgroundMusicChannel = audio.play(badMusic, {channel=1, loops=0, fadein=100})
+        end, 1)
 
     self.monster_layer.alpha = 1
-    transition.to(self.monster_layer, {y=150, time=1500})
+    transition.to(self.monster_layer, {y=0, time=1500})
     timer.performWithDelay(2000, function() 
         transition.to(self.overlay, {alpha=1, time=500}) 
-        timer.performWithDelay(1200, function() self:gameOver() end, 1)
+        timer.performWithDelay(2500, function() self:gameOver() end, 1)
         end, 1)
 end
 
@@ -160,7 +165,11 @@ end
 function Field:goodGameOver()
     gameOver = true
     goodGameOverHappened = true
-    
+    local goodMusic = audio.loadStream('sound/GoodEnding.mp3')
+    audio.stop(backgroundMusicChannel)
+    timer.performWithDelay(10, function()
+        backgroundMusicChannel = audio.play(goodMusic, {channel=1, loops=0, fadein=100})
+        end, 1)
     local overlay = display.newImage('images/goodGameOverlay.png')
     overlay.x = display.contentWidth / 2
     overlay.y = display.contentHeight / 2
@@ -194,6 +203,9 @@ function Field:goodGameOver()
                 continueBtn = nil
                 overlay:removeSelf()
                 overlay = nil
+                audio.stop(backgroundMusicChannel)
+                backgroundMusicChannel = audio.play( fieldMusic, { channel=1, loops=-1, fadein=100 } )
+
             end
 
             local function exit()
@@ -223,11 +235,15 @@ function Field:gameOver()
     layers.gameOver:insert(exitBtn)
 
     local function play()
-        storyboard:gotoScene('farm_screen')
+        timer.performWithDelay(50, function()
+            storyboard:gotoScene('farm_screen')
+            end, 1)
     end
 
     local function exit()
-        storyboard:gotoScene('title_screen')
+        timer.performWithDelay(50, function()
+            storyboard:gotoScene('title_screen')
+        end, 1)
     end
 
     playBtn.touch = play

@@ -384,7 +384,7 @@ function Pests.does_spawn(pest)
         return 0
     end
     if myType == 'land' then
-        if r <= 15 and (#theField.pests[pest] == 0) then
+        if r <= 13 and (#theField.pests[pest] == 0) then
             return true
         end
     elseif myType == 'air' then
@@ -395,22 +395,22 @@ function Pests.does_spawn(pest)
             chances[1] = 10
             chances[2] = 5
         elseif i <= 150 then
-            chances[0] = 50
-            chances[1] = 30
-            chances[2] = 15
+            chances[0] = 70
+            chances[1] = 15
+            chances[2] = 10
             chances[3] = 5
         elseif i <= 250 then
-            chances[0] = 40
-            chances[1] = 30
+            chances[0] = 55
+            chances[1] = 15
             chances[2] = 15
             chances[3] = 10
             chances[4] = 5
         elseif i <= 400 then
-            chances[0] = 35
-            chances[1] = 20
-            chances[2] = 20
+            chances[0] = 40
+            chances[1] = 15
+            chances[2] = 15
             chances[3] = 15
-            chances[4] = 5
+            chances[4] = 10
             chances[5] = 5
         else
             chances[0] = 30

@@ -45,6 +45,7 @@ end
 
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
+    gameOver = false
     print("title_screen")
     storyboard.returnTo='title_screen'
     group = self.view
@@ -103,9 +104,8 @@ function scene:createScene( event )
 
     local LevelButton = widget.newButton
     {
-        defaultFile = "images/buttonRed.png",
-        overFile = "images/buttonRedOver.png",
-        label = "Visit Our Site!",
+        defaultFile = "images/siteButton.png",
+        overFile = "images/siteButtonDown.png",
         font = native.systemFontBold,
         fontSize = 27,
         labelColor={ default={1, 1, 1, 1}, over={1, 1, 1, .5}},
@@ -162,27 +162,27 @@ function scene:createScene( event )
         emboss = true,
         onRelease = toggleOptions
     }
-    exitButton.x = 680
-    exitButton.y = 320
+    exitButton.x = 730
+    exitButton.y = 250
     exitButton.xScale = .7
     exitButton.yScale = .7
     layers.popup:insert(exitButton)
 
-    local txt = display.newText(layers.popup, 'Music Volume', 500, 360, native.systemFontBold, 25)
+    local txt = display.newText(layers.popup, 'Music Volume', 510, 320, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 330, y=370, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 340, y=330, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
-    txt = display.newText(layers.popup, 'Sound-Effects Volume', 500, 440, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 510, 400, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 330, y=450, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 340, y=410, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
-    txt = display.newText(layers.popup, 'Vibration Enabled', 440, 540, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Vibration Enabled', 450, 500, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
     local vibrateToggleBG = display.newImage('images/uiToggleBG.png')
-    vibrateToggleBG.x = 610
-    vibrateToggleBG.y = 540
+    vibrateToggleBG.x = 620
+    vibrateToggleBG.y = 500
     layers.popup:insert(vibrateToggleBG)
 
     local vibrateToggle = display.newImage('images/uiToggleThing.png')
@@ -191,21 +191,21 @@ function scene:createScene( event )
             if isVibrateEnabled then
                 print('no')
                 isVibrateEnabled = false
-                transition.to(vibrateToggle, {x=635, time=400})
+                transition.to(vibrateToggle, {x=645, time=400})
             else
                 print('yes')
                 isVibrateEnabled = true
-                transition.to(vibrateToggle, {x=585, time=400})
+                transition.to(vibrateToggle, {x=595, time=400})
             end
         end
     end
 
     if isVibrateEnabled then
-        vibrateToggle.x = 585
+        vibrateToggle.x = 595
     else
-        vibrateToggle.x = 635
+        vibrateToggle.x = 645
     end
-    vibrateToggle.y = 540
+    vibrateToggle.y = 500
     layers.popup:insert(vibrateToggle)
     vibrateToggleBG.touch = toggleVibrate
     vibrateToggleBG:addEventListener('touch', toggleVibrateBG)
@@ -259,10 +259,10 @@ function scene:createScene( event )
         emboss = true,
         onRelease = toggleTutorial
     }
-    tutorialClose.x = 680
+    tutorialClose.x = 685
     tutorialClose.y = 235
-    tutorialClose.xScale = .4
-    tutorialClose.yScale = .4
+    tutorialClose.xScale = .35
+    tutorialClose.yScale = .35
     tutorialClose.touch = toggleTutorial
     tutorialClose:addEventListener('touch', tutorialClose)
     layers.tutorial:insert(tutorialClose)
@@ -274,7 +274,7 @@ function scene:createScene( event )
     group:insert(layers.tutorial)
     timer.performWithDelay(10, function() touchesAllowed = true end)
 
-
+    --[[
     ------------------------------------------------------------------
     -- Debug images
     ------------------------------------------------------------------
@@ -298,7 +298,7 @@ function scene:createScene( event )
     layers.frame:insert(tmpImage)
     tmpImage.touch = clear_player
     tmpImage:addEventListener('touch', tmpImage)
-
+    ]]--
 end
 
 function clear_player(self, event)
