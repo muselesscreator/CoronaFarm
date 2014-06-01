@@ -178,7 +178,6 @@ function scene:createScene( event)
     progressBar:setMask(progressMask)
     progressBar.maskX = -120
 
-
     local ScoreCard = display.newImage('images/scorecard.png')
     ScoreCard.x = 120
     ScoreCard.y = 80
@@ -187,9 +186,8 @@ function scene:createScene( event)
 --> Set Label
     scoreHUD = display.newText(0, 0, 0, CustomFont, 30)
     scoreHUD.anchorX = 0
-    scoreHUD.anchorY = 0
     scoreHUD.x = 110
-    scoreHUD.y = 67
+    scoreHUD.y = 84
     scoreHUD:setFillColor(0, 0, 0)
     layers.overFrame:insert(scoreHUD)
 

@@ -30,7 +30,7 @@ local function gotoLevel()
 end
 
 local function gotoSite()
-    system.openURL('www.nerdpilegames.com')
+    system.openURL('http://www.nerdpilegames.com')
     return true
 end
 
