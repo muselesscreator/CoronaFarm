@@ -96,7 +96,6 @@ function Plant:onClick()
     if self:canClick() then
         if self.myStage == self.mature then
             local bunch = self:checkNeighbors({})
-            playSoundEffect('harvest')
             mult = #bunch
             self:harvestNext(bunch, 1)
         elseif self.myStage == self.rot then
@@ -138,7 +137,7 @@ end
 
 function Plant:harvest(multiplier)
     local fontScale = (1 + (multiplier/25))
-
+    playSoundEffect('harvest')
     if multiplier == 1 then 
         multiplier = false
     else
