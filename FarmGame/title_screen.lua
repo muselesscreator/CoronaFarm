@@ -302,25 +302,26 @@ function scene:createScene( event )
     layers.adPopup.visible = false
     layers.adPopup.alpha = 0
 
-    local adPopupMenu = display.newImageRect( layers.adPopup, "images/popOutMenuBase.png", 534, 382)
+    local adPopupMenu = display.newImageRect( layers.adPopup, "images/videoConfirm.png", 534, 382)
     adPopupMenu.x = 250
     adPopupMenu.y = 200
+    adPopupMenu.yScale = .75
     adPopupMenu.anchorX = 0
     adPopupMenu.anchorY = 0
     layers.adPopup.visible = false
 
     adPopupYes = display.newImage('images/uiButtonCheck.png')
     adPopupYes.yScale = .9
-    adPopupYes.x = 650
-    adPopupYes.y = 512
+    adPopupYes.x = display.contentWidth/2 + 100
+    adPopupYes.y = 412
     adPopupYes.touch = playAd
     adPopupYes:addEventListener('touch', adPopupYes)
     layers.adPopup:insert(adPopupYes)
 
     adPopupClose = display.newImage('images/uiButtonX.png')
     adPopupClose.yScale = .9
-    adPopupClose.x = 650
-    adPopupClose.y = 312
+    adPopupClose.x = display.contentWidth/2 - 100
+    adPopupClose.y = 412
     adPopupClose.touch = toggleAdPopup
     adPopupClose:addEventListener('touch', adPopupClose)
     layers.adPopup:insert(adPopupClose)
