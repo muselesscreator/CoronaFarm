@@ -1,5 +1,6 @@
 local scene = storyboard.newScene()
 local widget = require("widget")
+local ads = require("ads")
 
 storyboard.purgeOnSceneChange = true
 
@@ -14,6 +15,13 @@ storyboard.purgeOnSceneChange = true
 
 
 -- local forward references should go here --
+
+local function playAd()
+    adGetTokenFlag = true
+    toggleAdPopup()
+    ads:setCurrentProvider( "admob" )
+    ads.show("interstitial", params)
+end
 
 local function gotoFarm()
     if not layers.popup.visible and not layers.tutorial.visible then
@@ -56,6 +64,7 @@ function scene:createScene( event )
     layers.frame = display.newGroup()
     layers.popup = display.newGroup()
     layers.tutorial = display.newGroup()
+    layers.adPopup = display.newGroup()
 
     bg = display.newImage('images/fieldBackground.png')
     bg.anchorX = 0
@@ -74,7 +83,16 @@ function scene:createScene( event )
     gopher.y = 470
     layers.bg:insert(gopher)
 
-
+    local giftButton = widget.newButton
+    {
+        defaultFile = "images/Gift Button_Pressed.png",
+        overFile = "images/Gift Button_Unpressed.png",
+        emboss = true,
+        onRelease = toggleAdPopup,
+    }
+    giftButton.x = 100
+    giftButton.y = 100
+    layers.frame:insert(giftButton)
 
     local FarmButton = widget.newButton
     {
@@ -266,13 +284,44 @@ function scene:createScene( event )
     tutorialClose.touch = toggleTutorial
     tutorialClose:addEventListener('touch', tutorialClose)
     layers.tutorial:insert(tutorialClose)
+    ---------------------------------------------------------------------------
+    -- Advertising Popup
+    ---------------------------------------------------------------------------
+    layers.adPopup.visible = false
+    layers.adPopup.alpha = 0
+
+    local adPopupMenu = display.newImageRect( layers.adPopup, "images/popOutMenuBase.png", 534, 382)
+    adPopupMenu.x = 250
+    adPopupMenu.y = 200
+    adPopupMenu.anchorX = 0
+    adPopupMenu.anchorY = 0
+    layers.adPopup.visible = false
+
+    adPopupYes = display.newImage('images/uiButtonCheck.png')
+    adPopupYes.yScale = .9
+    adPopupYes.x = 650
+    adPopupYes.y = 512
+    adPopupYes.touch = playAd
+    adPopupYes:addEventListener('touch', adPopupYes)
+    layers.adPopup:insert(adPopupYes)
+
+    adPopupClose = display.newImage('images/uiButtonX.png')
+    adPopupClose.yScale = .9
+    adPopupClose.x = 650
+    adPopupClose.y = 312
+    adPopupClose.touch = toggleAdPopup
+    adPopupClose:addEventListener('touch', adPopupClose)
+    layers.adPopup:insert(adPopupClose)
 
 
     group:insert(layers.bg)
     group:insert(layers.frame)
     group:insert(layers.popup)
+    group:insert(layers.adPopup)
     group:insert(layers.tutorial)
     timer.performWithDelay(10, function() touchesAllowed = true end)
+
+
 
     --[[
     ------------------------------------------------------------------

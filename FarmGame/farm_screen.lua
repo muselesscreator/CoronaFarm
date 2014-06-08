@@ -121,6 +121,7 @@ function scene:createScene( event)
     layers.doom = display.newGroup()
     layers.popup = display.newGroup()
     layers.tutorial = display.newGroup()
+    layers.adPopup = display.newGroup()
     layers.gameOver = display.newGroup()
     theField = Field(fieldType)
 
