@@ -16,8 +16,21 @@ else
     CustomFont = "ComicNeue-Bold"
 end
 
+local ads = require "ads"
+
+if ( system.getInfo("platformName") == "Android" ) then
+    ads.init( "admob", "ca-app-pub-4736694746810220/4317175391", adMobListener )
+    ads.init( "vungle", "5394d5318af2cc820200005c", vungleListener )
+else
+    ads.init( "admob", "ca-app-pub-4736694746810220/8747374995", adMobListener )
+    ads.init( "vungle", "5394d5b79fa750ac69000055", vungleListener )
+end
+
+
 local physics = require "physics"
 local socket = require "socket"
+
+
 physics.start()
 physics.setGravity( 0, 0 )
 physics.setDrawMode( hybrid )
@@ -213,6 +226,8 @@ log_levels = {  Info = 3,
                 Error = 0}
 log_level = 'Debug'
 
+adProviderSwitchFlag = false
+adGetTokenFlag = false
 ------------------------------------------------------
 -- 3. Global Functions
 ------------------------------------------------------
@@ -239,6 +254,63 @@ function allowTouches(event)
     touchesAllowed=true
     print('You may now touch this!')
 end
+--------------------------------------------------------------
+-- Advertising Functions
+--------------------------------------------------------------
+function vungleListener( event )
+   -- Video ad not yet downloaded and available
+    if ( event.isError and adProviderSwitchFlag) then
+        adProviderSwitchFlag = false
+        storyboard.hideOverlay()
+    elseif ( event.type == "adStart" and event.isError ) then
+        adProviderSwitchFlag = true
+        ads:setCurrentProvider( "admob" )
+    elseif (event.type == "adEnd") then --ad success
+        adProviderSwitchFlag = false
+        storyboard.hideOverlay()
+    else 
+        adProviderSwitchFlag = false
+        print( "Received event", event.type )
+    end
+    if (adGetTokenFlag == true) then
+        adGetTokenFlag = false
+        thePlayer.numCoins = thePlayer.numCoins + 1
+    end
+    return true
+end
+
+function adMobListener( event )
+    if ( event.isError and adProviderSwitchFlag) then
+        adProviderSwitchFlag = false
+        storyboard.hideOverlay()
+    elseif ( event.type == "adStart" and event.isError ) then
+        adProviderSwitchFlag = true
+        ads:setCurrentProvider( "vungle" )
+    elseif (event.type == "adEnd") then
+        adProviderSwitchFlag = false
+        storyboard.hideOverlay()
+    else 
+        adProviderSwitchFlag = false
+        print( "Received event", event.type )
+    end
+    if (adGetTokenFlag == true) then
+        adGetTokenFlag = false
+        thePlayer.numCoins = thePlayer.numCoins + 1
+    end
+    return true
+end
+
+toggleAdPopup = function ( self, event )
+    if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible then
+        if layers.adPopup.visible then
+            layers.adPopup.alpha = 0
+            timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
+        else
+            layers.adPopup.alpha = 1
+            layers.adPopup.visible = true
+        end
+    end
+end
 
 --------------------------------------------------------------
 -- Tutorial Functions
@@ -251,7 +323,7 @@ clickHelp = function (self, event)
 end
 
 toggleTutorial = function ( self, event )
-    if gameOver ~= true and not layers.popup.visible then
+    if gameOver ~= true and not layers.popup.visible and not layers.adPopup.visible then
         if layers.tutorial.visible then
             layers.tutorial.alpha = 0
             timer.performWithDelay(10, function() layers.tutorial.visible = false end, 1)
@@ -298,7 +370,7 @@ end
 -- Popup Functions
 ------------------------------------------------------------------
 toggleOptions = function ( event )
-    if gameOver ~= true and not layers.tutorial.visible then
+    if gameOver ~= true and not layers.tutorial.visible and not layers.adPopup.visible then
         if(layers.popup.visible) then
             layers.popup.alpha = 0
             timer.performWithDelay(10, function() layers.popup.visible = false end, 1)
@@ -360,5 +432,11 @@ Runtime:addEventListener( "key", onKeyEvent )
 
 ---------------------------------------------------------
 
+local params = {
+   isAnimated = false,
+   isAutoRotation = true,
+}
+ads:setCurrentProvider( "vungle" )
+ads.show( "interstitial", params )
 storyboard.gotoScene( "title_screen", "fade", 400 )
 

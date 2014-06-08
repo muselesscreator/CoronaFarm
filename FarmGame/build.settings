@@ -33,8 +33,23 @@ settings = {
 	-- Android permissions
 
 	androidPermissions = {
-  		"android.permission.INTERNET",
-        "android.permission.VIBRATE"
+        "android.permission.VIBRATE",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.READ_PHONE_STATE",
   	},
 
+    plugins =
+    {
+       ["CoronaProvider.ads.vungle"] =
+       {
+          publisherId = "com.vungle",
+       },
+       ["CoronaProvider.ads.admob"] =
+       {
+          publisherId = "com.coronalabs",
+          supportedPlatforms = { android = true },
+       },
+    },
 }
+
