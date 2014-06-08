@@ -376,6 +376,7 @@ function Field:rockAt(i, j)
             return v
         end
     end
+    return false
 end
 
 function Field:addElement(elem)

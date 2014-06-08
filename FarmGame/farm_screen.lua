@@ -230,13 +230,14 @@ function scene:createScene( event)
     wpnBtn = display.newSprite(magicWeaponSheet, sequenceData)
     wpnBtn:setSequence('magicWeaponIdle')
     wpnBtn.x = 60
-    wpnBtn.y = 645
+    wpnBtn.y = 625
     wpnBtn.touch = toggleWeapon
     wpnBtn:addEventListener('touch', wpnBtn)
     layers.frame:insert(wpnBtn)
 
-    wpnCount = display.newText(layers.frame, 'x'..thePlayer.numCoins, 30, 580, native.systemFontBold, 25)
-
+    wpnCount = display.newText(layers.frame, 'x'..thePlayer.numCoins, 30, 590, native.systemFontBold, 25)
+    wpnCount:rotate(330)
+    wpnCount:setFillColor(1,1, .5)
     ----------------------------------------------------------
     -- Popup Menu
     ---------------------------------------------------------
