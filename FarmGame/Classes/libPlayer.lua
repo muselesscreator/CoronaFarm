@@ -39,7 +39,7 @@ Player = class(function(player)
             for i, v in pairs(tmp_player) do
                 player[i] = v
             end
-            if player.numCoins == nil then
+            if player.numCoins == nil or player.numCoins < 4 then
                 player.numCoins = 10
             end
             print("returning player")
@@ -71,6 +71,21 @@ function Player:addScore(inc)
 
     if self.levelScore >= theField.goalScore and not gameOver and not goodGameOverHappened then
         theField:goodGameOver()
+    end
+end
+
+function Player:useCoin()
+    self.numCoins = self.numCoins - 1
+    weaponToggled = false
+    wpnBtn:setSequence('magicWeaponIdle')
+    wpnCount.text = 'x'..self.numCoins
+end
+
+function Player:hasCoins()
+    if self.numCoins > 0 then
+        return true
+    else
+        return false
     end
 end
 

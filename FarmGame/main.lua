@@ -66,9 +66,11 @@ sequenceData =
 
     { name="Reticle", sheet=weaponSheet, frames={ 1 }},
     { name="SlingAnim", sheet=weaponSheet, start=2, count=21, time=1000},
-    { name="BirdDeath", sheet=weaponSheet, start=23, count=16, time=800},
-    { name="Mallet", sheet=weaponSheet, start=39, count=6, time=250, loopCount=1},
-    { name="Slingshot", sheet=weaponSheet, frames={45}},
+    { name="MagicSlingAnim", sheet=weaponSheet, start=18, count=21, time=1000},
+    { name="BirdDeath", sheet=weaponSheet, start=39, count=16, time=800},
+    { name="MagicMallet", sheet=weaponSheet, start=55, count=28, time=600, loopCount=1},
+    { name="Mallet", sheet=weaponSheet, start=83, count=6, time=250, loopCount=1},
+    { name="Slingshot", sheet=weaponSheet, frames={89}},
 
     { name="BoxClosed", sheet=uiSheet, frames={1}},
     { name="BoxOpen", sheet=uiSheet, frames={2}},
@@ -94,7 +96,8 @@ sequenceData =
     { name="GopherOut", sheet=pestSheet, start=12, count=14, time=200, loopCount=1},
     { name="GopherDie", sheet=pestSheet, start=25, count=22, time=800, loopCount=1},
     { name="GopherHammerDie", sheet=pestSheet, start=48, count=27, time=800, loopCount=1},
-    { name="Swoop", sheet=pestSheet, start=76, count=6, time=800, loopCount=1},
+    { name="GopherMagicHammerDie", sheet=pestSheet, start=76, count=27, time=800, loopCount=1},
+    { name="Swoop", sheet=pestSheet, start=104, count=6, time=800, loopCount=1},
 
     { name="Blank", sheet=plantSheet, frames = { 1 }},
     { name="Carrot", sheet=plantSheet, frames = {9, 2, 3, 4, 8}},
@@ -143,9 +146,9 @@ sequenceData =
     { name="TomatoFrame3", sheet=plantSheet, frames={192, 190}, time=350},
     { name="TomatoHarvest", sheet=plantSheet, frames={196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207}, time=500, loopCount=1},
 
-    { name="magicWeaponIdle", sheet=magicWeaponSheet, frames={2}},
+    { name="magicWeaponIdle", sheet=magicWeaponSheet, frames={3}},
     { name="magicWeaponMallet", sheet=magicWeaponSheet, frames={1}},
-    { name="magicWeaponSlingshot", sheet=magicWeaponSheet, frames={1}}
+    { name="magicWeaponSlingshot", sheet=magicWeaponSheet, frames={2}}
 }
 
 require 'Classes.class'

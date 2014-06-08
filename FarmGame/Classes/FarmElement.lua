@@ -15,9 +15,7 @@ function FarmElement:initialize(args)
             if theField.weapon == 'Slingshot' and weaponToggled then
                 self:useMagicSlingshot() 
                 theField.pest_free = 3
-                thePlayer.numCoins = thePlayer.numCoins - 1
-                weaponToggled = false
-                wpnBtn:setSequence('magicWeaponIdle')
+                thePlayer:useCoin()
                 return true
             elseif self:whatIsNext().type == 'Slingshot' then
                 touchesAllowed = false
@@ -49,7 +47,6 @@ function FarmElement:initialize(args)
             print(pest)
             if theField.weapon == 'Mallet' and weaponToggled then
                 if pest ~= false or rock ~= false then
-                    thePlayer.numCoins = thePlayer.numCoins - 1
                     print('USE MAGIC HAMMER')
                     weaponToggled = false
                     theField:waitADay()
@@ -58,9 +55,13 @@ function FarmElement:initialize(args)
                     else
                         rock:useMagicHammer()
                     end
+                    thePlayer:useCoin()
+                    return true
                 else
                     print("Don't waste your magic weapons!")
                     weaponToggled = False
+                    wpnBtn:setSequence('magicWeaponIdle')
+                    return true
                 end
             end
 
