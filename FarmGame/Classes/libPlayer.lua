@@ -39,15 +39,20 @@ Player = class(function(player)
             for i, v in pairs(tmp_player) do
                 player[i] = v
             end
+            if player.numCoins == nil then
+                player.numCoins = 10
+            end
             print("returning player")
             return player
         end
         player.id = 0
         player.levelScore = 0
         player.totalScore = 0
+        player.numCoins = 0
         player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
         player.has_played_level = {false, false, false, false}
         player.has_unlocked_level = {false, false, false, false}
+
         return player
     end)
 

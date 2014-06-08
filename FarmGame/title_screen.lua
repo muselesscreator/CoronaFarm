@@ -17,6 +17,18 @@ storyboard.purgeOnSceneChange = true
 
 local function gotoFarm()
     if not layers.popup.visible and not layers.tutorial.visible then
+        tmpField = ''
+        for i, v in ipairs(fields.order) do
+            if thePlayer.totalScore >= fields[v].minScore then
+                print(thePlayer.totalScore)
+                print(fields[v].minScore)
+                tmpField = v
+            else
+                break
+            end
+        end
+        fieldType = tmpField
+        print(fieldType)
         storyboard.gotoScene('farm_screen')
         return true
     end
