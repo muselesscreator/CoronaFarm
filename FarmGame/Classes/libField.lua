@@ -9,6 +9,7 @@ Field = class(function(tmpField, type)
         end
         print(tmpField.Pest)
         tmpField.turns = 0        
+        tmpField.pest_free = 0
 
         tmpField.elements = {Blank = {}, Plant = {}, Pest = {}, Obstruction = {}}
         tmpField.total_squares = 0
@@ -303,10 +304,6 @@ function Field:getDoomCounter()
     return self.maxDoomCounter - num_flags
 end
 
-
-
-
-
 function Field:nextDay()
     print('--@Field:nextDay')
     for i, v in ipairs(theField.elements.Plant) do
@@ -318,6 +315,11 @@ function Field:nextDay()
     for i, v in ipairs(theField.elements.Pest) do
         v:nextDay()
     end
+
+    if self.pest_free > 0 then
+        self.pest_free = self.pest_free - 1
+    end
+
     self:cleanup()
     self.turns = self.turns + 1
     self:spawnPests()
@@ -332,7 +334,9 @@ function Field:waitADay()
 end
 
 function Field:spawnPests()
-    Pest:spawn(self.Pest)
+    if self.pest_free == 0 then
+        Pest:spawn(self.Pest)
+    end
 end
 
 
@@ -366,8 +370,15 @@ function Field:plantAt(i, j)
     return false
 end
 
+function Field:rockAt(i, j)
+    for k, v in ipairs(self.elements.Obstruction) do
+        if v.i == i and v.j == j then
+            return v
+        end
+    end
+end
+
 function Field:addElement(elem)
-    print('-- @Field:addElement')
     local id = 'elem'..self.lastElementID+1
     self.lastElementID = self.lastElementID + 1
     self.allElements[id] = elem

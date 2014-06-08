@@ -27,12 +27,14 @@ storyboard.purgeOnSceneChange = true
 
 display.setStatusBar(display.HiddenStatusBar)
 
+magicWeaponSheetInfo = require("ImageSheets.magicWeapon_sheet")
+magicWeaponSheet = graphics.newImageSheet("ImageSheets/magicWeapon_sheet.png", magicWeaponSheetInfo:getSheet())
 obsSheetInfo = require("ImageSheets.Obstruction_sheet")
 obsSheet = graphics.newImageSheet("ImageSheets/Obstruction_sheet.png", obsSheetInfo:getSheet())
 overlaySheetInfo = require("ImageSheets.Overlay_sheet")
 overlaySheet = graphics.newImageSheet("ImageSheets/Overlay_sheet.png", overlaySheetInfo:getSheet())
 pestSheetInfo = require("ImageSheets.pest_sheet")
-pestSheet = graphics.newImageSheet("ImageSheets/pest_sheet.png", pestSheetInfo:getSheet())plantSheetInfo = require("ImageSheets.plant_sheet")
+pestSheet = graphics.newImageSheet("ImageSheets/pest_sheet.png", pestSheetInfo:getSheet())
 plantSheetInfo = require("ImageSheets.plant_sheet")
 plantSheet = graphics.newImageSheet("ImageSheets/plant_sheet.png", plantSheetInfo:getSheet())
 uiSheetInfo = require("ImageSheets.UI_sheet")
@@ -139,7 +141,11 @@ sequenceData =
     { name="TomatoFrame1", sheet=plantSheet, frames={193, 190}, time=350},
     { name="TomatoFrame2", sheet=plantSheet, frames={191, 190}, time=350},
     { name="TomatoFrame3", sheet=plantSheet, frames={192, 190}, time=350},
-    { name="TomatoHarvest", sheet=plantSheet, frames={196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207}, time=500, loopCount=1}
+    { name="TomatoHarvest", sheet=plantSheet, frames={196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207}, time=500, loopCount=1},
+
+    { name="magicWeaponIdle", sheet=magicWeaponSheet, frames={2}},
+    { name="magicWeaponMallet", sheet=magicWeaponSheet, frames={1}},
+    { name="magicWeaponSlingshot", sheet=magicWeaponSheet, frames={1}}
 }
 
 require 'Classes.class'
@@ -195,6 +201,7 @@ sfxVolume = .5
 
 gameOver = false
 goodGameOverHappened = false
+weaponToggled = false
 tutorial = false
 no_pests = false
 log_levels = {  Info = 3,

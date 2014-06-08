@@ -22,20 +22,34 @@ storyboard.purgeOnSceneChange = true
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 
-local function gotoLevel( event )
+local function gotoLevel( self, event )
     storyboard.gotoScene('level_screen')
     return true
 end
 
-local function gotoTitle ( event )
+local function gotoTitle ( self, event )
    storyboard.gotoScene('title_screen')
    return true
+end
+
+function toggleWeapon( self, event )
+
+    if event.phase == 'began' then
+        if weaponToggled == false then
+            weaponToggled = true
+            wpnBtn:setSequence('magicWeapon'..theField.weapon)
+        else
+            weaponToggled = false
+            wpnBtn:setSequence('magicWeaponIdle')
+        end
+    end
 end
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
     gameOver = false
     goodGameOverHappened = false
     touchesAllowed = false
+    weaponToggled = false
     thePlayer:newLevel()
     local r = math.random(1, 100)
     if r < 5 then
@@ -210,6 +224,19 @@ function scene:createScene( event)
     layers.overFrame:insert(doomHUD)
 
 
+    -----------------------------------------
+    -- Magic Weapon Button
+    -----------------------------------------
+    wpnBtn = display.newSprite(magicWeaponSheet, sequenceData)
+    wpnBtn:setSequence('magicWeaponIdle')
+    wpnBtn.x = 60
+    wpnBtn.y = 645
+    wpnBtn.touch = toggleWeapon
+    wpnBtn:addEventListener('touch', wpnBtn)
+    layers.frame:insert(wpnBtn)
+
+    wpnCount = display.newText(layers.frame, 'x'..thePlayer.numCoins, 30, 580, native.systemFontBold, 25)
+
     ----------------------------------------------------------
     -- Popup Menu
     ---------------------------------------------------------
@@ -297,7 +324,6 @@ function scene:createScene( event)
     vibrateToggleBG:addEventListener('touch', toggleVibrateBG)
 
     layers.popup.alpha = 0
-
 
     ---------------------------------------------------------------------------
     -- Tutorial
