@@ -17,7 +17,6 @@ storyboard.purgeOnSceneChange = true
 -- local forward references should go here --
 
 local function playAd()
-    adGetTokenFlag = true
     toggleAdPopup()
     ads:setCurrentProvider( "vungle" )
     ads.show("interstitial", params)

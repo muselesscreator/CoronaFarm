@@ -256,6 +256,7 @@ function vungleListener( event )
         adProviderSwitchFlag = true
         ads:setCurrentProvider( "admob" )
     elseif (event.type == "adEnd") then --ad success
+        thePlayer:addCoin()
         adProviderSwitchFlag = false
         storyboard.hideOverlay()
     else 
@@ -264,7 +265,6 @@ function vungleListener( event )
     end
     if (adGetTokenFlag == true) then
         adGetTokenFlag = false
-        thePlayer.numCoins = thePlayer.numCoins + 1
     end
     return true
 end
