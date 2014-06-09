@@ -353,11 +353,16 @@ function FarmElement:useMagicSlingshot()
     theField.slingAnim:play()
     local killed_pest = false
 
-    timer.performWithDelay(1000, function()
+    timer.performWithDelay(1200, function()
         theField.slingAnim.alpha = 0 
         theField.slingAnim:setSequence('MagicSlingAnim')
         end, 1)
-
+    timer.performWithDelay(1200, function()
+        transition.to(theField.slingFlash, {alpha = .7, time=300, transition=easing.outQuad})
+        timer.performWithDelay(300, function()
+            transition.to(theField.slingFlash, {alpha = 0, time=300, transition=easing.inQuad})
+            end, 1)
+        end, 1)
 
     for i=1, theField.columns do
         for j=1, theField.columns do
@@ -374,7 +379,7 @@ function FarmElement:useMagicSlingshot()
             end
         end
     end
-    timer.performWithDelay(1000, function()
+    timer.performWithDelay(1400, function()
         if killed_pest == true then
             theField.slingAnim:setSequence('BirdDeath')
             theField.slingAnim.alpha = 1
