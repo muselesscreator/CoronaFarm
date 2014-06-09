@@ -19,32 +19,29 @@ storyboard.purgeOnSceneChange = true
 local function playAd()
     adGetTokenFlag = true
     toggleAdPopup()
-    ads:setCurrentProvider( "admob" )
+    ads:setCurrentProvider( "vungle" )
     ads.show("interstitial", params)
 end
 
 local function gotoFarm()
-    if not layers.popup.visible and not layers.tutorial.visible then
+    if not layers.popup.visible and not layers.tutorial.visible and not layers.adPopup.visible then
         storyboard.gotoScene('farm_screen')
         return true
     end
 end
 
 local function gotoLevel()
-    if not layers.popup.visible and not layers.tutorial.visible then
+    if not layers.popup.visible and not layers.tutorial.visible and not layers.adPopup.visible then
         storyboard.gotoScene('level_screen')
         return true
     end
 end
 
 local function gotoSite()
-    system.openURL('http://www.nerdpilegames.com')
-    return true
-end
-
-local function gotoTutorial()
-    storyboard.gotoScene('tutorial_screen')
-    return true
+    if not layers.popup.visible and not layers.tutorial.visible and not layers.adPopup.visible then
+        system.openURL('http://www.nerdpilegames.com')
+        return true
+    end
 end
 
 ---------------------------------------------------------------------------------
@@ -284,6 +281,8 @@ function scene:createScene( event )
     tutorialClose.touch = toggleTutorial
     tutorialClose:addEventListener('touch', tutorialClose)
     layers.tutorial:insert(tutorialClose)
+
+
     ---------------------------------------------------------------------------
     -- Advertising Popup
     ---------------------------------------------------------------------------

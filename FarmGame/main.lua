@@ -426,7 +426,7 @@ local params = {
    isAnimated = false,
    isAutoRotation = true,
 }
-ads:setCurrentProvider( "vungle" )
+ads:setCurrentProvider( "admob" )
 ads.show( "interstitial", params )
 storyboard.gotoScene( "title_screen", "fade", 400 )
 
