@@ -146,7 +146,7 @@ function scene:createScene( event )
 
 
 
-    local scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
+    scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
     scoreTxt:setFillColor(0, 0, 0)
     layers.frame:insert(scoreTxt)
     local scorecard = display.newImage('images/scorebar.png')

@@ -18,14 +18,6 @@ end
 
 local ads = require "ads"
 
-if ( system.getInfo("platformName") == "Android" ) then
-    ads.init( "admob", "ca-app-pub-4736694746810220/4317175391", adMobListener )
-    ads.init( "vungle", "5394d5318af2cc820200005c", vungleListener )
-else
-    ads.init( "admob", "ca-app-pub-4736694746810220/8747374995", adMobListener )
-    ads.init( "vungle", "5394d5b79fa750ac69000055", vungleListener )
-end
-
 
 local physics = require "physics"
 local socket = require "socket"
@@ -210,6 +202,7 @@ local clickAction = ""
 local plantsHarvested = {}
 isVibrateEnabled = true
 
+scoreTxt = {}
 math.randomseed(os.time())
 
 musicVolume = .5
@@ -259,19 +252,15 @@ end
 --------------------------------------------------------------
 function vungleListener( event )
    -- Video ad not yet downloaded and available
-    if ( event.isError and adProviderSwitchFlag) then
-        adProviderSwitchFlag = false
-        storyboard.hideOverlay()
-    elseif ( event.type == "adStart" and event.isError ) then
+    if ( event.type == "adStart" and event.isError ) then
         adProviderSwitchFlag = true
-        ads:setCurrentProvider( "admob" )
+        thePlayer:addCoin()
     elseif (event.type == "adEnd") then --ad success
         thePlayer:addCoin()
+        helpBtn.alpha = 0
         ads:hide()
-        adProviderSwitchFlag = false
         storyboard.hideOverlay()
     else 
-        adProviderSwitchFlag = false
         print( "Received event", event.type )
     end
     if (adGetTokenFlag == true) then
@@ -433,6 +422,15 @@ end
 Runtime:addEventListener( "key", onKeyEvent )
 
 ---------------------------------------------------------
+
+
+if ( system.getInfo("platformName") == "Android" ) then
+    ads.init( "admob", "ca-app-pub-4736694746810220/4317175391", adMobListener )
+    ads.init( "vungle", "5394d5318af2cc820200005c", vungleListener )
+else
+    ads.init( "admob", "ca-app-pub-4736694746810220/8747374995", adMobListener )
+    ads.init( "vungle", "5394d5b79fa750ac69000055", vungleListener )
+end
 
 local params = {
    isAnimated = false,

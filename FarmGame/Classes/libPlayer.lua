@@ -85,10 +85,13 @@ function Player:useCoin()
     weaponToggled = false
     wpnBtn:setSequence('magicWeaponIdle')
     wpnCount.text = 'x'..self.numCoins
+    saveTable(self, 'player.json')
 end
 
 function Player:addCoin()
+    print("???????????????????????????????????????")
     self.numCoins = self.numCoins + 1
+    saveTable(self, 'player.json')
 end
 
 function Player:genTipList()
