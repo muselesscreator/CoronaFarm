@@ -12,7 +12,12 @@ function FarmElement:initialize(args)
 
         if touchesAllowed and not layers.popup.visible and not gameOver and not layers.tutorial.visible then       
              
-            if self:whatIsNext().type == 'Slingshot' then
+            if theField.weapon == 'Slingshot' and weaponToggled then
+                self:useMagicSlingshot() 
+                theField.pest_free = 3
+                thePlayer:useCoin()
+                return true
+            elseif self:whatIsNext().type == 'Slingshot' then
                 touchesAllowed = false
                 local stuff = theField:whatIsAt(self.i, self.j)
                 can_shoot = true
@@ -37,8 +42,29 @@ function FarmElement:initialize(args)
 
 
             local pest = theField:pestAt(self.i, self.j)
+            local rock = theField:rockAt(self.i, self.j)
             print('--@FarmElement:onClick')
             print(pest)
+            if theField.weapon == 'Mallet' and weaponToggled then
+                if pest ~= false or rock ~= false then
+                    print('USE MAGIC HAMMER')
+                    weaponToggled = false
+                    theField:waitADay()
+                    if pest ~= false then
+                        pest:useMagicHammer()
+                    else
+                        rock:useMagicHammer()
+                    end
+                    thePlayer:useCoin()
+                    return true
+                else
+                    print("Don't waste your magic weapons!")
+                    weaponToggled = False
+                    wpnBtn:setSequence('magicWeaponIdle')
+                    return true
+                end
+            end
+
             if pest ~= false then
                 if pest:canClick() ~= false then
                     print('CLICK ON PEST')
@@ -319,6 +345,60 @@ function FarmElement:useSlingshot()
         end
         end, 1)
 end
+
+function FarmElement:useMagicSlingshot()
+    theField.slingAnim:setSequence('MagicSlingAnim')
+    theField.slingAnim.alpha = 1
+    slingshotVibrate()
+    theField.slingAnim:play()
+    local killed_pest = false
+
+    timer.performWithDelay(1200, function()
+        theField.slingAnim.alpha = 0 
+        theField.slingAnim:setSequence('MagicSlingAnim')
+        end, 1)
+    timer.performWithDelay(1200, function()
+        transition.to(theField.slingFlash, {alpha = .7, time=300, transition=easing.outQuad})
+        timer.performWithDelay(300, function()
+            transition.to(theField.slingFlash, {alpha = 0, time=300, transition=easing.inQuad})
+            end, 1)
+        end, 1)
+
+    for i=1, theField.columns do
+        for j=1, theField.columns do
+            local pest = theField:pestAt(i, j)
+            if pest ~= false then
+                print('Kill this pest!')
+                killed_pest = true
+                pest:useWeapon()
+            else
+                local other_stuff = theField:whatIsAt(i, j)
+                if #other_stuff > 0 then
+                    FarmElement.useWeapon(other_stuff[1])
+                end
+            end
+        end
+    end
+    timer.performWithDelay(1400, function()
+        if killed_pest == true then
+            theField.slingAnim:setSequence('BirdDeath')
+            theField.slingAnim.alpha = 1
+            theField.slingAnim:play()
+            timer.performWithDelay(800, function()
+                theField.slingAnim.alpha = 0
+                theField.slingAnim:setSequence('SlingAnim')
+                touchesAllowed = true
+                self:useNext()
+                theField:nextDay()
+                end, 1)
+        else
+            touchesAllowed = true
+            self:useNext()
+            theField:nextDay()
+        end
+        end, 1)
+end
+
 
 function FarmElement:hideWeapon()
     if self.weapon_sprite ~= nil then

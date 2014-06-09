@@ -146,6 +146,19 @@ function Rock:useWeapon()
     end
 end
 
+function Rock:useMagicHammer()
+    self.overlay:setSequence('MagicMallet')
+    self.overlay.y = self.y - 70
+    self.overlay.alpha = 1
+    self.overlay:play()
+    vibrate()
+    playSoundEffect('break')
+    local tmp = Blank:new({i=self.i, j=self.j})
+    timer.performWithDelay(800, function() self:die() end, 1)
+
+
+end
+
 --==================================================================================
 --====   StonePlant                 ================================================
 --==================================================================================

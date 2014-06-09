@@ -165,6 +165,20 @@ function LandPest:useWeapon()
     timer.performWithDelay(800, function() self:die() end, 1)
 end
 
+function LandPest:useMagicHammer()
+    local r = math.random(1, 5)
+    fn = 'mallet_'..r
+    playSoundEffect(fn)
+    self.dying = true
+    self.pest_sprite.y = self.pest_sprite.y - 85
+    self.pest_sprite.x = self.pest_sprite.x + 5
+    self.pest_sprite:setSequence('GopherMagicHammerDie')
+    vibrate()
+    local tmp = Blank:new({i=self.i, j=self.j})
+    self.pest_sprite:play()
+    timer.performWithDelay(800, function() Pest.die(self) end, 1)
+end
+
 function LandPest:die()
     if self.rock == nil then
         local tmp = Rock:new({i=self.i, j=self.j})

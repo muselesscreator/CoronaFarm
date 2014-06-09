@@ -22,20 +22,41 @@ storyboard.purgeOnSceneChange = true
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 
-local function gotoLevel( event )
+local function gotoLevel( self, event )
     storyboard.gotoScene('level_screen')
     return true
 end
 
-local function gotoTitle ( event )
+local function gotoTitle ( self, event )
    storyboard.gotoScene('title_screen')
    return true
 end
+
+function toggleWeapon( self, event )
+
+    if event.phase == 'began' then
+        if weaponToggled == false then
+            weaponToggled = true
+            wpnBtn:setSequence('magicWeapon'..theField.weapon)
+        else
+            weaponToggled = false
+            wpnBtn:setSequence('magicWeaponIdle')
+        end
+    end
+end
+
+function clearTip()
+    tipBox:removeSelf()
+    tipWrapper:removeSelf()
+    return true
+end 
+
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
     gameOver = false
     goodGameOverHappened = false
     touchesAllowed = false
+    weaponToggled = false
     thePlayer:newLevel()
     local r = math.random(1, 100)
     if r < 5 then
@@ -123,6 +144,7 @@ function scene:createScene( event)
     layers.tutorial = display.newGroup()
     layers.adPopup = display.newGroup()
     layers.gameOver = display.newGroup()
+    layers.tips = display.newGroup()
     theField = Field(fieldType)
 
     theField:fill()
@@ -211,6 +233,20 @@ function scene:createScene( event)
     layers.overFrame:insert(doomHUD)
 
 
+    -----------------------------------------
+    -- Magic Weapon Button
+    -----------------------------------------
+    wpnBtn = display.newSprite(magicWeaponSheet, sequenceData)
+    wpnBtn:setSequence('magicWeaponIdle')
+    wpnBtn.x = 60
+    wpnBtn.y = 625
+    wpnBtn.touch = toggleWeapon
+    wpnBtn:addEventListener('touch', wpnBtn)
+    layers.frame:insert(wpnBtn)
+
+    wpnCount = display.newText(layers.frame, 'x'..thePlayer.numCoins, 30, 590, native.systemFontBold, 25)
+    wpnCount:rotate(330)
+    wpnCount:setFillColor(1,1, .5)
     ----------------------------------------------------------
     -- Popup Menu
     ---------------------------------------------------------
@@ -299,7 +335,6 @@ function scene:createScene( event)
 
     layers.popup.alpha = 0
 
-
     ---------------------------------------------------------------------------
     -- Tutorial
     ---------------------------------------------------------------------------
@@ -353,6 +388,26 @@ function scene:createScene( event)
     layers.tutorial:insert(tutorialClose)
 
 
+    ---------------------------------------------------------------
+    -- Tips Panel
+    ---------------------------------------------------------------
+    local tip = thePlayer:nextTip()
+    print(tip)
+    tipBox = display.newImage(tip)
+    tipBox.x = display.contentWidth/2
+    tipBox.y = display.contentHeight/2
+    layers.tips:insert(tipBox)
+
+    tipWrapper = display.newRect(0,0,display.contentWidth, display.contentHeight)
+    tipWrapper.anchorX = 0
+    tipWrapper.anchorY = 0
+    tipWrapper.alpha = 0
+    tipWrapper.isHitTestable = true
+    tipWrapper.tap = clearTip
+    tipWrapper:addEventListener('tap', clearTip)
+    layers.tips:insert(tipWrapper)
+
+
     theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
     theQueue:fill()
@@ -363,6 +418,7 @@ function scene:createScene( event)
     group:insert(layers.popup)
     group:insert(layers.tutorial)
     group:insert(layers.gameOver)
+    group:insert(layers.tips)
 
     touchesAllowed = true
     --timer.performWithDelay(800, allowTouches, -1)

@@ -26,6 +26,7 @@ fields.Salad = {
     turnLength = 500,
     maxDoomCounter = 8,
     doomObjType = 'Rock',
+    weapon = 'Mallet',
 }
 function fields.Salad.updateWeights()
     mallet_weights()
@@ -60,6 +61,7 @@ fields.Stew = {
     turnLength = 500,
     maxDoomCounter = 5,
     doomObjType = 'Urn',
+    weapon = 'Slingshot',
 }
 function fields.Stew.updateWeights(queue, field)
     slingshot_weights()    
@@ -95,6 +97,7 @@ fields.Salsa = {
     turnLength = 500,
     maxDoomCounter = 20,
     doomObjType = 'Rock',
+    weapon = 'Mallet',
 }
 function fields.Salsa.updateWeights()
     mallet_weights()
@@ -129,6 +132,7 @@ fields.Tea = {
     goalScore = 60000,
     maxDoomCounter = 25,
     doomObjType = 'StonePlant',
+    weapon = 'Slingshot',
 }
 function fields.Tea.updateWeights()
     slingshot_weights()
