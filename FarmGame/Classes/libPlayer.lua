@@ -87,13 +87,17 @@ function Player:useCoin()
     wpnCount.text = 'x'..self.numCoins
 end
 
+function Player:addCoin()
+    self.numCoins = self.numCoins + 1
+end
+
 function Player:genTipList()
     self.tips = {}
     for i=1, 16, 1 do
         if i < 10 then
-            self.tips[i] = 'Images/tip0'..i..'.png'
+            self.tips[i] = 'images/tip0'..i..'.png'
         else
-            self.tips[i] = 'Images/tip'..i..'.png'
+            self.tips[i] = 'images/tip'..i..'.png'
         end
     end
     for i=16, 2, -1 do
