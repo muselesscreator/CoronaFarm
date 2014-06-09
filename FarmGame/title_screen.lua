@@ -16,8 +16,8 @@ storyboard.purgeOnSceneChange = true
 
 -- local forward references should go here --
 
-local function playAd()
-    toggleAdPopup()
+local function playAd(self, event)
+    toggleAdPopup(self, event)
     ads:setCurrentProvider( "vungle" )
     ads.show("interstitial", params)
 end
@@ -91,15 +91,17 @@ function scene:createScene( event )
     gopher.y = 470
     layers.bg:insert(gopher)
 
-    local giftButton = widget.newButton
-    {
-        defaultFile = "images/Gift Button_Pressed.png",
-        overFile = "images/Gift Button_Unpressed.png",
-        emboss = true,
-        onRelease = toggleAdPopup,
-    }
+    giftButton = display.newSprite(magicWeaponSheet, sequenceData)
+
     giftButton.x = 100
     giftButton.y = 100
+    if thePlayer.numCoins == 5 then
+        giftButton:setSequence('giftButtonDisabled')
+    else
+        giftButton:setSequence('giftButton')
+        giftButton.touch = toggleAdPopup
+        giftButton:addEventListener('touch', giftButton)
+    end
     layers.frame:insert(giftButton)
 
     local FarmButton = widget.newButton
@@ -246,12 +248,16 @@ function scene:createScene( event )
     layers.tutorial.visible = false
     layers.tutorial.alpha = 0
     layers.tutorial.frame = 1
+    
 
-    helpBtn = display.newImage('images/questionMenuButton.png')
+    local helpBtn = widget.newButton
+    {
+        defaultFile = "images/questionMenuButton.png",
+        emboss = true,
+        onRelease = toggleTutorial
+    }
     helpBtn.x = 830
     helpBtn.y = 710
-    helpBtn.touch = clickHelp
-    helpBtn:addEventListener('touch', helpBtn)
     layers.frame:insert(helpBtn)
 
     tutorialPanel = display.newSprite(uiSheet, sequenceData)
@@ -290,8 +296,6 @@ function scene:createScene( event )
     tutorialClose.y = 150
     tutorialClose.xScale = .7
     tutorialClose.yScale = .7
-    tutorialClose.touch = toggleTutorial
-    tutorialClose:addEventListener('touch', tutorialClose)
     layers.tutorial:insert(tutorialClose)
 
 

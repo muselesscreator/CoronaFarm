@@ -151,9 +151,11 @@ sequenceData =
     { name="TomatoFrame3", sheet=plantSheet, frames={192, 190}, time=350},
     { name="TomatoHarvest", sheet=plantSheet, frames={196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207}, time=500, loopCount=1},
 
-    { name="magicWeaponIdle", sheet=magicWeaponSheet, frames={3}},
-    { name="magicWeaponMallet", sheet=magicWeaponSheet, frames={1}},
-    { name="magicWeaponSlingshot", sheet=magicWeaponSheet, frames={2}}
+    { name='giftButton', sheet=magicWeaponSheet, frames={1}},
+    { name='giftButtonDisabled', sheet=magicWeaponSheet, frames={3}},
+    { name="magicWeaponIdle", sheet=magicWeaponSheet, frames={6}},
+    { name="magicWeaponMallet", sheet=magicWeaponSheet, frames={4}},
+    { name="magicWeaponSlingshot", sheet=magicWeaponSheet, frames={5}}
 }
 
 require 'Classes.class'
@@ -292,10 +294,13 @@ function adMobListener( event )
 end
 
 toggleAdPopup = function ( self, event )
-    if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible then
+    if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible and event.phase == 'ended' then
         if layers.adPopup.visible then
             layers.adPopup.alpha = 0
             timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
+            if thePlayer.numCoins == 5 then
+                disableGiftButton()
+            end
         else
             layers.adPopup.alpha = 1
             layers.adPopup.visible = true
