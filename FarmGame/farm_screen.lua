@@ -239,7 +239,7 @@ function scene:createScene( event)
         onRelease = toggleOptions
     }
     backButton.x = 390
-    backButton.y = 340
+    backButton.y = 300
     layers.popup:insert(backButton)
 
     local exitButton = widget.newButton
@@ -250,24 +250,24 @@ function scene:createScene( event)
         onRelease = gotoTitle
     }
     exitButton.x = 615
-    exitButton.y = 340
+    exitButton.y = 300
     layers.popup:insert(exitButton)
 
-    local txt = display.newText(layers.popup, 'Music Volume', 500, 390, native.systemFontBold, 25)
+    local txt = display.newText(layers.popup, 'Music Volume', 510, 350, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 340, y=400, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 340, y=370, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
-    txt = display.newText(layers.popup, 'Sound-Effects Volume', 500, 470, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Sound-Effects Volume', 510, 430, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 340, y=480, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 340, y=450, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
-    txt = display.newText(layers.popup, 'Vibration Enabled', 440, 570, native.systemFontBold, 25)
+    txt = display.newText(layers.popup, 'Vibration Enabled', 450, 540, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
     local vibrateToggleBG = display.newImage('images/uiToggleBG.png')
-    vibrateToggleBG.x = 610
-    vibrateToggleBG.y = 570
+    vibrateToggleBG.x = 620
+    vibrateToggleBG.y = 540
     layers.popup:insert(vibrateToggleBG)
 
     local vibrateToggle = display.newImage('images/uiToggleThing.png')
@@ -276,21 +276,21 @@ function scene:createScene( event)
             if isVibrateEnabled then
                 print('no')
                 isVibrateEnabled = false
-                transition.to(vibrateToggle, {x=635, time=400})
+                transition.to(vibrateToggle, {x=645, time=400})
             else
                 print('yes')
                 isVibrateEnabled = true
-                transition.to(vibrateToggle, {x=585, time=400})
+                transition.to(vibrateToggle, {x=595, time=400})
             end
         end
     end
 
     if isVibrateEnabled then
-        vibrateToggle.x = 585
+        vibrateToggle.x = 595
     else
-        vibrateToggle.x = 635
+        vibrateToggle.x = 645
     end
-    vibrateToggle.y = 570
+    vibrateToggle.y = 540
     layers.popup:insert(vibrateToggle)
     vibrateToggleBG.touch = toggleVibrate
     vibrateToggleBG:addEventListener('touch', toggleVibrateBG)
@@ -345,7 +345,7 @@ function scene:createScene( event)
         onRelease = toggleTutorial
     }
     tutorialClose.x = 680
-    tutorialClose.y = 235
+    tutorialClose.y = 237
     tutorialClose.xScale = .4
     tutorialClose.yScale = .4
     layers.tutorial:insert(tutorialClose)
