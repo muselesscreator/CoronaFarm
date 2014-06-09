@@ -44,6 +44,13 @@ function toggleWeapon( self, event )
         end
     end
 end
+
+function clearTip()
+    tipBox:removeSelf()
+    tipWrapper:removeSelf()
+    return true
+end 
+
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
     gameOver = false
@@ -137,6 +144,7 @@ function scene:createScene( event)
     layers.tutorial = display.newGroup()
     layers.adPopup = display.newGroup()
     layers.gameOver = display.newGroup()
+    layers.tips = display.newGroup()
     theField = Field(fieldType)
 
     theField:fill()
@@ -380,6 +388,26 @@ function scene:createScene( event)
     layers.tutorial:insert(tutorialClose)
 
 
+    ---------------------------------------------------------------
+    -- Tips Panel
+    ---------------------------------------------------------------
+    local tip = thePlayer:nextTip()
+    print(tip)
+    tipBox = display.newImage(tip)
+    tipBox.x = display.contentWidth/2
+    tipBox.y = display.contentHeight/2
+    layers.tips:insert(tipBox)
+
+    tipWrapper = display.newRect(0,0,display.contentWidth, display.contentHeight)
+    tipWrapper.anchorX = 0
+    tipWrapper.anchorY = 0
+    tipWrapper.alpha = 0
+    tipWrapper.isHitTestable = true
+    tipWrapper.tap = clearTip
+    tipWrapper:addEventListener('tap', clearTip)
+    layers.tips:insert(tipWrapper)
+
+
     theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
     theQueue:fill()
@@ -390,6 +418,7 @@ function scene:createScene( event)
     group:insert(layers.popup)
     group:insert(layers.tutorial)
     group:insert(layers.gameOver)
+    group:insert(layers.tips)
 
     touchesAllowed = true
     --timer.performWithDelay(800, allowTouches, -1)

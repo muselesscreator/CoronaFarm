@@ -42,6 +42,11 @@ Player = class(function(player)
             if player.numCoins == nil or player.numCoins < 4 then
                 player.numCoins = 10
             end
+            if player.tips == nil then
+                player:genTipList()
+                player.tipIndex = 1
+            end
+
             print("returning player")
             return player
         end
@@ -52,7 +57,8 @@ Player = class(function(player)
         player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
         player.has_played_level = {false, false, false, false}
         player.has_unlocked_level = {false, false, false, false}
-
+        player:genTipList()
+        player.tipIndex = 1
         return player
     end)
 
@@ -81,6 +87,21 @@ function Player:useCoin()
     wpnCount.text = 'x'..self.numCoins
 end
 
+function Player:genTipList()
+    self.tips = {}
+    for i=1, 16, 1 do
+        if i < 10 then
+            self.tips[i] = 'Images/tip0'..i..'.png'
+        else
+            self.tips[i] = 'Images/tip'..i..'.png'
+        end
+    end
+    for i=16, 2, -1 do
+        local j = math.random(1, i)
+        self.tips[i], self.tips[j] = self.tips[j], self.tips[i]
+    end
+end
+
 function Player:hasCoins()
     if self.numCoins > 0 then
         return true
@@ -91,4 +112,15 @@ end
 
 function Player:newLevel()
     self.levelScore = 0
+end
+
+function Player:nextTip()
+    local tip = self.tips[self.tipIndex]
+    if self.tipIndex < 16 then
+        self.tipIndex = self.tipIndex + 1
+    else
+        self.tipIndex = 1
+        self:genTipList()
+    end
+    return tip
 end
