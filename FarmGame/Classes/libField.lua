@@ -69,6 +69,13 @@ Field = class(function(tmpField, type)
         layers.overFrame:insert(slingAnim)
         tmpField.slingAnim = slingAnim
 
+        local flash = display.newRect(0, 0, display.contentWidth, display.contentHeight)
+        flash.anchorX = 0
+        flash.anchorY = 0
+        flash.alpha = 0
+        layers.overFrame:insert(flash)
+        tmpField.slingFlash = flash
+
         return tmpField
     end)
 
