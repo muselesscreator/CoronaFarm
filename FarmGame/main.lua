@@ -307,14 +307,16 @@ end
 -- Tutorial Functions
 --------------------------------------------------------------
 clickHelp = function (self, event)
-    if event.phase == 'began' then
+    print(event.phase)
+    if event.phase == 'ended' then
         print("?")
-        return toggleTutorial()
+        return toggleTutorial(self, event)
     end
 end
 
-toggleTutorial = function ( self, event )
-    if gameOver ~= true and not layers.popup.visible and not layers.adPopup.visible then
+toggleTutorial = function ( event )
+    print(event.phase)
+    if gameOver ~= true and not layers.popup.visible and not layers.adPopup.visible and event.phase == 'ended' then
         if layers.tutorial.visible then
             layers.tutorial.alpha = 0
             timer.performWithDelay(10, function() layers.tutorial.visible = false end, 1)
@@ -326,7 +328,9 @@ toggleTutorial = function ( self, event )
             tutorialBackBtn.alpha = 0
             tutorialNextBtn.alpha = 1
         end
+        return true
     end
+
 end
 
 tutorialNext = function ( self, event )

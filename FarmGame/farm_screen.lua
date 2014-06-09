@@ -343,11 +343,14 @@ function scene:createScene( event)
     layers.tutorial.alpha = 0
     layers.tutorial.frame = 1
 
-    helpBtn = display.newImage('images/questionMenuButton.png')
+    local helpBtn = widget.newButton
+    {
+        defaultFile = "images/questionMenuButton.png",
+        emboss = true,
+        onRelease = toggleTutorial
+    }
     helpBtn.x = 60
     helpBtn.y = 290
-    helpBtn.touch = clickHelp
-    helpBtn:addEventListener('touch', helpBtn)
     layers.frame:insert(helpBtn)
 
     tutorialPanel = display.newSprite(uiSheet, sequenceData)
@@ -358,19 +361,20 @@ function scene:createScene( event)
     layers.tutorial:insert(tutorialPanel)
 
     tutorialBackBtn = display.newImage('images/uiArrow.png')
-    tutorialBackBtn.xScale = -1
-    tutorialBackBtn.yScale = .9
-    tutorialBackBtn.x = 380
-    tutorialBackBtn.y = 512
+    tutorialBackBtn.xScale = -1.2
+    tutorialBackBtn.yScale = 1.2
+    tutorialBackBtn.x = 250
+    tutorialBackBtn.y = 590
     tutorialBackBtn.alpha = 0
     tutorialBackBtn.touch = tutorialBack
     tutorialBackBtn:addEventListener('touch', tutorialBackBtn)
     layers.tutorial:insert(tutorialBackBtn)
 
     tutorialNextBtn = display.newImage('images/uiArrow.png')
-    tutorialNextBtn.yScale = .9
-    tutorialNextBtn.x = 650
-    tutorialNextBtn.y = 512
+    tutorialNextBtn.xScale = 1.2
+    tutorialNextBtn.yScale = 1.2 
+    tutorialNextBtn.x = 780
+    tutorialNextBtn.y = 590
     tutorialNextBtn.touch = tutorialNext
     tutorialNextBtn:addEventListener('touch', tutorialNextBtn)
     layers.tutorial:insert(tutorialNextBtn)
@@ -381,10 +385,10 @@ function scene:createScene( event)
         emboss = true,
         onRelease = toggleTutorial
     }
-    tutorialClose.x = 685
-    tutorialClose.y = 235
-    tutorialClose.xScale = .35
-    tutorialClose.yScale = .35
+    tutorialClose.x = 830
+    tutorialClose.y = 150
+    tutorialClose.xScale = .7
+    tutorialClose.yScale = .7
     layers.tutorial:insert(tutorialClose)
 
 
