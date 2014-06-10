@@ -48,7 +48,6 @@ settings = {
        ["CoronaProvider.ads.admob"] =
        {
           publisherId = "com.coronalabs",
-          supportedPlatforms = { android = true },
        },
     },
 }
