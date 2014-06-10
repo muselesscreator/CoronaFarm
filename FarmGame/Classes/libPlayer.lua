@@ -39,8 +39,8 @@ Player = class(function(player)
             for i, v in pairs(tmp_player) do
                 player[i] = v
             end
-            if player.numCoins == nil or player.numCoins < 4 then
-                player.numCoins = 10
+            if player.numCoins == nil then
+                player.numCoins = 0
             end
             if player.tips == nil then
                 player:genTipList()
@@ -89,8 +89,10 @@ function Player:useCoin()
 end
 
 function Player:addCoin()
-    print("???????????????????????????????????????")
     self.numCoins = self.numCoins + 1
+    if self.numCoins >= 5 then
+        disableGiftButton()
+    end
     saveTable(self, 'player.json')
 end
 

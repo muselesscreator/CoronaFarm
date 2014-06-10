@@ -305,7 +305,7 @@ toggleAdPopup = function ( )
         if layers.adPopup.visible then
             layers.adPopup.alpha = 0
             timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
-            if thePlayer.numCoins == 5 then
+            if thePlayer.numCoins >= 5 then
                 disableGiftButton()
             end
         else
@@ -315,6 +315,11 @@ toggleAdPopup = function ( )
     end
 end
 
+
+disableGiftButton = function()
+    giftButton:setSequence("giftButtonDisabled")
+    giftButton.touch = nil
+end
 --------------------------------------------------------------
 -- Tutorial Functions
 --------------------------------------------------------------
