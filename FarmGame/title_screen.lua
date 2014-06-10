@@ -17,9 +17,11 @@ storyboard.purgeOnSceneChange = true
 -- local forward references should go here --
 
 local function playAd(self, event)
-    toggleAdPopup(self, event)
-    ads:setCurrentProvider( "vungle" )
-    ads.show("interstitial", params)
+    if event.phase == 'ended' then
+        toggleAdPopup()
+        ads:setCurrentProvider( "vungle" )
+        ads.show("interstitial", params)
+    end
 end
 
 local function gotoFarm()
@@ -95,11 +97,11 @@ function scene:createScene( event )
 
     giftButton.x = 100
     giftButton.y = 100
-    if thePlayer.numCoins == 5 then
+    if thePlayer.numCoins >= 5 then
         giftButton:setSequence('giftButtonDisabled')
     else
         giftButton:setSequence('giftButton')
-        giftButton.touch = toggleAdPopup
+        giftButton.touch = AdButton
         giftButton:addEventListener('touch', giftButton)
     end
     layers.frame:insert(giftButton)

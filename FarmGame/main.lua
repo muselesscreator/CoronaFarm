@@ -293,8 +293,15 @@ function adMobListener( event )
     return true
 end
 
-toggleAdPopup = function ( self, event )
-    if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible and event.phase == 'ended' then
+
+AdButton = function(self, event)
+    if event.phase == 'ended' then
+        toggleAdPopup()
+    end
+end
+
+toggleAdPopup = function ( )
+    if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible then
         if layers.adPopup.visible then
             layers.adPopup.alpha = 0
             timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
