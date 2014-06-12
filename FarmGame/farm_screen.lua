@@ -311,22 +311,23 @@ function scene:createScene( event)
     local vibrateToggle = display.newImage('images/uiToggleThing.png')
     local function toggleVibrate(self, event)
         if event.phase == 'began' then
-            if isVibrateEnabled then
+            if thePlayer.vibrateEnabled then
                 print('no')
-                isVibrateEnabled = false
-                transition.to(vibrateToggle, {x=645, time=400})
+                thePlayer.vibrateEnabled = false
+                transition.to(vibrateToggle, {x=595, time=400})
             else
                 print('yes')
-                isVibrateEnabled = true
-                transition.to(vibrateToggle, {x=595, time=400})
+                thePlayer.vibrateEnabled = true
+                transition.to(vibrateToggle, {x=645, time=400})
             end
+            saveTable(thePlayer, 'player.json')
         end
     end
 
-    if isVibrateEnabled then
-        vibrateToggle.x = 595
-    else
+    if thePlayer.vibrateEnabled then
         vibrateToggle.x = 645
+    else
+        vibrateToggle.x = 595
     end
     vibrateToggle.y = 540
     layers.popup:insert(vibrateToggle)

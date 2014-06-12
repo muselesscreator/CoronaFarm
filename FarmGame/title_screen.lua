@@ -63,6 +63,8 @@ end
 
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
+    touchesAllowed = true
+
     gameOver = false
     print("title_screen")
     storyboard.returnTo='title_screen'
@@ -202,12 +204,12 @@ function scene:createScene( event )
 
     local txt = display.newText(layers.popup, 'Music Volume', 510, 320, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 340, y=330, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 340, y=330, w=350, h=55, range=100, startX = thePlayer.musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
     txt = display.newText(layers.popup, 'Sound-Effects Volume', 510, 400, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 340, y=410, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 340, y=410, w=350, h=55, range=100, startX = thePlayer.soundEffectsVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
     txt = display.newText(layers.popup, 'Vibration Enabled', 450, 500, native.systemFontBold, 25)
@@ -220,22 +222,23 @@ function scene:createScene( event )
     local vibrateToggle = display.newImage('images/uiToggleThing.png')
     local function toggleVibrate(self, event)
         if event.phase == 'began' then
-            if isVibrateEnabled then
+            if thePlayer.vibrateEnabled then
                 print('no')
-                isVibrateEnabled = false
-                transition.to(vibrateToggle, {x=645, time=400})
+                thePlayer.vibrateEnabled = false
+                transition.to(vibrateToggle, {x=595, time=400})
             else
                 print('yes')
-                isVibrateEnabled = true
-                transition.to(vibrateToggle, {x=595, time=400})
+                thePlayer.vibrateEnabled = true
+                transition.to(vibrateToggle, {x=645, time=400})
             end
+            saveTable(thePlayer, 'player.json')
         end
     end
 
-    if isVibrateEnabled then
-        vibrateToggle.x = 595
-    else
+    if thePlayer.vibrateEnabled then
         vibrateToggle.x = 645
+    else
+        vibrateToggle.x = 595
     end
     vibrateToggle.y = 500
     layers.popup:insert(vibrateToggle)

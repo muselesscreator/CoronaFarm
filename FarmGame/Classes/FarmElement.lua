@@ -13,12 +13,15 @@ function FarmElement:initialize(args)
         if touchesAllowed and not layers.popup.visible and not gameOver and not layers.tutorial.visible then       
              
             if theField.weapon == 'Slingshot' and weaponToggled then
+                touchesAllowed = false
+                timer.performWithDelay(2000, function() touchesAllowed = true end, 1)
                 self:useMagicSlingshot() 
                 theField.pest_free = 3
                 thePlayer:useCoin()
                 return true
             elseif self:whatIsNext().type == 'Slingshot' then
                 touchesAllowed = false
+                timer.performWithDelay(650, function() touchesAllowed = true end, 1)
                 local stuff = theField:whatIsAt(self.i, self.j)
                 can_shoot = true
                 local myPlant = nil
@@ -47,9 +50,10 @@ function FarmElement:initialize(args)
             print(pest)
             if theField.weapon == 'Mallet' and weaponToggled then
                 if pest ~= false or rock ~= false then
+                    touchesAllowed = false
+                    timer.performWithDelay(750, function() touchesAllowed = true end, 1)
                     print('USE MAGIC HAMMER')
                     weaponToggled = false
-                    theField:waitADay()
                     if pest ~= false then
                         pest:useMagicHammer()
                     else
@@ -349,15 +353,21 @@ end
 function FarmElement:useMagicSlingshot()
     theField.slingAnim:setSequence('MagicSlingAnim')
     theField.slingAnim.alpha = 1
-    slingshotVibrate()
     theField.slingAnim:play()
     local killed_pest = false
+
+    timer.performWithDelay(500, function()    
+        playSoundEffect('magicSlingshot1')
+        end, 1)
 
     timer.performWithDelay(1200, function()
         theField.slingAnim.alpha = 0 
         theField.slingAnim:setSequence('MagicSlingAnim')
         end, 1)
     timer.performWithDelay(1200, function()
+        slingshotVibrate()
+        playSoundEffect('magicSlingshot2')
+
         transition.to(theField.slingFlash, {alpha = .7, time=300, transition=easing.outQuad})
         timer.performWithDelay(300, function()
             transition.to(theField.slingFlash, {alpha = 0, time=300, transition=easing.inQuad})

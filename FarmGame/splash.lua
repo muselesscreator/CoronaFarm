@@ -1,27 +1,20 @@
-----------------------------------------------------------------------------------
---      Scene Name
---      Scene notes
----------------------------------------------------------------------------------
-
-local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 local widget = require("widget")
-require 'libTutorial'
-require 'libFieldCreation'
+local ads = require("ads")
+
 storyboard.purgeOnSceneChange = true
 
 ----------------------------------------------------------------------------------
--- 
+--
 --      NOTE:
---      
+--
 --      Code outside of listener functions (below) will only be executed once,
 --      unless storyboard.removeScene() is called.
--- 
+--
 ---------------------------------------------------------------------------------
 
 
 -- local forward references should go here --
-
 
 ---------------------------------------------------------------------------------
 -- BEGINNING OF YOUR IMPLEMENTATION
@@ -29,73 +22,85 @@ storyboard.purgeOnSceneChange = true
 
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
-    touchesAllowed = false
-    fieldType = 'Salad'
-    --local backgroundMusic = audio.loadStream('sound/farm_song.mp3')
-    --backgroundMusicChannel = audio.play( backgroundMusic, { channel=1, loops=-1, fadein=100 } )
-    local group = self.view
-    fieldInit(group, fieldType, true)
-    runTutorial(fieldType)
-end
+    group = self.view
+    layers = display.newGroup()
+    layers.bg = display.newGroup()
 
-onDrawerButton = function ( event )
-    if(layers.theDrawer.isOpen) then
-        transition.to( layers.theDrawer, {x =  layers.theDrawer.x - 110 + 20, time = 200} )
-        layers.theDrawer.isOpen = false
-    else
-        transition.to( layers.theDrawer, {x =  layers.theDrawer.x + 110 - 20, time = 200} )
-        layers.theDrawer.isOpen = true
-    end
-    return true
-end
+    bg = display.newImage('Default-Landscape.png')
+    bg.anchorX = 0
+    bg.anchorY = 0
+    layers.bg:insert(bg)
 
-toggleOptions = function ( event )
-    if(layers.popup.visible) then
-        layers.popup.alpha = 0
-        layers.popup.visible = false
-    else
-        layers.popup.alpha = 1
-        layers.popup.visible = true
-    end
+
+    group:insert(layers.bg)
+
+
+    timer.performWithDelay(1500, function() storyboard.gotoScene('title_screen') end, 1)
+
 end
 
 -- Called BEFORE scene has moved onscreen:
 function scene:willEnterScene( event )
         local group = self.view
+
+        -----------------------------------------------------------------------------
+
+        --      This event requires build 2012.782 or later.
+
+        -----------------------------------------------------------------------------
+
 end
 
 
 -- Called immediately after scene has moved onscreen:
 function scene:enterScene( event )
         local group = self.view
+
+        -----------------------------------------------------------------------------
+
+        --      INSERT code here (e.g. start timers, load audio, start listeners, etc.)
+
+        -----------------------------------------------------------------------------
+
 end
 
 
 -- Called when scene is about to move offscreen:
 function scene:exitScene( event )
         local group = self.view
-        for i, v in pairs(level) do
-            if i == 'next' then
-                v:removeSelf()
-                v = nil
-            elseif i:sub(1, 7) == 'textbox' or i:sub(1, 4) == 'hand' then
-                v:die()
-            elseif i:sub(1, 6) == 'gopher' then
-                v:delete()
-            end
-        end
+
+        -----------------------------------------------------------------------------
+
+        --      INSERT code here (e.g. stop timers, remove listeners, unload sounds, etc.)
+
+        -----------------------------------------------------------------------------
+
 end
 
 
 -- Called AFTER scene has finished moving offscreen:
 function scene:didExitScene( event )
         local group = self.view
+
+        -----------------------------------------------------------------------------
+
+        --      This event requires build 2012.782 or later.
+
+        -----------------------------------------------------------------------------
+
 end
 
 
 -- Called prior to the removal of scene's "view" (display group)
 function scene:destroyScene( event )
         local group = self.view
+
+        -----------------------------------------------------------------------------
+
+        --      INSERT code here (e.g. remove listeners, widgets, save state, etc.)
+
+        -----------------------------------------------------------------------------
+
 end
 
 
@@ -103,6 +108,13 @@ end
 function scene:overlayBegan( event )
         local group = self.view
         local overlay_name = event.sceneName  -- name of the overlay scene
+
+        -----------------------------------------------------------------------------
+
+        --      This event requires build 2012.797 or later.
+
+        -----------------------------------------------------------------------------
+
 end
 
 
@@ -110,6 +122,13 @@ end
 function scene:overlayEnded( event )
         local group = self.view
         local overlay_name = event.sceneName  -- name of the overlay scene
+
+        -----------------------------------------------------------------------------
+
+        --      This event requires build 2012.797 or later.
+
+        -----------------------------------------------------------------------------
+
 end
 
 
@@ -147,4 +166,3 @@ scene:addEventListener( "overlayEnded", scene )
 ---------------------------------------------------------------------------------
 
 return scene
-    

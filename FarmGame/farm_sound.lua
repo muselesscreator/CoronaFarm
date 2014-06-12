@@ -1,20 +1,22 @@
 
 function playSoundEffect(fn)
-    local snd = audio.loadSound('sound/'..fn..'.wav')
+    local snd = audio.loadSound('sound/'..fn..'.mp3')
     snd = audio.play( snd )
     print(snd)
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    audio.setVolume(sfxVolume, {channel=snd})
-    audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
+    audio.setVolume(thePlayer.soundEffectsVolume, {channel=snd})
+    audio.setVolume(thePlayer.musicVolume, {channel = backgroundMusicChannel})
+    saveTable(thePlayer, 'player.json')
 end
 
 
 function setMusicVolume( event )
-    musicVolume = event.value / 100
-    audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
+    thePlayer.musicVolume = event.value / 100
+    audio.setVolume(thePlayer.musicVolume, {channel = backgroundMusicChannel})
+    saveTable(thePlayer, 'player.json')
 end
 
 function setSFXVolume( event )
-    sfxVolume = event.value / 100
-    print(sfxVolume)
+    thePlayer.soundEffectsVolume = event.value / 100
+    saveTable(thePlayer, 'player.json')
 end

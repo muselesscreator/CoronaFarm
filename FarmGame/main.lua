@@ -253,6 +253,7 @@ end
 -- Advertising Functions
 --------------------------------------------------------------
 function vungleListener( event )
+    scoreTxt.text = event.type
    -- Video ad not yet downloaded and available
     if ( event.type == "adStart" and event.isError ) then
         adProviderSwitchFlag = true
@@ -333,7 +334,7 @@ end
 
 toggleTutorial = function ( event )
     print(event.phase)
-    if gameOver ~= true and not layers.popup.visible and not layers.adPopup.visible and event.phase == 'ended' then
+    if gameOver ~= true and not layers.popup.visible and not layers.adPopup.visible and event.phase == 'ended' and touchesAllowed then
         if layers.tutorial.visible then
             layers.tutorial.alpha = 0
             timer.performWithDelay(10, function() layers.tutorial.visible = false end, 1)
@@ -382,7 +383,7 @@ end
 -- Popup Functions
 ------------------------------------------------------------------
 toggleOptions = function ( event )
-    if gameOver ~= true and not layers.tutorial.visible and not layers.adPopup.visible then
+    if gameOver ~= true and not layers.tutorial.visible and not layers.adPopup.visible and touchesAllowed then
         if(layers.popup.visible) then
             layers.popup.alpha = 0
             timer.performWithDelay(10, function() layers.popup.visible = false end, 1)
@@ -459,5 +460,5 @@ local params = {
 }
 ads:setCurrentProvider( "admob" )
 ads.show( "interstitial", params )
-storyboard.gotoScene( "title_screen", "fade", 400 )
-
+splash = display.newImageRect('Default-Landscape', 0, 0, display.contentWidth, display.contentHeight)
+storyboard.gotoScene( "splash")

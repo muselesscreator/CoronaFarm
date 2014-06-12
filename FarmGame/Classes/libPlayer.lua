@@ -46,6 +46,11 @@ Player = class(function(player)
                 player:genTipList()
                 player.tipIndex = 1
             end
+            if player.musicVolume == nil then
+                player.musicVolume = .5
+                player.soundEffectsVolume = .5
+                player.vibrateEnabled = true
+            end
 
             print("returning player")
             return player
