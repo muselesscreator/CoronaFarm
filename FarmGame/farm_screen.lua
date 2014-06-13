@@ -45,12 +45,6 @@ function toggleWeapon( self, event )
     end
 end
 
-function clearTip()
-    tipBox:removeSelf()
-    tipWrapper:removeSelf()
-    return true
-end 
-
 -- Called when the scene's view does not exist:
 function scene:createScene( event)
     gameOver = false
@@ -394,28 +388,13 @@ function scene:createScene( event)
     ---------------------------------------------------------------
     -- Tips Panel
     ---------------------------------------------------------------
-    local tip = thePlayer:nextTip()
-    print(tip)
-    tipBox = display.newImage(tip)
-    tipBox.x = display.contentWidth/2
-    tipBox.y = display.contentHeight/2
-    layers.tips:insert(tipBox)
-
-    tipWrapper = display.newRect(0,0,display.contentWidth, display.contentHeight)
-    tipWrapper.anchorX = 0
-    tipWrapper.anchorY = 0
-    tipWrapper.alpha = 0
-    tipWrapper.isHitTestable = true
-    tipWrapper.tap = clearTip
-    tipWrapper:addEventListener('tap', clearTip)
-    layers.tips:insert(tipWrapper)
 
     theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
     theQueue:fill()
 
 
-    local backdrop = display.newImage('Default-Landscape.png')
+    local backdrop = display.newImage('images/loading.jpg')
     backdrop.anchorX = 0
     backdrop.anchorY = 0
     local backdropTouch = function()
@@ -424,24 +403,35 @@ function scene:createScene( event)
     backdrop.tap = backdropTouch
     backdrop:addEventListener('tap', backdrop)
     layers.loading:insert(backdrop)
+
+    local tip = thePlayer:nextTip()
+    local tipBox = display.newImage(tip)
+    tipBox.x = display.contentWidth/2
+    tipBox.y = 550
+    layers.loading:insert(tipBox)
+
     local emptyLoading = display.newImage('images/uiProgressBar.png')
     emptyLoading.x = display.contentWidth/2
     emptyLoading.xScale = 3
-    emptyLoading.y = 650
+    emptyLoading.y = 700
     layers.loading:insert(emptyLoading)
+
     local fullLoading = display.newImage('images/uiProgressBarFull.png')
     fullLoading.x = display.contentWidth/2
     fullLoading.xScale = 3
-    fullLoading.y = 650
+    fullLoading.y = 700
+
     local loadingMask = graphics.newMask('images/uiProgressBarMask.png')
     fullLoading:setMask(loadingMask)
     layers.loading:insert(fullLoading)
     local width = 480
     fullLoading.maskX = -(width/2)
-    transition.to(fullLoading, {maskX = width/2, time=5000})
+    transition.to(fullLoading, {maskX = width/2, time=7500})
     timer.performWithDelay(7500, function()
             backdrop:removeSelf()
             backdrop = nil
+            tipBox:removeSelf()
+            tipBox = nil
             emptyLoading:removeSelf()
             emptyLoading = nil
             fullLoading:removeSelf()

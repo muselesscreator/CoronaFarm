@@ -77,8 +77,9 @@ function scene:createScene( event )
     layers.popup = display.newGroup()
     layers.tutorial = display.newGroup()
     layers.adPopup = display.newGroup()
+    layers.adConf = display.newGroup()
 
-    bg = display.newImage('images/fieldBackground.png')
+    bg = display.newImage('images/fieldBackground.jpg')
     bg.anchorX = 0
     bg.anchorY = 0
     layers.bg:insert(bg)
@@ -94,19 +95,6 @@ function scene:createScene( event )
     gopher.x = display.contentWidth/2 - 12
     gopher.y = 470
     layers.bg:insert(gopher)
-
-    giftButton = display.newSprite(magicWeaponSheet, sequenceData)
-
-    giftButton.x = 100
-    giftButton.y = 100
-    if thePlayer.numCoins >= 5 then
-        giftButton:setSequence('giftButtonDisabled')
-    else
-        giftButton:setSequence('giftButton')
-        giftButton.touch = AdButton
-        giftButton:addEventListener('touch', giftButton)
-    end
-    layers.frame:insert(giftButton)
 
     local FarmButton = widget.newButton
     {
@@ -312,6 +300,58 @@ function scene:createScene( event )
     layers.adPopup.visible = false
     layers.adPopup.alpha = 0
 
+
+    AdButton = function(self, event)
+        if hasNetwork() then
+            toggleAdPopup()
+        else
+            local srry = display.newImage('images/connectionRequired.png')
+            srry.x = display.contentCenterX
+            srry.y = display.contentCenterY
+            layers.adConf:insert(srry)
+            local srryTouch = display.newRect(0, 0, display.contentWidth, display.contentHeight)
+            srryTouch.alpha = 0
+            srryTouch.isHitTestable = true
+            srryTouch.tap = function() 
+                srry:removeSelf()
+                srry = nil
+                srryTouch:removeSelf()
+                srryTouch = nil
+            end
+            srryTouch:addEventListener('tap', srryTouch)
+            layers.adConf:insert(srryTouch)
+        end
+    end
+
+    toggleAdPopup = function ( )
+        if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible then
+            if layers.adPopup.visible then
+                layers.adPopup.alpha = 0
+                timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
+                if thePlayer.numCoins >= 5 then
+                    disableGiftButton()
+                end
+            else
+                layers.adPopup.alpha = 1
+                layers.adPopup.visible = true
+            end
+        end
+    end
+
+
+    giftButton = display.newSprite(magicWeaponSheet, sequenceData)
+
+    giftButton.x = 100
+    giftButton.y = 100
+    if thePlayer.numCoins >= 5 then
+        giftButton:setSequence('giftButtonDisabled')
+    else
+        giftButton:setSequence('giftButton')
+        giftButton.tap = AdButton
+        giftButton:addEventListener('tap', giftButton)
+    end
+    layers.frame:insert(giftButton)
+
     local adPopupMenu = display.newImageRect( layers.adPopup, "images/videoConfirm.png", 534, 382)
     adPopupMenu.x = 250
     adPopupMenu.y = 200
@@ -337,40 +377,15 @@ function scene:createScene( event )
     layers.adPopup:insert(adPopupClose)
 
 
+
     group:insert(layers.bg)
     group:insert(layers.frame)
     group:insert(layers.popup)
     group:insert(layers.adPopup)
     group:insert(layers.tutorial)
+    group:insert(layers.adConf)
     timer.performWithDelay(10, function() touchesAllowed = true end)
 
-
-
-    --[[
-    ------------------------------------------------------------------
-    -- Debug images
-    ------------------------------------------------------------------
-
-    tmpImage = display.newImage('images/plus.png')
-    tmpImage.x = 100
-    tmpImage.y = 75
-    tmpImage.xScale = .5
-    tmpImage.yScale = .5
-    tmpImage.alpha = .3
-    layers.frame:insert(tmpImage)
-    tmpImage.touch = promote_player
-    tmpImage:addEventListener('touch', tmpImage)
-
-    tmpImage = display.newImage('images/minus.png')
-    tmpImage.x = 900
-    tmpImage.y = 75
-    tmpImage.xScale = .5
-    tmpImage.yScale = .5
-    tmpImage.alpha = .3
-    layers.frame:insert(tmpImage)
-    tmpImage.touch = clear_player
-    tmpImage:addEventListener('touch', tmpImage)
-    ]]--
 end
 
 function clear_player(self, event)

@@ -2,18 +2,24 @@
 -- 1. Imports and Includes
 -----------------------------------------------------
 
---theFonts = native.getFontNames()
---for i=1, #theFonts do 
---    print(theFonts[i])
---end
---> Create physics (do we need this??)
+isMac = false
+isAndroid = false
+isWin = false
+isSim = false
 if "Win" == system.getInfo( "platformName" ) then
     CustomFont = "Comic Neue"
+    isWin = true
 elseif "Android" == system.getInfo( "platformName" ) then
     CustomFont = "ComicNeue-Bold.ttf"
+    isAndroid = true
 else
     -- Mac and iOS
     CustomFont = "ComicNeue-Bold"
+    isMac = true
+end
+
+if "simulator" == system.getInfo("environment") then
+    isSim = true
 end
 
 local ads = require "ads"
@@ -243,8 +249,17 @@ function log(message, level)
     end
 end
 
-
-
+function hasNetwork()
+    local socket = require("socket")
+    local test = socket.tcp()
+    test:settimeout(1, 't')  -- Set timeout to 1 second
+    local netConn = test:connect("www.google.com", 80)
+    if netConn == nil then
+        return false
+    end
+    test:close()
+    return true
+end
 function allowTouches(event)
     touchesAllowed=true
     print('You may now touch this!')
@@ -253,18 +268,30 @@ end
 -- Advertising Functions
 --------------------------------------------------------------
 function vungleListener( event )
-    if event.type ~= 'cachedAdAvailable' then
-        scoreTxt.text = event.type
-    end
-    -- Video ad not yet downloaded and available
-    if ( event.type == "adStart" and event.isError ) then
-        adProviderSwitchFlag = true
-        thePlayer:addCoin()
-    elseif (event.type == "adEnd") then --ad success
+
+    if (event.type == "adEnd") then --ad success
         thePlayer:addCoin()
         helpBtn.alpha = 0
         ads:hide()
         storyboard.hideOverlay()
+
+        adConf = display.newImage('images/weaponRecieved.png')
+        adConf.x = display.contentCenterX
+        adConf.y = display.contentCenterY
+        layers.adConf:insert(adConf)
+        confClick = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+        confClick.alpha = 0
+        confClick.isHitTestable = true
+        confClick.tap = function() 
+            adConf:removeSelf()
+            adConf = nil
+            confClick:removeSelf()
+            confClick = nil
+            return true 
+        end
+        confClick:addEventListener("tap", confClick)
+        layers.adConf:insert(confClick)
+
     else 
         print( "Received event", event.type )
     end
@@ -284,6 +311,7 @@ function adMobListener( event )
     elseif (event.type == "adEnd") then
         ads:hide()
         adProviderSwitchFlag = false
+        storyboard.gotoScene('title_screen')
         storyboard.hideOverlay()
     else 
         adProviderSwitchFlag = false
@@ -296,27 +324,6 @@ function adMobListener( event )
     return true
 end
 
-
-AdButton = function(self, event)
-    if event.phase == 'ended' then
-        toggleAdPopup()
-    end
-end
-
-toggleAdPopup = function ( )
-    if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible then
-        if layers.adPopup.visible then
-            layers.adPopup.alpha = 0
-            timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
-            if thePlayer.numCoins >= 5 then
-                disableGiftButton()
-            end
-        else
-            layers.adPopup.alpha = 1
-            layers.adPopup.visible = true
-        end
-    end
-end
 
 
 disableGiftButton = function()

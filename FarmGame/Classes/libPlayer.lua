@@ -1,4 +1,5 @@
 local json = require('json')
+math.randomseed(os.time())
 
 -----------------------------------------
 --Player Class and Score Function
@@ -139,5 +140,6 @@ function Player:nextTip()
         self.tipIndex = 1
         self:genTipList()
     end
+    saveTable(self, 'player.json')
     return tip
 end
