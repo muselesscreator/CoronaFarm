@@ -70,13 +70,10 @@ function scene:createScene( event)
     else
         fn = 'sound/FarmSong.mp3'
     end
-    fieldMusic = audio.loadStream(fn)
-    print("MUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSIC VOLUME")
-    print(musicVolume)
     audio.stop(1)
+    fieldMusic = audio.loadStream(fn)
+    audio.setVolume(thePlayer.musicVolume, {channel = 1})
     backgroundMusicChannel = audio.play( fieldMusic, { channel=1, loops=-1, fadein=100 } )
-    audio.setVolume(musicVolume, {channel = backgroundMusicChannel})
-    
 
     print('farm_screen')
     local group = self.view
@@ -293,12 +290,12 @@ function scene:createScene( event)
 
     local txt = display.newText(layers.popup, 'Music Volume', 510, 360, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 340, y=370, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 340, y=370, w=350, h=55, range=100, startX = thePlayer.musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
     txt = display.newText(layers.popup, 'Sound-Effects Volume', 510, 440, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 340, y=450, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 340, y=450, w=350, h=55, range=100, startX = thePlayer.soundEffectsVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
     txt = display.newText(layers.popup, 'Vibration Enabled', 450, 540, native.systemFontBold, 25)

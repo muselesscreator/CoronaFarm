@@ -166,9 +166,7 @@ function LandPest:useWeapon()
 end
 
 function LandPest:useMagicHammer()
-    local r = math.random(1, 5)
-    fn = 'mallet_'..r
-    playSoundEffect(fn)
+    playSoundEffect('magicHammer')
     self.dying = true
     self.pest_sprite.y = self.pest_sprite.y - 85
     self.pest_sprite.x = self.pest_sprite.x + 5

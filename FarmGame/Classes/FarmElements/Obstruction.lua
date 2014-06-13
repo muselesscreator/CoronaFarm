@@ -148,15 +148,20 @@ end
 
 function Rock:useMagicHammer()
     self.overlay:setSequence('MagicMallet')
+    playSoundEffect('magicHammer')
     self.overlay.y = self.y - 70
     self.overlay.alpha = 1
     self.overlay:play()
     vibrate()
-    playSoundEffect('break')
     local tmp = Blank:new({i=self.i, j=self.j})
-    timer.performWithDelay(800, function() self:die() end, 1)
-
-
+    timer.performWithDelay(600, function() 
+            self:die()
+            playSoundEffect('rockSmash')
+        end, 1)
+    timer.performWithDelay(350, function()
+            self.obs_sprite:setFrame(2)
+            playSoundEffect('break')
+        end, 1)
 end
 
 --==================================================================================
