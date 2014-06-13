@@ -52,7 +52,6 @@ Player = class(function(player)
                 player.soundEffectsVolume = .5
                 player.vibrateEnabled = true
             end
-
             print("returning player")
             return player
         end

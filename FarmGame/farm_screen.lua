@@ -35,12 +35,14 @@ end
 function toggleWeapon( self, event )
 
     if event.phase == 'began' then
-        if weaponToggled == false then
-            weaponToggled = true
-            wpnBtn:setSequence('magicWeapon'..theField.weapon)
-        else
-            weaponToggled = false
-            wpnBtn:setSequence('magicWeaponIdle')
+        if thePlayer.numCoins > 0 then
+            if weaponToggled == false then
+                weaponToggled = true
+                wpnBtn:setSequence('magicWeapon'..theField.weapon)
+            else
+                weaponToggled = false
+                wpnBtn:setSequence('magicWeaponIdle')
+            end
         end
     end
 end
