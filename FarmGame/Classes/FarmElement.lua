@@ -233,7 +233,6 @@ function FarmElement:useWeapon()
             self:hideWeapon()
             end, 1)
     else
-        print(self.weapon_sprite.x..', '..self.weapon_sprite.y)
         self.weapon_sprite:setSequence('Reticle')
         self.weapon_sprite.alpha = 1
         timer.performWithDelay(1000, function()
@@ -356,6 +355,21 @@ function FarmElement:useMagicSlingshot()
     theField.slingAnim:play()
     local killed_pest = false
 
+    for i=1, theField.columns do
+        for j=1, theField.rows do
+            local pest = theField:pestAt(i, j)
+            if pest ~= false then
+                pest.weapon_sprite:setSequence('Reticle')
+                pest.weapon_sprite.alpha = 1
+            else
+                local other_stuff = theField:whatIsAt(i, j)
+                if #other_stuff > 0 then
+                    other_stuff[1].weapon_sprite:setSequence('Reticle')
+                    other_stuff[1].weapon_sprite.alpha = 1
+                end
+            end
+        end
+    end
     timer.performWithDelay(500, function()    
         playSoundEffect('magicSlingshot1')
         end, 1)
