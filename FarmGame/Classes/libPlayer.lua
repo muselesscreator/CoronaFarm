@@ -62,6 +62,9 @@ Player = class(function(player)
         player.highScores = {Salad = 0,Stew = 0,Salsa = 0,Tea = 0}
         player.has_played_level = {false, false, false, false}
         player.has_unlocked_level = {false, false, false, false}
+        player.musicVolume = .5
+        player.soundEffectsVolume = .5
+        player.vibrateEnabled = true
         player:genTipList()
         player.tipIndex = 1
         return player

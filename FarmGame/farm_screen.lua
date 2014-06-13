@@ -55,7 +55,7 @@ end
 function scene:createScene( event)
     gameOver = false
     goodGameOverHappened = false
-    touchesAllowed = false
+    touchesAllowed = true
     weaponToggled = false
     thePlayer:newLevel()
     local r = math.random(1, 100)
@@ -142,6 +142,7 @@ function scene:createScene( event)
     layers.adPopup = display.newGroup()
     layers.gameOver = display.newGroup()
     layers.tips = display.newGroup()
+    layers.loading = display.newGroup()
     theField = Field(fieldType)
 
     theField:fill()
@@ -409,10 +410,46 @@ function scene:createScene( event)
     tipWrapper:addEventListener('tap', clearTip)
     layers.tips:insert(tipWrapper)
 
-
     theBasket = Basket()
     theQueue = libQueue(theField.initialWeights, 3)
     theQueue:fill()
+
+
+    local backdrop = display.newImage('Default-Landscape.png')
+    backdrop.anchorX = 0
+    backdrop.anchorY = 0
+    local backdropTouch = function()
+        return true
+    end
+    backdrop.tap = backdropTouch
+    backdrop:addEventListener('tap', backdrop)
+    layers.loading:insert(backdrop)
+    local emptyLoading = display.newImage('images/uiProgressBar.png')
+    emptyLoading.x = display.contentWidth/2
+    emptyLoading.xScale = 3
+    emptyLoading.y = 650
+    layers.loading:insert(emptyLoading)
+    local fullLoading = display.newImage('images/uiProgressBarFull.png')
+    fullLoading.x = display.contentWidth/2
+    fullLoading.xScale = 3
+    fullLoading.y = 650
+    local loadingMask = graphics.newMask('images/uiProgressBarMask.png')
+    fullLoading:setMask(loadingMask)
+    layers.loading:insert(fullLoading)
+    local width = 480
+    fullLoading.maskX = -(width/2)
+    transition.to(fullLoading, {maskX = width/2, time=5000})
+    timer.performWithDelay(7500, function()
+            backdrop:removeSelf()
+            backdrop = nil
+            emptyLoading:removeSelf()
+            emptyLoading = nil
+            fullLoading:removeSelf()
+            fullLoading = nil
+            loadingMask = nil
+        end, 1)
+
+
 
     group:insert(layers.field)
     group:insert(layers.frame)
@@ -421,9 +458,7 @@ function scene:createScene( event)
     group:insert(layers.tutorial)
     group:insert(layers.gameOver)
     group:insert(layers.tips)
-
-    touchesAllowed = true
-    --timer.performWithDelay(800, allowTouches, -1)
+    group:insert(layers.loading)
 end
 
 -- Called BEFORE scene has moved onscreen:

@@ -66,8 +66,19 @@ Field = class(function(tmpField, type)
         slingAnim.x = display.contentWidth/2
         slingAnim.y = display.contentHeight/2
         slingAnim.alpha = 0
+        slingAnim:play()
+
         layers.overFrame:insert(slingAnim)
         tmpField.slingAnim = slingAnim
+
+        local magicSlingAnim = display.newSprite(weaponSheet, sequenceData)
+        magicSlingAnim:setSequence('magicSlingAnim')
+        magicSlingAnim:play()
+        magicSlingAnim.x = display.contentWidth/2
+        magicSlingAnim.y = display.contentHeight/2
+        magicSlingAnim.alpha = 0
+        layers.overFrame:insert(magicSlingAnim)
+        tmpField.magicSlingAnim = magicSlingAnim
 
         local flash = display.newRect(0, 0, display.contentWidth, display.contentHeight)
         flash.anchorX = 0
@@ -100,6 +111,15 @@ function Field:fill()
                     local tmp = Turtle:new({i=c, j=r})
                 else
                     local tmp = Blank:new({i=c, j=r})
+                    tmp.base_sprite:setSequence('Mallet')
+                    tmp.base_sprite:play()
+                    timer.performWithDelay(250, function()
+                            tmp.base_sprite:setSequence('MagicMallet')
+                            tmp.base_sprite:play()
+                            timer.performWithDelay(600, function()
+                                    tmp.base_sprite:setSequence('Blank')
+                                end, 1)
+                        end, 1)
                 end
                 self.total_squares = self.total_squares + 1
             end

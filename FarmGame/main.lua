@@ -70,7 +70,7 @@ sequenceData =
     { name="Urn", sheet=obsSheet, frames={ 82 }},
 
     { name="Reticle", sheet=weaponSheet, frames={ 1 }},
-    { name="SlingAnim", sheet=weaponSheet, start=2, count=21, time=1000},
+    { name="SlingAnim", sheet=weaponSheet, start=2, count=16, time=1000},
     { name="MagicSlingAnim", sheet=weaponSheet, start=18, count=21, time=1200},
     { name="BirdDeath", sheet=weaponSheet, start=39, count=16, time=800},
     { name="MagicMallet", sheet=weaponSheet, start=55, count=28, time=600, loopCount=1},
@@ -253,8 +253,10 @@ end
 -- Advertising Functions
 --------------------------------------------------------------
 function vungleListener( event )
-    scoreTxt.text = event.type
-   -- Video ad not yet downloaded and available
+    if event.type ~= 'cachedAdAvailable' then
+        scoreTxt.text = event.type
+    end
+    -- Video ad not yet downloaded and available
     if ( event.type == "adStart" and event.isError ) then
         adProviderSwitchFlag = true
         thePlayer:addCoin()
