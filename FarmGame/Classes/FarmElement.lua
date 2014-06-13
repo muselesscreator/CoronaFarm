@@ -364,7 +364,7 @@ function FarmElement:useMagicSlingshot()
         theField.slingAnim.alpha = 0 
         theField.slingAnim:setSequence('MagicSlingAnim')
         end, 1)
-    timer.performWithDelay(1200, function()
+    timer.performWithDelay(1500, function()
         slingshotVibrate()
         playSoundEffect('magicSlingshot2')
 
@@ -374,38 +374,39 @@ function FarmElement:useMagicSlingshot()
             end, 1)
         end, 1)
 
-    for i=1, theField.columns do
-        for j=1, theField.columns do
-            local pest = theField:pestAt(i, j)
-            if pest ~= false then
-                print('Kill this pest!')
-                killed_pest = true
-                pest:useWeapon()
-            else
-                local other_stuff = theField:whatIsAt(i, j)
-                if #other_stuff > 0 then
-                    FarmElement.useWeapon(other_stuff[1])
+    timer.performWithDelay(1500, function()
+            for i=1, theField.columns do
+                for j=1, theField.columns do
+                    local pest = theField:pestAt(i, j)
+                    if pest ~= false then
+                        print('Kill this pest!')
+                        killed_pest = true
+                        pest:useWeapon()
+                    else
+                        local other_stuff = theField:whatIsAt(i, j)
+                        if #other_stuff > 0 then
+                            FarmElement.useWeapon(other_stuff[1])
+                        end
+                    end
                 end
             end
-        end
-    end
-    timer.performWithDelay(1400, function()
-        if killed_pest == true then
-            theField.slingAnim:setSequence('BirdDeath')
-            theField.slingAnim.alpha = 1
-            theField.slingAnim:play()
-            timer.performWithDelay(800, function()
-                theField.slingAnim.alpha = 0
-                theField.slingAnim:setSequence('SlingAnim')
+
+            if killed_pest == true then
+                theField.slingAnim:setSequence('BirdDeath')
+                theField.slingAnim.alpha = 1
+                theField.slingAnim:play()
+                timer.performWithDelay(800, function()
+                    theField.slingAnim.alpha = 0
+                    theField.slingAnim:setSequence('SlingAnim')
+                    touchesAllowed = true
+                    self:useNext()
+                    theField:nextDay()
+                    end, 1)
+            else
                 touchesAllowed = true
                 self:useNext()
                 theField:nextDay()
-                end, 1)
-        else
-            touchesAllowed = true
-            self:useNext()
-            theField:nextDay()
-        end
+            end
         end, 1)
 end
 
