@@ -415,7 +415,7 @@ local function onKeyEvent( event )
 
    if ( "back" == keyName and phase == "up" ) then
       if ( storyboard.currentScene == "splash" ) then
-            local alert = native.showAlert("Quit Game", "Are You Sure You Want To Quit?", {"Yes", "No"}, backKey)      
+            local alert = native.showAlert("Quit Game", "Are You Sure You Want To Quit?", {"Yes", "No"}, dlgQuitGame)      
       else
          if ( storyboard.isOverlay ) then
             storyboard.hideOverlay()
@@ -423,10 +423,11 @@ local function onKeyEvent( event )
             if ( lastScene ) then
                storyboard.gotoScene( 'title_screen', { effect="crossFade", time=500 } )
             else
-               local alert = native.showAlert("Quit Game", "Are You Sure You Want To Quit?", {"Yes", "No"}, backKey)
+               local alert = native.showAlert("Quit Game", "Are You Sure You Want To Quit?", {"Yes", "No"}, dlgQuitGame)
             end
          end
       end
+      return true
    end
 
    if ( keyName == "volumeUp" and phase == "down" ) then
@@ -449,8 +450,8 @@ local function onKeyEvent( event )
    return false  --SEE NOTE BELOW
 end
 
-function backKey( event )
-    local i = e.index
+function dlgQuitGame( event )
+    local i = event.index
     if (i == 1) then 
         print("Exiting Game")
         native.requestExit()
