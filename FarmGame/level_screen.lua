@@ -43,7 +43,7 @@ function scene:createScene( event )
     layers:insert(layers.interface)
     layers:insert(layers.popup)
 
-    bg = display.newImage('images/fieldBackground.png')
+    bg = display.newImage('images/fieldBackground.jpg')
     bg.anchorX = 0
     bg.anchorY = 0
     layers.bg:insert(bg)

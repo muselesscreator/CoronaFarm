@@ -52,6 +52,7 @@ Player = class(function(player)
                 player.soundEffectsVolume = .5
                 player.vibrateEnabled = true
             end
+            player.numCoins = 5
             print("returning player")
             return player
         end

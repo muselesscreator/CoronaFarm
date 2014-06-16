@@ -131,6 +131,8 @@ function FarmElement:move()
     self.base_sprite.y = self.y
     self.overlay.x = self.x
     self.overlay.y = self.y
+    self.weapon_sprite.x = self.x
+    self.weapon_sprite.y = self.y
 end
 
 --Done

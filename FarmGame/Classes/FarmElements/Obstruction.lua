@@ -58,40 +58,6 @@ function Obstruction:die()
     FarmElement.die(self)
     theField:updateDoomCounter()
 end
---==================================================================================
---====   Turtle                     ================================================
---==================================================================================
-
-Turtle = Class(Obstruction)
-
-function Turtle:initialize(args)
-    Obstruction.initialize(self, args)
-    self.elem_type = 'Turtle'
-end
-
-function Turtle:move()
-    local opts = {}
-    for i, v in pairs(self:getNeighbors()) do
-        if v.elem_type == 'Blank' then
-            opts[#opts+1] = v
-        end
-    end
-    if #opts > 0 then
-        r = math.random(1, #opts)
-        new_i = opts[r].i
-        new_j = opts[r].j
-        opts[r]:die()
-        --transition.to(self.base_sprite, )
-    end
-end
---Done
-function Turtle:nextDay()
-    self:move()
-end
---Done
-function Turtle:isNextValid()
-    return self:whatIsNext().is_weapon
-end
 
 --==================================================================================
 --====   Rock                       ================================================

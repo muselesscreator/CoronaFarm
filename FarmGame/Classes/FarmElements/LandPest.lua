@@ -171,6 +171,7 @@ function LandPest:useMagicHammer()
     self.pest_sprite.y = self.pest_sprite.y - 85
     self.pest_sprite.x = self.pest_sprite.x + 5
     self.pest_sprite:setSequence('GopherMagicHammerDie')
+    playSoundEffect('gopherMagicMallet')
     vibrate()
     local tmp = Blank:new({i=self.i, j=self.j})
     self.pest_sprite:play()
