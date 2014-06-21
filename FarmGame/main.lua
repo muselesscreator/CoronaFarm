@@ -268,7 +268,6 @@ end
 -- Advertising Functions
 --------------------------------------------------------------
 function vungleListener( event )
-
     if (event.type == "adEnd") then --ad success
         thePlayer:addCoin()
         helpBtn.alpha = 0
@@ -302,24 +301,34 @@ function vungleListener( event )
 end
 
 function adMobListener( event )
-    if ( event.isError and adProviderSwitchFlag) then
-        adProviderSwitchFlag = false
-        storyboard.hideOverlay()
-    elseif ( event.type == "adStart" and event.isError ) then
-        adProviderSwitchFlag = true
-        ads:setCurrentProvider( "vungle" )
-    elseif (event.type == "adEnd") then
+    if (event.type == "adEnd") then --ad success
+        thePlayer:addCoin()
+        helpBtn.alpha = 0
         ads:hide()
-        adProviderSwitchFlag = false
-        storyboard.gotoScene('title_screen')
         storyboard.hideOverlay()
+
+        adConf = display.newImage('images/weaponRecieved.png')
+        adConf.x = display.contentCenterX
+        adConf.y = display.contentCenterY
+        layers.adConf:insert(adConf)
+        confClick = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+        confClick.alpha = 0
+        confClick.isHitTestable = true
+        confClick.tap = function() 
+            adConf:removeSelf()
+            adConf = nil
+            confClick:removeSelf()
+            confClick = nil
+            return true 
+        end
+        confClick:addEventListener("tap", confClick)
+        layers.adConf:insert(confClick)
+
     else 
-        adProviderSwitchFlag = false
         print( "Received event", event.type )
     end
     if (adGetTokenFlag == true) then
         adGetTokenFlag = false
-        thePlayer.numCoins = thePlayer.numCoins + 1
     end
     return true
 end
@@ -478,7 +487,4 @@ local params = {
    isAnimated = false,
    isAutoRotation = true,
 }
-ads:setCurrentProvider( "admob" )
-ads.show( "interstitial", params )
-splash = display.newImageRect('Default-Landscape', 0, 0, display.contentWidth, display.contentHeight)
 storyboard.gotoScene( "splash")

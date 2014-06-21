@@ -34,11 +34,7 @@ function scene:createScene( event )
 
     group:insert(layers.bg)
 
-    if isSim or not hasNetwork() then
-        timer.performWithDelay(500, function() storyboard.gotoScene('title_screen') end, 1)
-    else
-        timer.performWithDelay(1000, function() storyboard.gotoScene('title_screen') end, 1)
-    end
+    timer.performWithDelay(500, function() storyboard.gotoScene('title_screen') end, 1)
 end
 
 -- Called BEFORE scene has moved onscreen:
