@@ -31,7 +31,10 @@ settings = {
 	},
 	
 	-- Android permissions
-
+android =
+    {
+      usesExpansionFile = true
+    }
 	androidPermissions = {
         "android.permission.VIBRATE",
         "android.permission.INTERNET",
