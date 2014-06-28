@@ -26,9 +26,11 @@ function scene:createScene( event )
     layers = display.newGroup()
     layers.bg = display.newGroup()
 
-    bg = display.newImage('Default-Landscape.png')
+    bg = display.newImageRect('Default-Landscape.png', display.contentWidth, display.contentHeight)
     bg.anchorX = 0
     bg.anchorY = 0
+    bg.x = 0
+    bg.y = 0
     layers.bg:insert(bg)
 
 
