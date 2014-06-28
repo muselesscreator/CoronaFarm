@@ -16,15 +16,16 @@ storyboard.purgeOnSceneChange = true
 
 -- local forward references should go here --
 
-local function playAd()
-    adGetTokenFlag = true
-    toggleAdPopup()
-    ads:setCurrentProvider( "admob" )
-    ads.show("interstitial", params)
+local function playAd(self, event)
+    if event.phase == 'ended' then
+        toggleAdPopup()
+        ads:setCurrentProvider( "vungle" )
+        ads.show("interstitial", params)
+    end
 end
 
 local function gotoFarm()
-    if not layers.popup.visible and not layers.tutorial.visible then
+    if not layers.popup.visible and not layers.tutorial.visible and not layers.adPopup.visible then
         tmpField = ''
         for i, v in ipairs(fields.order) do
             if thePlayer.totalScore >= fields[v].minScore then
@@ -43,20 +44,17 @@ local function gotoFarm()
 end
 
 local function gotoLevel()
-    if not layers.popup.visible and not layers.tutorial.visible then
+    if not layers.popup.visible and not layers.tutorial.visible and not layers.adPopup.visible then
         storyboard.gotoScene('level_screen')
         return true
     end
 end
 
 local function gotoSite()
-    system.openURL('http://www.nerdpilegames.com')
-    return true
-end
-
-local function gotoTutorial()
-    storyboard.gotoScene('tutorial_screen')
-    return true
+    if not layers.popup.visible and not layers.tutorial.visible and not layers.adPopup.visible then
+        system.openURL('http://www.nerdpilegames.com')
+        return true
+    end
 end
 
 ---------------------------------------------------------------------------------
@@ -65,6 +63,8 @@ end
 
 -- Called when the scene's view does not exist:
 function scene:createScene( event )
+    touchesAllowed = true
+
     gameOver = false
     print("title_screen")
     storyboard.returnTo='title_screen'
@@ -77,6 +77,7 @@ function scene:createScene( event )
     layers.popup = display.newGroup()
     layers.tutorial = display.newGroup()
     layers.adPopup = display.newGroup()
+    layers.adConf = display.newGroup()
 
     bg = display.newImage('images/fieldBackground.jpg')
     bg.anchorX = 0
@@ -95,17 +96,6 @@ function scene:createScene( event )
     gopher.y = 470
     layers.bg:insert(gopher)
 
-    local giftButton = widget.newButton
-    {
-        defaultFile = "images/Gift Button_Pressed.png",
-        overFile = "images/Gift Button_Unpressed.png",
-        emboss = true,
-        onRelease = toggleAdPopup,
-    }
-    giftButton.x = 100
-    giftButton.y = 100
-    layers.frame:insert(giftButton)
-
     local FarmButton = widget.newButton
     {
         defaultFile = "images/playNow.png",
@@ -118,6 +108,8 @@ function scene:createScene( event )
     FarmButton.xScale = 1.1
     FarmButton.yScale = 1.1
     layers.frame:insert(FarmButton)
+
+    
 
     local LevelButton = widget.newButton
     {
@@ -150,7 +142,7 @@ function scene:createScene( event )
 
 
 
-    local scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
+    scoreTxt = display.newText( 'Total Score', 195, 730, nil, 36)
     scoreTxt:setFillColor(0, 0, 0)
     layers.frame:insert(scoreTxt)
     local scorecard = display.newImage('images/scorebar.png')
@@ -200,12 +192,12 @@ function scene:createScene( event )
 
     local txt = display.newText(layers.popup, 'Music Volume', 510, 320, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local mscSlider = VolSlider({x = 340, y=330, w=350, h=55, range=100, startX = musicVolume, event='setMusicVolume'})
+    local mscSlider = VolSlider({x = 340, y=330, w=350, h=55, range=100, startX = thePlayer.musicVolume, event='setMusicVolume'})
     mscSlider.icon:addEventListener('setMusicVolume', setMusicVolume)
     
     txt = display.newText(layers.popup, 'Sound-Effects Volume', 510, 400, native.systemFontBold, 25)
     txt:setFillColor(0, 0, 0)
-    local sfxSlider = VolSlider({x = 340, y=410, w=350, h=55, range=100, startX = sfxVolume, event='setSFXVolume'})
+    local sfxSlider = VolSlider({x = 340, y=410, w=350, h=55, range=100, startX = thePlayer.soundEffectsVolume, event='setSFXVolume'})
     sfxSlider.icon:addEventListener('setSFXVolume', setSFXVolume)
 
     txt = display.newText(layers.popup, 'Vibration Enabled', 450, 500, native.systemFontBold, 25)
@@ -218,22 +210,23 @@ function scene:createScene( event )
     local vibrateToggle = display.newImage('images/uiToggleThing.png')
     local function toggleVibrate(self, event)
         if event.phase == 'began' then
-            if isVibrateEnabled then
+            if thePlayer.vibrateEnabled then
                 print('no')
-                isVibrateEnabled = false
-                transition.to(vibrateToggle, {x=645, time=400})
+                thePlayer.vibrateEnabled = false
+                transition.to(vibrateToggle, {x=595, time=400})
             else
                 print('yes')
-                isVibrateEnabled = true
-                transition.to(vibrateToggle, {x=595, time=400})
+                thePlayer.vibrateEnabled = true
+                transition.to(vibrateToggle, {x=645, time=400})
             end
+            saveTable(thePlayer, 'player.json')
         end
     end
 
-    if isVibrateEnabled then
-        vibrateToggle.x = 595
-    else
+    if thePlayer.vibrateEnabled then
         vibrateToggle.x = 645
+    else
+        vibrateToggle.x = 595
     end
     vibrateToggle.y = 500
     layers.popup:insert(vibrateToggle)
@@ -250,12 +243,16 @@ function scene:createScene( event )
     layers.tutorial.visible = false
     layers.tutorial.alpha = 0
     layers.tutorial.frame = 1
+    
 
-    helpBtn = display.newImage('images/questionMenuButton.png')
+    local helpBtn = widget.newButton
+    {
+        defaultFile = "images/questionMenuButton.png",
+        emboss = true,
+        onRelease = toggleTutorial
+    }
     helpBtn.x = 830
     helpBtn.y = 710
-    helpBtn.touch = clickHelp
-    helpBtn:addEventListener('touch', helpBtn)
     layers.frame:insert(helpBtn)
 
     tutorialPanel = display.newSprite(uiSheet, sequenceData)
@@ -266,19 +263,20 @@ function scene:createScene( event )
     layers.tutorial:insert(tutorialPanel)
 
     tutorialBackBtn = display.newImage('images/uiArrow.png')
-    tutorialBackBtn.xScale = -1
-    tutorialBackBtn.yScale = .9
-    tutorialBackBtn.x = 380
-    tutorialBackBtn.y = 512
+    tutorialBackBtn.xScale = -1.2
+    tutorialBackBtn.yScale = 1.2
+    tutorialBackBtn.x = 250
+    tutorialBackBtn.y = 590
     tutorialBackBtn.alpha = 0
     tutorialBackBtn.touch = tutorialBack
     tutorialBackBtn:addEventListener('touch', tutorialBackBtn)
     layers.tutorial:insert(tutorialBackBtn)
 
     tutorialNextBtn = display.newImage('images/uiArrow.png')
-    tutorialNextBtn.yScale = .9
-    tutorialNextBtn.x = 650
-    tutorialNextBtn.y = 512
+    tutorialNextBtn.xScale = 1.2
+    tutorialNextBtn.yScale = 1.2 
+    tutorialNextBtn.x = 780
+    tutorialNextBtn.y = 590
     tutorialNextBtn.touch = tutorialNext
     tutorialNextBtn:addEventListener('touch', tutorialNextBtn)
     layers.tutorial:insert(tutorialNextBtn)
@@ -289,18 +287,70 @@ function scene:createScene( event )
         emboss = true,
         onRelease = toggleTutorial
     }
-    tutorialClose.x = 685
-    tutorialClose.y = 235
-    tutorialClose.xScale = .35
-    tutorialClose.yScale = .35
-    tutorialClose.touch = toggleTutorial
-    tutorialClose:addEventListener('touch', tutorialClose)
+    tutorialClose.x = 830
+    tutorialClose.y = 150
+    tutorialClose.xScale = .7
+    tutorialClose.yScale = .7
     layers.tutorial:insert(tutorialClose)
+
+
     ---------------------------------------------------------------------------
     -- Advertising Popup
     ---------------------------------------------------------------------------
     layers.adPopup.visible = false
     layers.adPopup.alpha = 0
+
+
+    AdButton = function(self, event)
+        if hasNetwork() then
+            toggleAdPopup()
+        else
+            local srry = display.newImage('images/connectionRequired.png')
+            srry.x = display.contentCenterX
+            srry.y = display.contentCenterY
+            layers.adConf:insert(srry)
+            local srryTouch = display.newRect(0, 0, display.contentWidth, display.contentHeight)
+            srryTouch.alpha = 0
+            srryTouch.isHitTestable = true
+            srryTouch.tap = function() 
+                srry:removeSelf()
+                srry = nil
+                srryTouch:removeSelf()
+                srryTouch = nil
+            end
+            srryTouch:addEventListener('tap', srryTouch)
+            layers.adConf:insert(srryTouch)
+        end
+    end
+
+    toggleAdPopup = function ( )
+        if gameOver ~= true and not layers.popup.visible and not layers.tutorial.visible then
+            if layers.adPopup.visible then
+                layers.adPopup.alpha = 0
+                timer.performWithDelay(10, function() layers.adPopup.visible = false end, 1)
+                if thePlayer.numCoins >= 5 then
+                    disableGiftButton()
+                end
+            else
+                layers.adPopup.alpha = 1
+                layers.adPopup.visible = true
+            end
+        end
+    end
+
+
+    giftButton = display.newSprite(magicWeaponSheet, sequenceData)
+
+    giftButton.x = 100
+    giftButton.y = 100
+    if thePlayer.numCoins >= 5 then
+        giftButton:setSequence('giftButtonDisabled')
+    else
+        giftButton:setSequence('giftButton')
+        giftButton.tap = AdButton
+        giftButton:addEventListener('tap', giftButton)
+    end
+    layers.frame:insert(giftButton)
 
     local adPopupMenu = display.newImageRect( layers.adPopup, "images/videoConfirm.png", 534, 382)
     adPopupMenu.x = 250
@@ -327,40 +377,15 @@ function scene:createScene( event )
     layers.adPopup:insert(adPopupClose)
 
 
+
     group:insert(layers.bg)
     group:insert(layers.frame)
     group:insert(layers.popup)
     group:insert(layers.adPopup)
     group:insert(layers.tutorial)
+    group:insert(layers.adConf)
     timer.performWithDelay(10, function() touchesAllowed = true end)
 
-
-
-    --[[
-    ------------------------------------------------------------------
-    -- Debug images
-    ------------------------------------------------------------------
-
-    tmpImage = display.newImage('images/plus.png')
-    tmpImage.x = 100
-    tmpImage.y = 75
-    tmpImage.xScale = .5
-    tmpImage.yScale = .5
-    tmpImage.alpha = .3
-    layers.frame:insert(tmpImage)
-    tmpImage.touch = promote_player
-    tmpImage:addEventListener('touch', tmpImage)
-
-    tmpImage = display.newImage('images/minus.png')
-    tmpImage.x = 900
-    tmpImage.y = 75
-    tmpImage.xScale = .5
-    tmpImage.yScale = .5
-    tmpImage.alpha = .3
-    layers.frame:insert(tmpImage)
-    tmpImage.touch = clear_player
-    tmpImage:addEventListener('touch', tmpImage)
-    ]]--
 end
 
 function clear_player(self, event)

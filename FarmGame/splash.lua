@@ -26,12 +26,9 @@ function scene:createScene( event )
     layers = display.newGroup()
     layers.bg = display.newGroup()
 
-    print('splash')
-
-    bg = display.newImageRect('Default-Landscape.png', display.contentWidth, display.contentHeight)
-    bg.x = display.contentCenterX
-    bg.y = display.contentCenterY
-
+    bg = display.newImage('Default-Landscape.png')
+    bg.anchorX = 0
+    bg.anchorY = 0
     layers.bg:insert(bg)
 
 
