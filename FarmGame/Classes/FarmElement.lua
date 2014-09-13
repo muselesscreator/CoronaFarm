@@ -245,23 +245,32 @@ end
 
 function FarmElement:confSlingshot(myPlant)
     local function hideUI()
+        print("Hide UI")
         self.menu:removeSelf()
         self.menu = nil
         self.doShoot:removeSelf()
         self.doShoot = nil
         self.doHarvest:removeSelf()
         self.doHarvest = nil
+        touchesAllowed = false
         theField:waitADay()
     end
 
-    local function harvest()
-        myPlant:onClick()
-        hideUI()
+    local function harvest(event)
+        if event.phase=='ended' then
+            hideUI()
+            myPlant:onClick()
+        end
+        return true
+
     end
 
-    local function shoot()
-        self:useSlingshot()
-        hideUI()
+    local function shoot(event)
+        if event.phase=='ended' then
+            hideUI()
+            self:useSlingshot()
+        end
+        return true
     end
 
     self.menu = display.newImage('images/uiConfirmDialog.png')
@@ -288,9 +297,9 @@ function FarmElement:confSlingshot(myPlant)
     self.doHarvest.x = self.x+50
     
     self.doShoot.touch = shoot
-    self.doShoot:addEventListener('touch', self.doShoot)
+    self.doShoot:addEventListener('touch', shoot)
     self.doHarvest.touch = harvest
-    self.doHarvest:addEventListener('touch', self.doHarvest)
+    self.doHarvest:addEventListener('touch', harvest)
 
     
 end
