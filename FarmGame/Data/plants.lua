@@ -17,19 +17,19 @@ Plants.Lettuce ={
     }
 Plants.Carrot ={
     dim = {1,1},
-    turns = {1, 1, 1, 20, 10},
+    turns = {2, 2, 3, 7, 10},
     maxHarvest = {1},
     xp = 25,
     }
 Plants.Potato ={
     dim = {1,1},
-    turns = {1, 1, 1, 88, 10},
+    turns = {2, 3, 3, 8, 10},
     maxHarvest = {1},
     xp = 50,
     }
 Plants.Celery ={
     dim = {1,1},
-    turns = {1, 1, 1, 100, 10},
+    turns = {6, 6, 6, 6, 10},
     maxHarvest = {1},
     xp = 1000,
 }
